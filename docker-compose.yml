@@ -1,0 +1,166 @@
+# docker-compose.yml
+# ReamurCMS — Docker Development Environment
+#
+# Services:
+#   app        → PHP 8.2 + Apache  (http://localhost:8080)
+#   db         → MySQL 8.0         (localhost:3306)
+#   redis      → Redis 7           (localhost:6379)
+#   phpmyadmin → phpMyAdmin        (http://localhost:8081)
+#   mailhog    → MailHog SMTP/UI   (http://localhost:8025)
+#
+# Usage:
+#   docker-compose up -d            # Start all services
+#   docker-compose down             # Stop all services
+#   docker-compose down -v          # Stop and remove volumes
+#   docker-compose logs -f app      # Follow app logs
+#   docker-compose exec app bash    # Open shell in app container
+
+version: '3.8'
+
+services:
+
+  # ─────────────────────────────────────────
+  # PHP 8.2 + Apache Application
+  # ─────────────────────────────────────────
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        PHP_VERSION: '8.2'
+    container_name: reamur_app
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    volumes:
+      - ./:/var/www/html
+      - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini:ro
+      - ./docker/apache/reamur.conf:/etc/apache2/sites-enabled/000-default.conf:ro
+    environment:
+      # Application
+      APP_ENV: development
+      APP_DEBUG: "true"
+      # Database
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_DATABASE: reamur
+      DB_USERNAME: reamur
+      DB_PASSWORD: reamur_password
+      # Redis Cache
+      CACHE_ENGINE: redis
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      # Mail (MailHog)
+      MAIL_ENGINE: smtp
+      MAIL_SMTP_HOSTNAME: mailhog
+      MAIL_SMTP_PORT: 1025
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:80" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    networks:
+      - reamur-network
+
+  # ─────────────────────────────────────────
+  # MySQL 8.0 Database
+  # ─────────────────────────────────────────
+  db:
+    image: mysql:8.0
+    container_name: reamur_db
+    restart: unless-stopped
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: reamur
+      MYSQL_USER: reamur
+      MYSQL_PASSWORD: reamur_password
+      MYSQL_ROOT_PASSWORD: root_password
+    volumes:
+      - reamur_dbdata:/var/lib/mysql
+      - ./docker/mysql/my.cnf:/etc/mysql/conf.d/my.cnf:ro
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "reamur", "-preamur_password" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    networks:
+      - reamur-network
+
+  # ─────────────────────────────────────────
+  # Redis 7 — Cache Engine
+  # ─────────────────────────────────────────
+  redis:
+    image: redis:7-alpine
+    container_name: reamur_redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - reamur_redisdata:/data
+    command: redis-server --save 60 1 --loglevel warning
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    networks:
+      - reamur-network
+
+  # ─────────────────────────────────────────
+  # phpMyAdmin — Database UI
+  # ─────────────────────────────────────────
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    container_name: reamur_phpmyadmin
+    restart: unless-stopped
+    ports:
+      - "8081:80"
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+      PMA_USER: reamur
+      PMA_PASSWORD: reamur_password
+      MYSQL_ROOT_PASSWORD: root_password
+      UPLOAD_LIMIT: 50M
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - reamur-network
+
+  # ─────────────────────────────────────────
+  # MailHog — Local SMTP + Email UI
+  # ─────────────────────────────────────────
+  mailhog:
+    image: mailhog/mailhog:latest
+    container_name: reamur_mailhog
+    restart: unless-stopped
+    ports:
+      - "1025:1025"   # SMTP
+      - "8025:8025"   # Web UI → http://localhost:8025
+    networks:
+      - reamur-network
+
+# ─────────────────────────────────────────
+# Networks
+# ─────────────────────────────────────────
+networks:
+  reamur-network:
+    driver: bridge
+
+# ─────────────────────────────────────────
+# Volumes
+# ─────────────────────────────────────────
+volumes:
+  reamur_dbdata:
+    driver: local
+  reamur_redisdata:
+    driver: local
