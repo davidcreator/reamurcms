@@ -1,0 +1,95 @@
+# .github/workflows/dependency-update.yml
+# ReamurCMS — Automated Dependency Update
+#
+# Runs every Sunday at midnight UTC.
+# Updates composer dependencies and opens a Pull Request with the changes.
+# The PR is created on branch `chore/dependency-update` and auto-deleted after merge.
+
+name: Dependency Update
+
+on:
+  schedule:
+    - cron: '0 0 * * 0' # Every Sunday at midnight UTC / Domingo à meia-noite UTC
+  workflow_dispatch: # Allows manual trigger / Permite execução manual
+
+jobs:
+  update-dependencies:
+    name: Update Composer Dependencies
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          tools: composer:v2
+
+      - name: Verify composer.json exists
+        run: |
+          if [ ! -f "system/storage/composer.json" ]; then
+            echo "❌ composer.json not found at system/storage/composer.json"
+            exit 1
+          fi
+          echo "✅ composer.json found"
+
+      - name: Update dependencies
+        id: update
+        run: |
+          cd system/storage
+
+          echo "=== Current dependency versions ==="
+          composer show --installed 2>/dev/null | head -20 || echo "(no packages installed yet)"
+
+          echo ""
+          echo "Updating dependencies..."
+          composer update --no-progress --prefer-dist
+
+          echo ""
+          echo "=== Updated dependency versions ==="
+          composer show --installed | head -20
+
+          # Check if composer.lock changed
+          if git diff --quiet composer.lock 2>/dev/null; then
+            echo "no_changes=true" >> $GITHUB_OUTPUT
+            echo "✅ No dependency updates available"
+          else
+            echo "no_changes=false" >> $GITHUB_OUTPUT
+            echo "📦 Dependencies updated — preparing Pull Request"
+          fi
+
+      - name: Create Pull Request
+        if: steps.update.outputs.no_changes == 'false'
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: 'chore(deps): update composer dependencies'
+          title: '⬆️ Automated Composer dependency update'
+          body: |
+            ## 📦 Automated Dependency Update
+
+            This PR was created automatically by the `dependency-update` workflow.
+
+            ### What changed
+            - Updated `system/storage/composer.lock` to the latest compatible versions.
+
+            ### How to review
+            1. Check the diff in `composer.lock`
+            2. Run `composer install` locally and verify the application works
+            3. Review any major version bumps manually before merging
+
+            ---
+            *Triggered by scheduled workflow on `${{ github.ref_name }}`*
+          branch: chore/dependency-update
+          delete-branch: true
+          labels: |
+            dependencies
+            automated
+
+      - name: No update needed
+        if: steps.update.outputs.no_changes == 'true'
+        run: echo "✅ All dependencies are already up to date. No PR needed."

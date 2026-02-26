@@ -1,0 +1,51 @@
+# .github/workflows/security.yml
+# ReamurCMS — Security Scan
+#
+# Runs every Monday at 02:00 UTC and can be triggered manually.
+# Checks composer.lock for known vulnerabilities using Symfony's security checker.
+
+name: Security Scan
+
+on:
+  schedule:
+    - cron: '0 2 * * 1' # Every Monday at 02:00 UTC / Toda segunda-feira às 2h UTC
+  workflow_dispatch: # Allows manual trigger / Permite execução manual
+
+jobs:
+  security-scan:
+    name: Composer Security Check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          tools: composer:v2
+
+      - name: Verify composer.lock exists
+        run: |
+          LOCK_FILE="system/storage/composer.lock"
+          if [ ! -f "$LOCK_FILE" ]; then
+            echo "❌ composer.lock not found at: $LOCK_FILE"
+            echo "Run 'composer install' in system/storage to generate it."
+            exit 1
+          fi
+          echo "✅ composer.lock found at: $LOCK_FILE"
+
+      - name: Run Security Checker
+        uses: symfonycorp/security-checker-action@v5
+        with:
+          lock: system/storage/composer.lock
+
+      - name: Post summary
+        if: always()
+        run: |
+          echo "## 🔒 Security Scan Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **Triggered by:** ${{ github.event_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Date:** $(date -u '+%Y-%m-%d %H:%M UTC')" >> $GITHUB_STEP_SUMMARY
+          echo "- **Lock file:** \`system/storage/composer.lock\`" >> $GITHUB_STEP_SUMMARY

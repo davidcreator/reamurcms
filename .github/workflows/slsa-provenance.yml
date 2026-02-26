@@ -1,0 +1,181 @@
+# .github/workflows/slsa-provenance.yml
+# ReamurCMS — SLSA Level 3 Provenance Generator
+#
+# Generates a cryptographically signed provenance attestation (SLSA Level 3)
+# for every release artifact. This proves:
+#   - WHAT was built (the artifact)
+#   - FROM WHAT source (commit SHA + repository)
+#   - HOW it was built (this workflow)
+#
+# Triggered automatically when a new release is published (by release.yml),
+# or can be triggered manually.
+#
+# Verify the generated provenance with:
+#   slsa-verifier verify-artifact reamurcms-vX.X.X.zip \
+#     --provenance-path reamurcms-vX.X.X.zip.intoto.jsonl \
+#     --source-uri github.com/davidcreator/reamurcms
+#
+# More info: https://slsa.dev | https://github.com/slsa-framework/slsa-github-generator
+
+name: SLSA Provenance
+
+on:
+  release:
+    types: [ published ]  # Triggered by release.yml / Acionado pelo release.yml
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: 'Release tag to generate provenance for (e.g. v2.0.0)'
+        required: true
+        type: string
+
+permissions:
+  actions: read        # Required by SLSA generator / Necessário pelo gerador SLSA
+  contents: write      # To upload provenance to release / Para anexar à release
+  id-token: write      # For keyless signing via Sigstore / Para assinatura sem chaves
+
+jobs:
+  # ─────────────────────────────────────────────────────
+  # JOB 1 — Build the artifact and compute its SHA-256
+  # ─────────────────────────────────────────────────────
+  build-artifact:
+    name: Build Release Artifact
+    runs-on: ubuntu-latest
+
+    outputs:
+      artifact-name: ${{ steps.build.outputs.artifact_name }}
+      artifact-sha256: ${{ steps.hash.outputs.sha256 }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          tools: composer:v2
+
+      - name: Install production dependencies
+        run: |
+          if [ -f "system/storage/composer.json" ]; then
+            cd system/storage
+            composer install --no-progress --prefer-dist --optimize-autoloader --no-dev
+          fi
+
+      - name: Determine tag
+        id: tag
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "tag=${{ inputs.release_tag }}" >> $GITHUB_OUTPUT
+          else
+            echo "tag=${{ github.event.release.tag_name }}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Build artifact
+        id: build
+        run: |
+          TAG="${{ steps.tag.outputs.tag }}"
+          ARTIFACT_NAME="reamurcms-${TAG}.zip"
+
+          mkdir -p /tmp/reamurcms-${TAG}
+
+          rsync -a \
+            --exclude='.git' \
+            --exclude='.github' \
+            --exclude='*.log' \
+            --exclude='system/storage/vendor' \
+            . /tmp/reamurcms-${TAG}/
+
+          cd /tmp
+          zip -r "${ARTIFACT_NAME}" "reamurcms-${TAG}/"
+          mv "/tmp/${ARTIFACT_NAME}" "${GITHUB_WORKSPACE}/"
+
+          echo "artifact_name=${ARTIFACT_NAME}" >> $GITHUB_OUTPUT
+          echo "✅ Artifact built: ${ARTIFACT_NAME}"
+
+      - name: Compute SHA-256 hash
+        id: hash
+        run: |
+          ARTIFACT="${{ steps.build.outputs.artifact_name }}"
+          SHA=$(sha256sum "${ARTIFACT}" | awk '{print $1}')
+          # Base64-encode the "filename:hash" pair as required by the SLSA generator
+          ENCODED=$(echo -n "${ARTIFACT}:${SHA}" | base64 -w0)
+          echo "sha256=${ENCODED}" >> $GITHUB_OUTPUT
+          echo "✅ SHA-256: ${SHA}"
+
+      - name: Upload artifact for provenance job
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-artifact
+          path: ${{ steps.build.outputs.artifact_name }}
+          retention-days: 1
+
+  # ─────────────────────────────────────────────────────
+  # JOB 2 — Generate SLSA Level 3 Provenance
+  # Runs in a separate, isolated job (SLSA requirement)
+  # ─────────────────────────────────────────────────────
+  provenance:
+    name: Generate SLSA Provenance
+    needs: [ build-artifact ]
+
+    # Use the official SLSA generic provenance generator
+    # This job MUST be called as a reusable workflow — do not add extra steps here
+    uses: slsa-framework/slsa-github-generator/.github/workflows/generator_generic_slsa3.yml@v2.0.0
+
+    with:
+      base64-subjects: ${{ needs.build-artifact.outputs.artifact-sha256 }}
+      upload-assets: true           # Attaches provenance to the GitHub Release
+      upload-tag-name: ${{ github.event_name == 'release' && github.event.release.tag_name || inputs.release_tag }}
+      compile-generator: true       # Builds the generator from source for SLSA L3 compliance
+
+    permissions:
+      actions: read
+      id-token: write
+      contents: write
+
+  # ─────────────────────────────────────────────────────
+  # JOB 3 — Verification (informational, non-blocking)
+  # ─────────────────────────────────────────────────────
+  verify-provenance:
+    name: Verify Provenance (Info)
+    runs-on: ubuntu-latest
+    needs: [ build-artifact, provenance ]
+    if: always() && needs.provenance.result == 'success'
+
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: release-artifact
+
+      - name: Install slsa-verifier
+        run: |
+          curl -sSLo slsa-verifier \
+            "https://github.com/slsa-framework/slsa-verifier/releases/latest/download/slsa-verifier-linux-amd64"
+          chmod +x slsa-verifier
+          echo "✅ slsa-verifier installed"
+          ./slsa-verifier version
+
+      - name: Post provenance summary
+        run: |
+          ARTIFACT="${{ needs.build-artifact.outputs.artifact-name }}"
+          echo "## 🔐 SLSA Provenance Generated" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Field            | Value |" >> $GITHUB_STEP_SUMMARY
+          echo "|------------------|-------|" >> $GITHUB_STEP_SUMMARY
+          echo "| SLSA Level       | **3** |" >> $GITHUB_STEP_SUMMARY
+          echo "| Artifact         | \`${ARTIFACT}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| Source           | \`github.com/davidcreator/reamurcms\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| Commit           | \`${{ github.sha }}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| Signing          | Keyless via [Sigstore](https://sigstore.dev) |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 🔍 Verify this artifact locally" >> $GITHUB_STEP_SUMMARY
+          echo '```bash' >> $GITHUB_STEP_SUMMARY
+          echo "# Install slsa-verifier: https://github.com/slsa-framework/slsa-verifier" >> $GITHUB_STEP_SUMMARY
+          echo "slsa-verifier verify-artifact ${ARTIFACT} \\" >> $GITHUB_STEP_SUMMARY
+          echo "  --provenance-path ${ARTIFACT}.intoto.jsonl \\" >> $GITHUB_STEP_SUMMARY
+          echo "  --source-uri github.com/davidcreator/reamurcms" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
