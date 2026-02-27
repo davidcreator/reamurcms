@@ -1,0 +1,15 @@
+<div class="float-end dropdown">
+  <button class="btn btn-light dropdown-toggle" type="button" id="languageDropdown" data-bs-toggle="dropdown" aria-expanded="false" aria-label="{{ text_language }}">
+    {{ text_language }} <i class="fa-solid fa-caret-down fa-fw" aria-hidden="true"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown">
+    {% for language in languages %}
+      <li>
+        <a href="{{ language.href }}" class="dropdown-item{% if language.code == code %} active{% endif %}" {% if language.code == code %}aria-current="true"{% endif %}>
+          <img src="language/{{ language.code }}/{{ language.code }}.png" alt="{{ language.text }}" width="16" height="11" loading="lazy"/> 
+          <span>{{ language.text }}</span>
+        </a>
+      </li>
+    {% endfor %}
+  </ul>
+</div>
