@@ -1,0 +1,133 @@
+<?php
+// Heading
+$_['heading_title']           = 'Produtos';
+
+// Text
+$_['text_success']            = 'Sucesso: Você modificou os produtos!';
+$_['text_variant']            = 'Observe que, por ser um produto variante, você deve substituir os dados do <a href="%s" target="_blank" class="alert-link">produto principal</a>. Caso contrário, os dados serão substituídos pelos do <a href="%s" target="_blank" class="alert-link">produto principal</a> ao salvar.';
+$_['text_list']               = 'Lista de Produtos';
+$_['text_add']                = 'Adicionar Produto';
+$_['text_edit']               = 'Editar Produto';
+$_['text_variant_add']        = 'Adicionar Variante';
+$_['text_model']              = 'Modelo';
+$_['text_price']              = 'Preço';
+$_['text_stock']              = 'Estoque';
+$_['text_specification']      = 'Especificação';
+$_['text_filter']             = 'Filtrar';
+$_['text_default']            = 'Padrão';
+$_['text_keyword']            = 'Não use espaços. Substitua-os por "-" e certifique-se de que a URL de SEO seja globalmente única.';
+$_['text_option_add']         = 'Adicionar Opção';
+$_['text_option_value']       = 'Valor da Opção';
+$_['text_select']             = 'Selecionar';
+$_['text_radio']              = 'Botão de Rádio';
+$_['text_checkbox']           = 'Caixa de Seleção';
+$_['text_input']              = 'Entrada';
+$_['text_text']               = 'Texto';
+$_['text_textarea']           = 'Área de Texto';
+$_['text_file']               = 'Arquivo';
+$_['text_date']               = 'Data';
+$_['text_datetime']           = 'Data e Hora';
+$_['text_time']               = 'Hora';
+$_['text_image']              = 'Imagem';
+$_['text_image_additional']   = 'Imagens Adicionais';
+$_['text_reward']             = 'Comprar Pontos';
+$_['text_points']             = 'Pontos de Recompensa';
+$_['text_report']             = 'Relatórios';
+
+// Column
+$_['column_name']             = 'Nome do Produto';
+$_['column_model']            = 'Modelo';
+$_['column_image']            = 'Imagem';
+$_['column_price']            = 'Preço';
+$_['column_quantity']         = 'Quantidade';
+$_['column_status']           = 'Status';
+$_['column_ip']               = 'IP';
+$_['column_store']            = 'Loja';
+$_['column_country']          = 'País';
+$_['column_date_added']       = 'Data de Adição';
+$_['column_action']           = 'Ação';
+
+// Entry
+$_['entry_name']              = 'Nome do Produto';
+$_['entry_description']       = 'Descrição';
+$_['entry_meta_title']        = 'Título da Meta Tag';
+$_['entry_meta_keyword']      = 'Palavras-chave da Meta Tag';
+$_['entry_meta_description']  = 'Descrição da Meta Tag';
+$_['entry_store']             = 'Lojas';
+$_['entry_keyword']           = 'Palavra-chave';
+$_['entry_model']             = 'Modelo';
+$_['entry_sku']               = 'SKU';
+$_['entry_upc']               = 'UPC';
+$_['entry_ean']               = 'EAN';
+$_['entry_jan']               = 'JAN';
+$_['entry_isbn']              = 'ISBN';
+$_['entry_mpn']               = 'MPN';
+$_['entry_location']          = 'Localização';
+$_['entry_shipping']          = 'Requer Envio';
+$_['entry_manufacturer']      = 'Fabricante';
+$_['entry_date_available']    = 'Data Disponível';
+$_['entry_quantity']          = 'Quantidade';
+$_['entry_minimum']           = 'Quantidade Mínima';
+$_['entry_stock_status']      = 'Status Fora de Estoque';
+$_['entry_price']             = 'Preço';
+$_['entry_trial_price']       = 'Preço de Teste';
+$_['entry_tax_class']         = 'Classe de Imposto';
+$_['entry_points']            = 'Pontos';
+$_['entry_subtract']          = 'Subtrair Estoque';
+$_['entry_weight_class']      = 'Classe de Peso';
+$_['entry_weight']            = 'Peso';
+$_['entry_dimension']         = 'Dimensões (C x L x A)';
+$_['entry_length_class']      = 'Classe de Comprimento';
+$_['entry_length']            = 'Comprimento';
+$_['entry_width']             = 'Largura';
+$_['entry_height']            = 'Altura';
+$_['entry_option']            = 'Opção';
+$_['entry_option_value']      = 'Valor da Opção';
+$_['entry_customer_group']    = 'Grupo de Clientes';
+$_['entry_date_start']        = 'Data de Início';
+$_['entry_date_end']          = 'Data de Término';
+$_['entry_priority']          = 'Prioridade';
+$_['entry_attribute']         = 'Atributo';
+$_['entry_attribute_group']   = 'Grupo de Atributos';
+$_['entry_image']             = 'Imagem';
+$_['entry_text']              = 'Texto';
+$_['entry_required']          = 'Obrigatório';
+$_['entry_status']            = 'Status';
+$_['entry_sort_order']        = 'Ordem de Classificação';
+$_['entry_category']          = 'Categorias';
+$_['entry_filter']            = 'Filtros';
+$_['entry_download']          = 'Downloads';
+$_['entry_related']           = 'Produtos Relacionados';
+$_['entry_tag']               = 'Tags do Produto';
+$_['entry_reward']            = 'Pontos de Recompensa';
+$_['entry_layout']            = 'Substituição de Layout';
+$_['entry_subscription']      = 'Plano de Assinatura';
+
+// Help
+$_['help_tag']                = 'Separado por vírgula';
+$_['help_sku']                = 'Unidade de Manutenção de Estoque';
+$_['help_upc']                = 'Código Universal de Produto';
+$_['help_ean']                = 'Número Europeu do Artigo';
+$_['help_jan']                = 'Número Japonês do Artigo';
+$_['help_isbn']               = 'Número Padrão Internacional do Livro';
+$_['help_mpn']                = 'Número da Peça do Fabricante';
+$_['help_minimum']            = 'Forçar um valor mínimo de pedido';
+$_['help_stock_status']       = 'Status exibido quando um produto está fora de estoque';
+$_['help_manufacturer']       = '(Autocompletar)';
+$_['help_category']           = '(Autocompletar)';
+$_['help_filter']             = '(Autocompletar)';
+$_['help_download']           = '(Autocompletar)';
+$_['help_related']            = '(Autocompletar)';
+$_['help_option']             = '(Autocompletar)';
+$_['help_points']             = 'Número de pontos necessários para comprar este item. Se não quiser que este produto seja adquirido com pontos, deixe como 0.';
+
+// Error
+$_['error_warning']           = 'Aviso: Verifique cuidadosamente o formulário para erros!';
+$_['error_permission']        = 'Aviso: Você não tem permissão para modificar os produtos!';
+$_['error_name']              = 'O nome do produto deve ter entre 1 e 255 caracteres!';
+$_['error_meta_title']        = 'O título da meta deve ter entre 1 e 255 caracteres!';
+$_['error_model']             = 'O modelo do produto deve ter entre 1 e 64 caracteres!';
+$_['error_keyword']           = 'A URL de SEO deve ter entre 1 e 64 caracteres!';
+$_['error_keyword_exists']    = 'A URL de SEO deve ser única!';
+$_['error_keyword_character'] = 'A palavra-chave só pode conter caracteres a-z, 0-9, - e _!';
+$_['error_required']          = '%s obrigatório!';

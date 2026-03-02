@@ -1,0 +1,17 @@
+<?php
+namespace Reamur\Admin\Model\Extension\Reamur\Report;
+/**
+ * Class Activity
+ *
+ * @package Reamur\Admin\Model\Extension\Reamur\Report
+ */
+class Activity extends \Reamur\System\Engine\Model {
+	/**
+	 * @return array
+	 */
+	public function getActivities(): array {
+		$query = $this->db->query("SELECT `key`, `data`, `date_added` FROM `" . DB_PREFIX . "customer_activity` ORDER BY `date_added` DESC LIMIT 0,5");
+
+		return $query->rows;
+	}
+}
