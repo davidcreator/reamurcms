@@ -1,5 +1,5 @@
 <?php
-namespace Reamur\Front\Controller\Extension\Reamur\Total;
+namespace Reamur\Catalog\Controller\Extension\Reamur\Total;
 class Reward extends \Reamur\System\Engine\Controller {
 	public function index(): string {
 		if ($this->config->get('total_reward_status')) {

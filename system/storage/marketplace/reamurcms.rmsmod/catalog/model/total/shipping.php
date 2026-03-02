@@ -1,5 +1,5 @@
 <?php
-namespace Reamur\Front\Model\Extension\Reamur\Total;
+namespace Reamur\Catalog\Model\Extension\Reamur\Total;
 class Shipping extends \Reamur\System\Engine\Model {
 	public function getTotal(array &$totals, array &$taxes, float &$total): void {
 		if ($this->cart->hasShipping() && isset($this->session->data['shipping_method'])) {

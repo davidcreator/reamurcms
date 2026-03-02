@@ -53,7 +53,7 @@ class Googleshopping extends Library {
         $this->load->model('setting/setting');
 
         if ($this->store_id === 0) {
-            $this->store_url = basename(DIR_TEMPLATE) == 'template' ? HTTPS_FRONT : HTTPS_SERVER;
+            $this->store_url = basename(DIR_TEMPLATE) == 'template' ? HTTPS_CATALOG : HTTPS_SERVER;
             $this->store_name = $this->config->get('config_name');
         } else {
             $this->store_url = $this->model_setting_setting->getSettingValue('config_ssl', $store_id);

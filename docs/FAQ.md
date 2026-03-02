@@ -105,7 +105,7 @@ Yes! ReamurCMS is fully modular. See the [Developer Guide](https://docs.reamurcm
 
 ### Where do I place custom modules?
 
-Custom modules go in `admin/controller/`, `front/controller/`, or `extension/`, depending on their scope.
+Custom modules go in `admin/controller/`, `catalog/controller/`, or `extension/`, depending on their scope.
 
 ---
 
@@ -358,7 +358,7 @@ Sim! O ReamurCMS é totalmente modular. Consulte o [Guia do Desenvolvedor](https
 
 ### Onde coloco módulos customizados?
 
-Módulos customizados ficam em `admin/controller/`, `front/controller/` ou `extension/`, dependendo do escopo.
+Módulos customizados ficam em `admin/controller/`, `catalog/controller/` ou `extension/`, dependendo do escopo.
 
 ---
 

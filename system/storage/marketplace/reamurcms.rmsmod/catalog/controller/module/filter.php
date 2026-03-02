@@ -1,5 +1,5 @@
 <?php
-namespace Reamur\Front\Controller\Extension\Reamur\Module;
+namespace Reamur\Catalog\Controller\Extension\Reamur\Module;
 class Filter extends \Reamur\System\Engine\Controller {
 	public function index(): string {
 		if (isset($this->request->get['path'])) {
@@ -10,9 +10,9 @@ class Filter extends \Reamur\System\Engine\Controller {
 
 		$category_id = end($parts);
 
-		$this->load->model('front/category');
+		$this->load->model('catalog/category');
 
-		$category_info = $this->model_front_category->getCategory($category_id);
+		$category_info = $this->model_catalog_category->getCategory($category_id);
 
 		if ($category_info) {
 			$this->load->language('extension/reamur/module/filter');
@@ -39,11 +39,11 @@ class Filter extends \Reamur\System\Engine\Controller {
 				$data['filter_category'] = [];
 			}
 
-			$this->load->model('front/product');
+			$this->load->model('catalog/product');
 
 			$data['filter_groups'] = [];
 
-			$filter_groups = $this->model_front_category->getFilters($category_id);
+			$filter_groups = $this->model_catalog_category->getFilters($category_id);
 
 			if ($filter_groups) {
 				foreach ($filter_groups as $filter_group) {
@@ -57,7 +57,7 @@ class Filter extends \Reamur\System\Engine\Controller {
 
 						$children_data[] = [
 							'filter_id' => $filter['filter_id'],
-							'name'      => $filter['name'] . ($this->config->get('config_product_count') ? ' (' . $this->model_front_product->getTotalProducts($filter_data) . ')' : '')
+							'name'      => $filter['name'] . ($this->config->get('config_product_count') ? ' (' . $this->model_catalog_product->getTotalProducts($filter_data) . ')' : '')
 						];
 					}
 

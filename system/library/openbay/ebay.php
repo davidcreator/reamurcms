@@ -58,8 +58,8 @@ final class Ebay {
 				$this->log('call(' . $call . ') - Data: ' .  json_encode($post));
 			}
 
-			if (defined("HTTPS_FRONT")) {
-				$domain = HTTPS_FRONT;
+			if (defined("HTTPS_CATALOG")) {
+				$domain = HTTPS_CATALOG;
 			} else {
 				$domain = $this->config->get('config_url');
 			}
@@ -131,8 +131,8 @@ final class Ebay {
 		if ($this->config->get('ebay_status') == 1) {
 			$this->log('openbay_noresponse_call(' . $call . ') - Data :' .  json_encode($post));
 
-			if (defined("HTTPS_FRONT")) {
-				$domain = HTTPS_FRONT;
+			if (defined("HTTPS_CATALOG")) {
+				$domain = HTTPS_CATALOG;
 			} else {
 				$domain = $this->config->get('config_url');
 			}
@@ -715,7 +715,7 @@ final class Ebay {
 			if ($this->openbay->addonLoad('openstock') && (isset($product['has_option']) && $product['has_option'] == 1)) {
 				$this->load->model('extension/module/openstock');
 				$this->load->model('tool/image');
-				$this->load->model('front/product');
+				$this->load->model('catalog/product');
 
 				$this->log('productUpdateListen(' . $product_id . ') - Variant');
 
@@ -968,9 +968,9 @@ final class Ebay {
 
 				if ($copy_status == true) {
 					if ($img['imgcount'] == 0) {
-						$this->db->query("UPDATE `" . DB_PREFIX . "product` SET `image` = 'front/" . $img['name'] . "' WHERE `product_id` = '" . (int)$img['product_id'] . "' LIMIT 1");
+						$this->db->query("UPDATE `" . DB_PREFIX . "product` SET `image` = 'catalog/" . $img['name'] . "' WHERE `product_id` = '" . (int)$img['product_id'] . "' LIMIT 1");
 					} else {
-						$this->db->query("INSERT INTO `" . DB_PREFIX . "product_image` SET `product_id` = '" . (int)$img['product_id'] . "', `image` = 'front/" . $this->db->escape($img['name']) . "', `sort_order` = '" . (int)$img['imgcount'] . "'");
+						$this->db->query("INSERT INTO `" . DB_PREFIX . "product_image` SET `product_id` = '" . (int)$img['product_id'] . "', `image` = 'catalog/" . $this->db->escape($img['name']) . "', `sort_order` = '" . (int)$img['imgcount'] . "'");
 					}
 
 					$this->db->query("DELETE FROM `" . DB_PREFIX . "ebay_image_import` WHERE `id` = '" . (int)$img['id'] . "' LIMIT 1");

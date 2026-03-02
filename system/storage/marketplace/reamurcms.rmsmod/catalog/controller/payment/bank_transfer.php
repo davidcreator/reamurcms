@@ -1,5 +1,5 @@
 <?php
-namespace Reamur\Front\Controller\Extension\Reamur\Payment;
+namespace Reamur\Catalog\Controller\Extension\Reamur\Payment;
 class BankTransfer extends \Reamur\System\Engine\Controller {
 	public function index(): string {
 		$this->load->language('extension/reamur/payment/bank_transfer');

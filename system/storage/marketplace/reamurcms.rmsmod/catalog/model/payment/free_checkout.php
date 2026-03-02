@@ -1,5 +1,5 @@
 <?php
-namespace Reamur\Front\Model\Extension\Reamur\Payment;
+namespace Reamur\Catalog\Model\Extension\Reamur\Payment;
 class FreeCheckout extends \Reamur\System\Engine\Model {
 	public function getMethods(array $address = []): array {
 		$this->load->language('extension/reamur/payment/free_checkout');

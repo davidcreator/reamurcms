@@ -1,5 +1,5 @@
 <?php
-namespace Reamur\Front\Controller\Extension\Reamur\Total;
+namespace Reamur\Catalog\Controller\Extension\Reamur\Total;
 class Voucher extends \Reamur\System\Engine\Controller {
 	public function index(): string {
 		if ($this->config->get('total_voucher_status')) {

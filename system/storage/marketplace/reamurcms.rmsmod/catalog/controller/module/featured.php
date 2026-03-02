@@ -1,5 +1,5 @@
 <?php
-namespace Reamur\Front\Controller\Extension\Reamur\Module;
+namespace Reamur\Catalog\Controller\Extension\Reamur\Module;
 class Featured extends \Reamur\System\Engine\Controller {
 	public function index(array $setting): string {
 		$this->load->language('extension/reamur/module/featured');
@@ -8,14 +8,14 @@ class Featured extends \Reamur\System\Engine\Controller {
 
 		$data['products'] = [];
 
-		$this->load->model('front/product');
+		$this->load->model('catalog/product');
 		$this->load->model('tool/image');
 
 		if (!empty($setting['product'])) {
 			$products = [];
 
 			foreach ($setting['product'] as $product_id) {
-				$product_info = $this->model_front_product->getProduct($product_id);
+				$product_info = $this->model_catalog_product->getProduct($product_id);
 
 				if ($product_info) {
 					$products[] = $product_info;

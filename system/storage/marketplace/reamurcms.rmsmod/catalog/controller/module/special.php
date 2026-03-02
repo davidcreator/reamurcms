@@ -1,5 +1,5 @@
 <?php
-namespace Reamur\Front\Controller\Extension\Reamur\Module;
+namespace Reamur\Catalog\Controller\Extension\Reamur\Module;
 class Special extends \Reamur\System\Engine\Controller {
 	public function index(array $setting): string {
 		$this->load->language('extension/reamur/module/special');
@@ -15,10 +15,10 @@ class Special extends \Reamur\System\Engine\Controller {
 			'limit' => $setting['limit']
 		];
 
-		$this->load->model('front/product');
+		$this->load->model('catalog/product');
 		$this->load->model('tool/image');
 
-		$results = $this->model_front_product->getSpecials($filter_data);
+		$results = $this->model_catalog_product->getSpecials($filter_data);
 
 		if ($results) {
 			foreach ($results as $result) {

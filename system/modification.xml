@@ -29,7 +29,7 @@
         // Add modification paths with security checks
         $modPaths = [
             'admin' => DIR_MODIFICATION . 'admin/view/template/',
-            'front' => DIR_MODIFICATION . 'front/view/theme/'
+            'catalog' => DIR_MODIFICATION . 'catalog/view/theme/'
         ];
         
         foreach ($modPaths as $type => $path) {

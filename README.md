@@ -23,7 +23,7 @@ Its goal is to provide an all-in-one platform that combines **digital content ma
 ### 🚀 Key Features
 
 #### 📦 E-commerce
-- Complete storefront for digital and physical products.
+- Complete catalog for digital and physical products.
 - Shopping cart, checkout flow, and order management.
 - Payment gateway integrations.
 - Inventory and product variant control.
@@ -151,7 +151,7 @@ $_['cache_expire'] = 3600;
 
 ReamurCMS follows a modular architecture. To create a new module:
 
-1. Create a folder under `admin/controller/`, `front/controller/` or `extension/`.
+1. Create a folder under `admin/controller/`, `catalog/controller/` or `extension/`.
 2. Add the necessary files (Controller, Model, View).
 3. Register the module in the system.
 
@@ -327,7 +327,7 @@ $_['cache_expire'] = 3600;
 
 O ReamurCMS segue uma arquitetura modular. Para criar um novo módulo:
 
-1. Crie uma pasta em `admin/controller/`, `front/controller/` ou `extension/`.
+1. Crie uma pasta em `admin/controller/`, `catalog/controller/` ou `extension/`.
 2. Adicione os arquivos necessários (Controller, Model, View).
 3. Registre o módulo no sistema.
 

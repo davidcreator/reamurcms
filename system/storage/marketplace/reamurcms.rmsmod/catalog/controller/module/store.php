@@ -1,5 +1,5 @@
 <?php
-namespace Reamur\Front\Controller\Extension\Reamur\Module;
+namespace Reamur\Catalog\Controller\Extension\Reamur\Module;
 class Store extends \Reamur\System\Engine\Controller {
 	public function index(): string {
 		$status = true;

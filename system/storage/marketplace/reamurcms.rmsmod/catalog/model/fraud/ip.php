@@ -1,5 +1,5 @@
 <?php
-namespace Reamur\Front\Model\Extension\Reamur\Fraud;
+namespace Reamur\Catalog\Model\Extension\Reamur\Fraud;
 class Ip extends \Reamur\System\Engine\Model {
 	public function check(array $order_info): int {
 		$status = false;

@@ -353,7 +353,7 @@ class Marketing extends \Reamur\System\Engine\Controller {
 			$data['marketing_id'] = 0;
 		}
 
-		$data['store'] = HTTP_FRONT;
+		$data['store'] = HTTP_CATALOG;
 
 		if (!empty($marketing_info)) {
 			$data['name'] = $marketing_info['name'];

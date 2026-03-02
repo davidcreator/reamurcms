@@ -1,5 +1,5 @@
 <?php
-namespace Reamur\Front\Controller\Extension\Reamur\Module;
+namespace Reamur\Catalog\Controller\Extension\Reamur\Module;
 class Category extends \Reamur\System\Engine\Controller {
 	public function index(): string {
 		$this->load->language('extension/reamur/module/category');
@@ -22,19 +22,19 @@ class Category extends \Reamur\System\Engine\Controller {
 			$data['child_id'] = 0;
 		}
 
-		$this->load->model('front/category');
+		$this->load->model('catalog/category');
 		
-		$this->load->model('front/product');
+		$this->load->model('catalog/product');
 
 		$data['categories'] = [];
 
-		$categories = $this->model_front_category->getCategories(0);
+		$categories = $this->model_catalog_category->getCategories(0);
 
 		foreach ($categories as $category) {
 			$children_data = [];
 
 			if ($category['category_id'] == $data['category_id']) {
-				$children = $this->model_front_category->getCategories($category['category_id']);
+				$children = $this->model_catalog_category->getCategories($category['category_id']);
 
 				foreach ($children as $child) {
 					$filter_data = [
@@ -44,7 +44,7 @@ class Category extends \Reamur\System\Engine\Controller {
 
 					$children_data[] = [
 						'category_id' => $child['category_id'],
-						'name'        => $child['name'] . ($this->config->get('config_product_count') ? ' (' . $this->model_front_product->getTotalProducts($filter_data) . ')' : ''),
+						'name'        => $child['name'] . ($this->config->get('config_product_count') ? ' (' . $this->model_catalog_product->getTotalProducts($filter_data) . ')' : ''),
 						'href'        => $this->url->link('product/category', 'language=' . $this->config->get('config_language') . '&path=' . $category['category_id'] . '_' . $child['category_id'])
 					];
 				}
@@ -57,7 +57,7 @@ class Category extends \Reamur\System\Engine\Controller {
 
 			$data['categories'][] = [
 				'category_id' => $category['category_id'],
-				'name'        => $category['name'] . ($this->config->get('config_product_count') ? ' (' . $this->model_front_product->getTotalProducts($filter_data) . ')' : ''),
+				'name'        => $category['name'] . ($this->config->get('config_product_count') ? ' (' . $this->model_catalog_product->getTotalProducts($filter_data) . ')' : ''),
 				'children'    => $children_data,
 				'href'        => $this->url->link('product/category', 'language=' . $this->config->get('config_language') . '&path=' . $category['category_id'])
 			];

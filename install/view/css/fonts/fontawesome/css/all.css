@@ -3290,7 +3290,7 @@ readers do not read off random characters that represent icons */
 .fa-phone-alt::before {
   content: "\f879"; }
 
-.fa-truck-front::before {
+.fa-truck-catalog::before {
   content: "\e2b7"; }
 
 .fa-cat::before {

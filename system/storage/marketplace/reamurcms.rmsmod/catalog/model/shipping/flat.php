@@ -1,5 +1,5 @@
 <?php
-namespace Reamur\Front\Model\Extension\Reamur\Shipping;
+namespace Reamur\Catalog\Model\Extension\Reamur\Shipping;
 class Flat extends \Reamur\System\Engine\Model {
 	function getQuote(array $address): array {
 		$this->load->language('extension/reamur/shipping/flat');

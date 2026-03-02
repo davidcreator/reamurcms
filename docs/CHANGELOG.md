@@ -79,7 +79,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - SEO tools for all content types
 
 #### 📦 E-commerce
-- Complete storefront for digital and physical products
+- Complete catalog for digital and physical products
 - Shopping cart, checkout flow, and order management
 - Payment gateway integrations
 - Inventory and product variant control

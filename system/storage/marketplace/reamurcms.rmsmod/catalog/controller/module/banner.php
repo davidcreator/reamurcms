@@ -1,5 +1,5 @@
 <?php
-namespace Reamur\Front\Controller\Extension\Reamur\Module;
+namespace Reamur\Catalog\Controller\Extension\Reamur\Module;
 class Banner extends \Reamur\System\Engine\Controller {
 	public function index(array $setting): string {
 		static $module = 0;

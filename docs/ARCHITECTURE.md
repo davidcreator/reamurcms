@@ -89,7 +89,7 @@ reamurcms/
 │   ├── 📁 view/                     # Admin templates
 │   └── 📁 language/                 # Admin translations
 │
-├── 📁 catalog/                      # Frontend (storefront)
+├── 📁 catalog/                      # Frontend (Catalog)
 │   ├── 📁 controller/               # Frontend controllers
 │   │   ├── 📁 product/              # Product pages
 │   │   ├── 📁 blog/                 # Blog pages

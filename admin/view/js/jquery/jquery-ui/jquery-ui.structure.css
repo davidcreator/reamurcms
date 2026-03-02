@@ -56,7 +56,7 @@
 	filter:Alpha(Opacity=0); /* support: IE8 */
 }
 
-.ui-front {
+.ui-catalog {
 	z-index: 100;
 }
 

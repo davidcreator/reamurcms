@@ -1,6 +1,6 @@
 <?php
-namespace Reamur\Front\Model\Extension\Reamur\Module;
-class Latest extends \Reamur\Front\Model\Front\Product {
+namespace Reamur\Catalog\Model\Extension\Reamur\Module;
+class Latest extends \Reamur\Catalog\Model\Catalog\Product {
 	public function getLatest(int $limit): array {
 		$sql = "SELECT DISTINCT *, `pd`.`name`, `p`.`image`, " . $this->statement['discount'] . ", " . $this->statement['special'] . ", " . $this->statement['reward'] . ", " . $this->statement['review'] . " FROM `" . DB_PREFIX . "product_to_store` `p2s` LEFT JOIN `" . DB_PREFIX . "product` `p` ON (`p`.`product_id` = `p2s`.`product_id` AND `p2s`.`store_id` = '" . (int)$this->config->get('config_store_id') . "' AND `p`.`status` = '1' AND `p`.`date_available` <= NOW()) LEFT JOIN `" . DB_PREFIX . "product_description` `pd` ON (`p`.`product_id` = `pd`.`product_id`) WHERE `pd`.`language_id` = '" . (int)$this->config->get('config_language_id') . "' ORDER BY `p`.`date_added` DESC LIMIT 0," . (int)$limit;
 
