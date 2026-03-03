@@ -1,0 +1,84 @@
+{{ header }}
+<div id="account-account" class="container">
+  {# Improved breadcrumb with aria-label for accessibility #}
+  <nav aria-label="breadcrumb">
+    <ul class="breadcrumb">
+      {% for breadcrumb in breadcrumbs %}
+        <li class="breadcrumb-item">
+          <a href="{{ breadcrumb.href }}" {% if loop.last %}aria-current="page"{% endif %}>
+            {{ breadcrumb.text }}
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
+  </nav>
+
+  {# Success message with improved accessibility #}
+  {% if success %}
+    <div class="alert alert-success alert-dismissible" role="alert">
+      <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+      <span>{{ success }}</span>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  {% endif %}
+
+  <div class="row">
+    {{ column_left }}
+    <div id="content" class="col">
+      {{ content_top }}
+
+      {# Account section with improved semantic structure #}
+      <section aria-labelledby="account-heading">
+        <h2 id="account-heading">{{ text_my_account }}</h2>
+        <ul class="list-unstyled">
+          <li><a href="{{ edit }}" class="account-link">{{ text_edit }}</a></li>
+          <li><a href="{{ password }}" class="account-link">{{ text_password }}</a></li>
+          <li><a href="{{ address }}" class="account-link">{{ text_address }}</a></li>
+          <li><a href="{{ wishlist }}" class="account-link">{{ text_wishlist }}</a></li>
+        </ul>
+      </section>
+
+      {# Orders section #}
+      <section aria-labelledby="orders-heading">
+        <h2 id="orders-heading">{{ text_my_orders }}</h2>
+        <ul class="list-unstyled">
+          <li><a href="{{ order }}" class="account-link">{{ text_order }}</a></li>
+          <li><a href="{{ subscription }}" class="account-link">{{ text_subscription }}</a></li>
+          <li><a href="{{ download }}" class="account-link">{{ text_download }}</a></li>
+          {% if reward %}
+            <li><a href="{{ reward }}" class="account-link">{{ text_reward }}</a></li>
+          {% endif %}
+          <li><a href="{{ return }}" class="account-link">{{ text_return }}</a></li>
+          <li><a href="{{ transaction }}" class="account-link">{{ text_transaction }}</a></li>
+        </ul>
+      </section>
+
+      {# Affiliate section #}
+      {% if affiliate %}
+        <section aria-labelledby="affiliate-heading">
+          <h2 id="affiliate-heading">{{ text_my_affiliate }}</h2>
+          <ul class="list-unstyled">
+            {% if not tracking %}
+              <li><a href="{{ affiliate }}" class="account-link">{{ text_affiliate_add }}</a></li>
+            {% else %}
+              <li><a href="{{ affiliate }}" class="account-link">{{ text_affiliate_edit }}</a></li>
+              <li><a href="{{ tracking }}" class="account-link">{{ text_tracking }}</a></li>
+            {% endif %}
+          </ul>
+        </section>
+      {% endif %}
+
+      {# Newsletter section #}
+      <section aria-labelledby="newsletter-heading">
+        <h2 id="newsletter-heading">{{ text_my_newsletter }}</h2>
+        <ul class="list-unstyled">
+          <li><a href="{{ newsletter }}" class="account-link">{{ text_newsletter }}</a></li>
+        </ul>
+      </section>
+
+      {{ content_bottom }}
+    </div>
+    {{ column_right }}
+  </div>
+</div>
+{{ footer }}

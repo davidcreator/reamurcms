@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<modification>
+  <name>Reamur Blog Extension</name>
+  <code>reamur_blog</code>
+  <version>1.0.0</version>
+  <author>Reamur</author>
+  <link>https://reamur.com</link>
+  <description>Comprehensive blog extension for Reamur CMS</description>
+  <files>
+    <!-- Register all blog modules -->
+    <file path="admin/controller/marketplace/extension.php">
+      <operation>
+        <search><![CDATA[$extension_data[] = array(]]></search>
+        <add position="before"><![CDATA[
+        // Blog Modules
+        if ($type == 'module') {
+          if (file_exists(DIR_EXTENSION . 'reamur/admin/controller/module/blog.php') && $this->user->hasPermission('access', 'extension/reamur/module/blog')) {
+            $extension_data[] = array(
+              'name'      => 'Blog Posts',
+              'href'      => $this->url->link('extension/reamur/module/blog', 'user_token=' . $this->session->data['user_token']),
+              'status'    => $this->config->get('module_blog_status') ? $this->language->get('text_enabled') : $this->language->get('text_disabled')
+            );
+          }
+          
+          if (file_exists(DIR_EXTENSION . 'reamur/admin/controller/module/blog_category.php') && $this->user->hasPermission('access', 'extension/reamur/module/blog_category')) {
+            $extension_data[] = array(
+              'name'      => 'Blog Categories',
+              'href'      => $this->url->link('extension/reamur/module/blog_category', 'user_token=' . $this->session->data['user_token']),
+              'status'    => $this->config->get('module_blog_category_status') ? $this->language->get('text_enabled') : $this->language->get('text_disabled')
+            );
+          }
+          
+          if (file_exists(DIR_EXTENSION . 'reamur/admin/controller/module/blog_search.php') && $this->user->hasPermission('access', 'extension/reamur/module/blog_search')) {
+            $extension_data[] = array(
+              'name'      => 'Blog Search',
+              'href'      => $this->url->link('extension/reamur/module/blog_search', 'user_token=' . $this->session->data['user_token']),
+              'status'    => $this->config->get('module_blog_search_status') ? $this->language->get('text_enabled') : $this->language->get('text_disabled')
+            );
+          }
+          
+          if (file_exists(DIR_EXTENSION . 'reamur/admin/controller/module/blog_tag.php') && $this->user->hasPermission('access', 'extension/reamur/module/blog_tag')) {
+            $extension_data[] = array(
+              'name'      => 'Blog Tags',
+              'href'      => $this->url->link('extension/reamur/module/blog_tag', 'user_token=' . $this->session->data['user_token']),
+              'status'    => $this->config->get('module_blog_tag_status') ? $this->language->get('text_enabled') : $this->language->get('text_disabled')
+            );
+          }
+          
+          if (file_exists(DIR_EXTENSION . 'reamur/admin/controller/module/blog_archive.php') && $this->user->hasPermission('access', 'extension/reamur/module/blog_archive')) {
+            $extension_data[] = array(
+              'name'      => 'Blog Archive',
+              'href'      => $this->url->link('extension/reamur/module/blog_archive', 'user_token=' . $this->session->data['user_token']),
+              'status'    => $this->config->get('module_blog_archive_status') ? $this->language->get('text_enabled') : $this->language->get('text_disabled')
+            );
+          }
+          
+          if (file_exists(DIR_EXTENSION . 'reamur/admin/controller/module/blog_recent.php') && $this->user->hasPermission('access', 'extension/reamur/module/blog_recent')) {
+            $extension_data[] = array(
+              'name'      => 'Recent Blog Posts',
+              'href'      => $this->url->link('extension/reamur/module/blog_recent', 'user_token=' . $this->session->data['user_token']),
+              'status'    => $this->config->get('module_blog_recent_status') ? $this->language->get('text_enabled') : $this->language->get('text_disabled')
+            );
+          }
+        }
+        ]]></add>
+      </operation>
+    </file>
+    
+    <!-- Add blog modules to layout -->
+    <file path="admin/controller/design/layout.php">
+      <operation>
+        <search><![CDATA[$data['extensions'] = array();]]></search>
+        <add position="after"><![CDATA[
+        // Blog Modules
+        if (file_exists(DIR_EXTENSION . 'reamur/admin/controller/module/blog.php')) {
+          $data['extensions'][] = array(
+            'code' => 'blog',
+            'name' => 'Blog Posts'
+          );
+        }
+        
+        if (file_exists(DIR_EXTENSION . 'reamur/admin/controller/module/blog_category.php')) {
+          $data['extensions'][] = array(
+            'code' => 'blog_category',
+            'name' => 'Blog Categories'
+          );
+        }
+        
+        if (file_exists(DIR_EXTENSION . 'reamur/admin/controller/module/blog_search.php')) {
+          $data['extensions'][] = array(
+            'code' => 'blog_search',
+            'name' => 'Blog Search'
+          );
+        }
+        
+        if (file_exists(DIR_EXTENSION . 'reamur/admin/controller/module/blog_tag.php')) {
+          $data['extensions'][] = array(
+            'code' => 'blog_tag',
+            'name' => 'Blog Tags'
+          );
+        }
+        
+        if (file_exists(DIR_EXTENSION . 'reamur/admin/controller/module/blog_archive.php')) {
+          $data['extensions'][] = array(
+            'code' => 'blog_archive',
+            'name' => 'Blog Archive'
+          );
+        }
+        
+        if (file_exists(DIR_EXTENSION . 'reamur/admin/controller/module/blog_recent.php')) {
+          $data['extensions'][] = array(
+            'code' => 'blog_recent',
+            'name' => 'Recent Blog Posts'
+          );
+        }
+        ]]></add>
+      </operation>
+    </file>
+  </files>
+</modification>

@@ -1,0 +1,36 @@
+<?php
+// Text
+$_['text_subject']               = '%s - Pedido %s';
+$_['text_greeting']              = 'Obrigado pelo seu interesse nos produtos %s. Seu pedido foi recebido e será processado assim que o pagamento for confirmado.';
+$_['text_link']                  = 'Para visualizar seu pedido, clique no link abaixo:';
+$_['text_order_detail']          = 'Detalhes do Pedido';
+$_['text_instruction']           = 'Instruções';
+$_['text_order_id']              = 'ID do Pedido:';
+$_['text_date_added']            = 'Data de Adição:';
+$_['text_order_status']          = 'Status do Pedido:';
+$_['text_payment_method']        = 'Método de Pagamento:';
+$_['text_shipping_method']       = 'Método de Envio:';
+$_['text_email']                 = 'E-mail:';
+$_['text_telephone']             = 'Telefone:';
+$_['text_ip']                    = 'Endereço IP:';
+$_['text_payment_address']       = 'Endereço de Pagamento';
+$_['text_shipping_address']      = 'Endereço de Envio';
+$_['text_products']              = 'Produtos';
+$_['text_product']               = 'Produto';
+$_['text_model']                 = 'Modelo';
+$_['text_quantity']              = 'Quantidade';
+$_['text_price']                 = 'Preço';
+$_['text_order_total']           = 'Totais do Pedido';
+$_['text_total']                 = 'Total';
+$_['text_subscription']          = 'Assinatura';
+$_['text_subscription_trial']    = '%s a cada %d %s(s) por %d pagamento(s), depois ';
+$_['text_subscription_duration'] = '%s a cada %d %s(s) por %d pagamento(s)';
+$_['text_subscription_cancel']   = '%s a cada %d %s(s) até ser cancelado';
+$_['text_day']                   = 'dia';
+$_['text_week']                  = 'semana';
+$_['text_semi_month']            = 'quinzena';
+$_['text_month']                 = 'mês';
+$_['text_year']                  = 'ano';
+$_['text_download']              = 'Assim que o pagamento for confirmado, você poderá clicar no link abaixo para acessar seus produtos para download:';
+$_['text_comment']               = 'Os comentários para seu pedido são:';
+$_['text_footer']                = 'Por favor, responda a este e-mail se tiver alguma dúvida.';

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html dir="{{ direction }}" lang="{{ lang }}">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>{{ title|e }}</title>
+  <base href="{{ base }}"/>
+  {% if description %}
+    <meta name="description" content="{{ description|e }}"/>
+  {% endif %}
+  {% if keywords %}
+    <meta name="keywords" content="{{ keywords|e }}"/>
+  {% endif %}
+  
+  <!-- Preload critical resources with proper crossorigin -->
+  <link rel="preload" href="{{ bootstrap }}" as="style" crossorigin="anonymous">
+  <link rel="preload" href="{{ jquery }}" as="script" crossorigin="anonymous">
+  
+  <!-- CSS with integrity checks -->
+  <link type="text/css" rel="stylesheet" media="screen" href="{{ bootstrap }}" crossorigin="anonymous"/>
+  <link type="text/css" rel="stylesheet" href="{{ icons }}" crossorigin="anonymous"/>
+  <link type="text/css" rel="stylesheet" href="{{ reamurcms }}" crossorigin="anonymous"/>
+  <link type="text/css" rel="stylesheet" href="catalog/view/js/jquery/datetimepicker/daterangepicker.css" crossorigin="anonymous"/>
+
+  <!-- JS with defer and async where appropriate -->
+  <script type="text/javascript" src="{{ jquery }}" defer crossorigin="anonymous"></script>
+  <script type="text/javascript" src="catalog/view/js/jquery/datetimepicker/moment.min.js" defer crossorigin="anonymous"></script>
+  <script type="text/javascript" src="catalog/view/js/jquery/datetimepicker/moment-with-locales.min.js" defer crossorigin="anonymous"></script>
+  <script type="text/javascript" src="catalog/view/js/jquery/datetimepicker/daterangepicker.js" defer crossorigin="anonymous"></script>
+  <script type="text/javascript" src="catalog/view/js/common.js" defer crossorigin="anonymous"></script>
+  
+  {% for style in css %}
+    <link href="{{ style.href }}" type="text/css" rel="{{ style.rel }}" media="{{ style.media }}" crossorigin="anonymous"/>
+  {% endfor %}
+  <link href="view/stylesheet/enhanced-upload.css" type="text/css" rel="stylesheet" crossorigin="anonymous"/>
+  {% for script in js %}
+    <script src="{{ script.href }}" type="text/javascript" defer crossorigin="anonymous"></script>
+  {% endfor %}
+  {% for link in links %}
+    <link href="{{ link.href }}" rel="{{ link.rel }}" crossorigin="anonymous"/>
+  {% endfor %}
+  {% for analytic in analytics %}
+    {{ analytic|raw }}
+  {% endfor %}
+</head>
+<body>
+<div id="alert" class="toast-container position-fixed top-0 end-0 p-3" role="alert" aria-live="polite"></div>
+<nav id="top" role="navigation" aria-label="Top navigation">
+  <div class="container">
+    <div class="nav float-start">
+      <ul class="list-inline">
+        <li class="list-inline-item">{{ currency }}</li>
+        <li class="list-inline-item">{{ language }}</li>
+      </ul>
+    </div>
+    <div class="nav float-end">
+      <ul class="list-inline">
+        <li class="list-inline-item">
+          <a href="{{ contact }}" aria-label="Contact us">
+            <i class="fa-solid fa-phone" aria-hidden="true"></i>
+            <span class="d-none d-md-inline">{{ telephone }}</span>
+          </a>
+        </li>
+        <li class="list-inline-item">
+          <div class="dropdown">
+            <a href="{{ account }}" class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true" aria-label="Account menu">
+              <i class="fa-solid fa-user" aria-hidden="true"></i>
+              <span class="d-none d-md-inline">{{ text_account }}</span>
+              <i class="fa-solid fa-caret-down" aria-hidden="true"></i>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end" role="menu">
+              {% if not logged %}
+                <li><a href="{{ register }}" class="dropdown-item" role="menuitem">{{ text_register }}</a></li>
+                <li><a href="{{ login }}" class="dropdown-item" role="menuitem">{{ text_login }}</a></li>
+              {% else %}
+                <li><a href="{{ account }}" class="dropdown-item" role="menuitem">{{ text_account }}</a></li>
+                <li><a href="{{ order }}" class="dropdown-item" role="menuitem">{{ text_order }}</a></li>
+                <li><a href="{{ transaction }}" class="dropdown-item" role="menuitem">{{ text_transaction }}</a></li>
+                <li><a href="{{ download }}" class="dropdown-item" role="menuitem">{{ text_download }}</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a href="{{ logout }}" class="dropdown-item" role="menuitem">{{ text_logout }}</a></li>
+              {% endif %}
+            </ul>
+          </div>
+        </li>
+        <li class="list-inline-item">
+          <a href="{{ wishlist }}" id="wishlist-total" title="{{ text_wishlist }}" aria-label="Wishlist">
+            <i class="fa-solid fa-heart" aria-hidden="true"></i>
+            <span class="d-none d-md-inline">{{ text_wishlist }}</span>
+          </a>
+        </li>
+        <li class="list-inline-item">
+          <a href="{{ shopping_cart }}" title="{{ text_shopping_cart }}" aria-label="Shopping cart">
+            <i class="fa-solid fa-cart-shopping" aria-hidden="true"></i>
+            <span class="d-none d-md-inline">{{ text_shopping_cart }}</span>
+          </a>
+        </li>
+        <li class="list-inline-item">
+          <a href="{{ checkout }}" title="{{ text_checkout }}" aria-label="Checkout">
+            <i class="fa-solid fa-share" aria-hidden="true"></i>
+            <span class="d-none d-md-inline">{{ text_checkout }}</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<header role="banner">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-md-3 col-lg-4">
+        <div id="logo">
+          {% if logo %}
+            <a href="{{ home }}" aria-label="Home">
+              <img src="{{ logo }}" title="{{ name }}" alt="{{ name }}" class="img-fluid" loading="eager" width="180" height="auto"/>
+            </a>
+          {% else %}
+            <h1><a href="{{ home }}">{{ name }}</a></h1>
+          {% endif %}
+        </div>
+      </div>
+      <div class="col-md-5">{{ search }}</div>
+      <div id="header-cart" class="col-md-4 col-lg-3 mb-2">{{ cart }}</div>
+    </div>
+  </div>
+</header>
+<main role="main">
+  {{ menu }}

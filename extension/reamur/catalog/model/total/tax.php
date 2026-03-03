@@ -1,0 +1,31 @@
+<?php
+namespace Reamur\Catalog\Model\Extension\Reamur\Total;
+/**
+ * Class Tax
+ *
+ * @package
+ */
+class Tax extends \Reamur\System\Engine\Model {
+	/**
+	 * @param array $totals
+	 * @param array $taxes
+	 * @param float $total
+	 *
+	 * @return void
+	 */
+	public function getTotal(array &$totals, array &$taxes, float &$total): void {
+		foreach ($taxes as $key => $value) {
+			if ($value > 0) {
+				$totals[] = [
+					'extension'  => 'reamur',
+					'code'       => 'tax',
+					'title'      => $this->tax->getRateName($key),
+					'value'      => $value,
+					'sort_order' => (int)$this->config->get('total_tax_sort_order')
+				];
+
+				$total += $value;
+			}
+		}
+	}
+}
