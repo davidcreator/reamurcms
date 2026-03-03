@@ -21,7 +21,7 @@ class Header extends \Reamur\System\Engine\Controller {
 		// Hard coding css so they can be replaced via the event's system.
 		$data['bootstrap'] = 'view/css/bootstrap.css';
 		$data['icons'] = 'view/css/fonts/fontawesome/css/all.min.css';
-		$data['reamur'] = 'view/css/reamur.css';
+		$data['reamurcms'] = 'view/css/reamurcms.css';
 
 		// Hard coding scripts so they can be replaced via the event's system.
 		$data['jquery'] = 'view/js/jquery/jquery-3.7.1.min.js';

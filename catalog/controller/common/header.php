@@ -51,10 +51,10 @@ class Header extends \Reamur\System\Engine\Controller {
             ? 'catalog/view/css/fonts/fontawesome/css/all.min.css?v=' . filemtime($iconsPath) 
             : 'catalog/view/css/fonts/fontawesome/css/all.min.css';
         
-        $reamurPath = DIR_APPLICATION . '../view/css/reamur.css';
-        $data['reamur'] = file_exists($reamurPath) 
-            ? 'catalog/view/css/reamur.css?v=' . filemtime($reamurPath) 
-            : 'catalog/view/css/reamur.css';
+        $reamurPath = DIR_APPLICATION . '../view/css/reamurcms.css';
+        $data['reamurcms'] = file_exists($reamurPath) 
+            ? 'catalog/view/css/reamurcms.css?v=' . filemtime($reamurPath) 
+            : 'catalog/view/css/reamurcms.css';
         
         $jqueryPath = DIR_APPLICATION . '../view/js/jquery/jquery-3.7.1.min.js';
         $data['jquery'] = file_exists($jqueryPath) 

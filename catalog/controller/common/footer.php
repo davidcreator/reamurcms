@@ -74,9 +74,12 @@ class Footer extends \Reamur\System\Engine\Controller {
         }
 
         // Static assets
-        $data['bootstrap'] = 'catalog/view/js/bootstrap/js/bootstrap.bundle.min.js';
+        $data['bootstrap'] = 'catalog/view/js/bootstrap/js/bootstrap.bundle.min.js';        
         $data['scripts'] = $this->document->getScripts('footer');
         $data['cookie'] = $this->load->controller('common/cookie');
+
+        // Modal
+        $data['modal'] = 'catalog/view/js/modal-fix.js';
 
         return $this->load->view('common/footer', $data);
     }

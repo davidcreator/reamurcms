@@ -12,7 +12,10 @@ class Setting extends \Reamur\System\Engine\Controller {
 	public function index(): void {
 		$this->load->model('setting/store');
 
-		$hostname = ($this->request->server['HTTPS'] ? 'https://' : 'http://') . str_replace('www.', '', $this->request->server['HTTP_HOST']) . rtrim(dirname($this->request->server['PHP_SELF']), '/.\\') . '/';
+		$protocol = (!empty($this->request->server['HTTPS']) && $this->request->server['HTTPS'] !== 'off') ? 'https://' : 'http://';
+		$host = str_replace('www.', '', $this->request->server['HTTP_HOST'] ?? '');
+		$path = isset($this->request->server['PHP_SELF']) ? dirname($this->request->server['PHP_SELF']) : '';
+		$hostname = $protocol . $host . rtrim($path, '/.\\') . '/';
 
 		$store_info = $this->model_setting_store->getStoreByHostname($hostname);
 

@@ -1,3 +1,48 @@
 [2026-02-27 20:26:39] [INFO] [PID:21440] [MEM:2MB] Class "Reamur\System\Library\Response" not found: in E:\wamp64\www\reamur\system\framework.php on line 109
 [2026-03-02 11:39:35] [INFO] [PID:16580] [MEM:2MB] PHP Warning:  Undefined array key "SERVER_PROTOCOL" in E:\wamp64\www\reamur\install\controller\error\not_found.php on line 27
 [2026-03-02 11:39:39] [INFO] [PID:16580] [MEM:2MB] PHP Warning:  Undefined array key "SERVER_PROTOCOL" in E:\wamp64\www\reamur\install\controller\error\not_found.php on line 27
+[2026-03-03 16:39:30] [INFO] [PID:16580] [MEM:2MB] PHP Warning:  Undefined array key "PHP_SELF" in E:\wamp64\www\reamur\catalog\controller\startup\setting.php on line 15
+[2026-03-03 16:39:30] [INFO] [PID:16580] [MEM:2MB] PHP Unknown:  dirname(): Passing null to parameter #1 ($path) of type string is deprecated in E:\wamp64\www\reamur\catalog\controller\startup\setting.php on line 15
+[2026-03-03 16:53:39] [INFO] [PID:16580] [MEM:4MB] Template rendering failed: Failed to render template: Unknown "file_exists" function in "catalog/view/template/common/footer.twig" at line 51. in E:\wamp64\www\reamur\system\library\template.php on line 211
+[2026-03-03 17:52:14] [INFO] [PID:16580] [MEM:2MB] Filemanager upload: PHP configuration - file_uploads: 1
+[2026-03-03 17:52:14] [INFO] [PID:16580] [MEM:2MB] Filemanager upload: PHP configuration - upload_max_filesize: 2M
+[2026-03-03 17:52:14] [INFO] [PID:16580] [MEM:2MB] Filemanager upload: PHP configuration - post_max_size: 64M
+[2026-03-03 17:52:14] [INFO] [PID:16580] [MEM:2MB] Filemanager upload: PHP configuration - max_file_uploads: 20
+[2026-03-03 17:52:14] [INFO] [PID:16580] [MEM:2MB] Filemanager upload: PHP configuration - memory_limit: 128M
+[2026-03-03 17:52:14] [INFO] [PID:16580] [MEM:2MB] Filemanager upload success: profile2.png
+[2026-03-03 17:52:16] [INFO] [PID:16580] [MEM:2MB] PHP Warning: imagecreatefrompng(): gd-png: libpng warning: iCCP: known incorrect sRGB profile
+File: E:\wamp64\www\reamur\system\library\image.php
+Line: 82
+[2026-03-03 17:52:16] [INFO] [PID:16580] [MEM:2MB] PHP Warning: imagecreatefrompng(): gd-png: libpng warning: iCCP: cHRM chunk does not match sRGB
+File: E:\wamp64\www\reamur\system\library\image.php
+Line: 82
+[2026-03-03 17:55:10] [INFO] [PID:16580] [MEM:2MB] PHP Warning: imagecreatefrompng(): gd-png: libpng warning: iCCP: known incorrect sRGB profile
+File: E:\wamp64\www\reamur\system\library\image.php
+Line: 82
+[2026-03-03 17:55:10] [INFO] [PID:16580] [MEM:2MB] PHP Warning: imagecreatefrompng(): gd-png: libpng warning: iCCP: cHRM chunk does not match sRGB
+File: E:\wamp64\www\reamur\system\library\image.php
+Line: 82
+[2026-03-03 17:55:10] [INFO] [PID:16580] [MEM:2MB] PHP Warning: imagecreatefrompng(): gd-png: libpng warning: iCCP: known incorrect sRGB profile
+File: E:\wamp64\www\reamur\system\library\image.php
+Line: 82
+[2026-03-03 17:55:10] [INFO] [PID:16580] [MEM:2MB] PHP Warning: imagecreatefrompng(): gd-png: libpng warning: iCCP: cHRM chunk does not match sRGB
+File: E:\wamp64\www\reamur\system\library\image.php
+Line: 82
+[2026-03-03 17:56:00] [INFO] [PID:16580] [MEM:2MB] Filemanager upload: PHP configuration - file_uploads: 1
+[2026-03-03 17:56:00] [INFO] [PID:16580] [MEM:2MB] Filemanager upload: PHP configuration - upload_max_filesize: 2M
+[2026-03-03 17:56:00] [INFO] [PID:16580] [MEM:2MB] Filemanager upload: PHP configuration - post_max_size: 64M
+[2026-03-03 17:56:00] [INFO] [PID:16580] [MEM:2MB] Filemanager upload: PHP configuration - max_file_uploads: 20
+[2026-03-03 17:56:00] [INFO] [PID:16580] [MEM:2MB] Filemanager upload: PHP configuration - memory_limit: 128M
+[2026-03-03 17:56:00] [INFO] [PID:16580] [MEM:2MB] Filemanager upload success: profile9.png
+[2026-03-03 17:56:01] [INFO] [PID:16580] [MEM:2MB] PHP Warning: imagecreatefrompng(): gd-png: libpng warning: iCCP: known incorrect sRGB profile
+File: E:\wamp64\www\reamur\system\library\image.php
+Line: 82
+[2026-03-03 17:56:01] [INFO] [PID:16580] [MEM:2MB] PHP Warning: imagecreatefrompng(): gd-png: libpng warning: iCCP: cHRM chunk does not match sRGB
+File: E:\wamp64\www\reamur\system\library\image.php
+Line: 82
+[2026-03-03 18:16:17] [INFO] [PID:16580] [MEM:2MB] Filemanager upload: PHP configuration - file_uploads: 1
+[2026-03-03 18:16:17] [INFO] [PID:16580] [MEM:2MB] Filemanager upload: PHP configuration - upload_max_filesize: 2M
+[2026-03-03 18:16:17] [INFO] [PID:16580] [MEM:2MB] Filemanager upload: PHP configuration - post_max_size: 64M
+[2026-03-03 18:16:17] [INFO] [PID:16580] [MEM:2MB] Filemanager upload: PHP configuration - max_file_uploads: 20
+[2026-03-03 18:16:17] [INFO] [PID:16580] [MEM:2MB] Filemanager upload: PHP configuration - memory_limit: 128M
+[2026-03-03 18:16:17] [INFO] [PID:16580] [MEM:2MB] Filemanager upload success: admin-ajax.png

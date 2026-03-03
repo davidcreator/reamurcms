@@ -75,22 +75,7 @@ class Image {
                 $image = imagecreatefromgif($file);
                 break;
             case 'image/png':
-                // Suppress libpng warnings about color profile mismatches
-                $originalErrorReporting = error_reporting();
-                error_reporting($originalErrorReporting & ~E_WARNING);
-                
-                $image = imagecreatefrompng($file);
-                
-                // Restore original error reporting
-                error_reporting($originalErrorReporting);
-                
-                if ($image !== false) {
-                    imageinterlace($image, false);
-                    // Preserve transparency and convert palette to true color if needed
-                    if (function_exists('imagepalettetotruecolor')) {
-                        imagepalettetotruecolor($image);
-                    }
-                }
+                $image = $this->createPngResource($file);
                 break;
             case 'image/jpeg':
                 $image = imagecreatefromjpeg($file);
@@ -102,6 +87,40 @@ class Image {
 
         if ($image === false) {
             throw new \RuntimeException('Failed to create image resource from: ' . $file);
+        }
+
+        return $image;
+    }
+
+    /**
+     * Load PNG without noisy libpng profile warnings
+     */
+    private function createPngResource(string $file): \GdImage|false {
+        $previousHandler = set_error_handler(
+            function (int $severity, string $message): bool {
+                if (str_contains($message, 'libpng warning: iCCP') || str_contains($message, 'libpng warning: cHRM')) {
+                    // swallow only the known color profile warnings
+                    return true;
+                }
+                // let any other warnings bubble up
+                return false;
+            },
+            E_WARNING
+        );
+
+        $previousReporting = error_reporting();
+        error_reporting($previousReporting & ~E_WARNING);
+
+        $image = imagecreatefrompng($file);
+
+        error_reporting($previousReporting);
+        restore_error_handler();
+
+        if ($image !== false) {
+            imageinterlace($image, false);
+            if (function_exists('imagepalettetotruecolor')) {
+                imagepalettetotruecolor($image);
+            }
         }
 
         return $image;

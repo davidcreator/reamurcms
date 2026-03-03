@@ -33,7 +33,8 @@
   {% for style in css %}
     <link href="{{ style.href }}" type="text/css" rel="{{ style.rel }}" media="{{ style.media }}" crossorigin="anonymous"/>
   {% endfor %}
-  <link href="view/stylesheet/enhanced-upload.css" type="text/css" rel="stylesheet" crossorigin="anonymous"/>
+  {# Use absolute path from base href to ensure enhanced-upload.css is found #}
+  <link href="catalog/view/css/enhanced-upload.css" type="text/css" rel="stylesheet" crossorigin="anonymous"/>
   {% for script in js %}
     <script src="{{ script.href }}" type="text/javascript" defer crossorigin="anonymous"></script>
   {% endfor %}
