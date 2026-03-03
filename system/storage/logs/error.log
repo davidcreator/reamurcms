@@ -46,3 +46,37 @@ Line: 82
 [2026-03-03 18:16:17] [INFO] [PID:16580] [MEM:2MB] Filemanager upload: PHP configuration - max_file_uploads: 20
 [2026-03-03 18:16:17] [INFO] [PID:16580] [MEM:2MB] Filemanager upload: PHP configuration - memory_limit: 128M
 [2026-03-03 18:16:17] [INFO] [PID:16580] [MEM:2MB] Filemanager upload success: admin-ajax.png
+[2026-03-03 20:30:35] [INFO] [PID:16580] [MEM:2MB] Query execution failed: Error: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'NULLS LAST, date_added DESC LIMIT 0,10' at line 1<br/>Error No: 1064<br/>SELECT * FROM `rms_blog_post` WHERE status = 'published' ORDER BY published_at DESC NULLS LAST, date_added DESC LIMIT 0,10 | SQL: SELECT * FROM `rms_blog_post` WHERE status = 'published' ORDER BY published_at DESC NULLS LAST, date... in E:\wamp64\www\reamur\system\library\db.php on line 175
+[2026-03-03 20:30:49] [INFO] [PID:16580] [MEM:2MB] Query execution failed: Error: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'NULLS LAST, date_added DESC LIMIT 0,10' at line 1<br/>Error No: 1064<br/>SELECT * FROM `rms_mooc_course` WHERE status = 'published' ORDER BY published_at DESC NULLS LAST, date_added DESC LIMIT 0,10 | SQL: SELECT * FROM `rms_mooc_course` WHERE status = 'published' ORDER BY published_at DESC NULLS LAST, da... in E:\wamp64\www\reamur\system\library\db.php on line 175
+[2026-03-03 20:31:02] [INFO] [PID:16580] [MEM:2MB] Query execution failed: Error: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'NULLS LAST, date_added DESC LIMIT 0,10' at line 1<br/>Error No: 1064<br/>SELECT * FROM `rms_blog_post` WHERE status = 'published' ORDER BY published_at DESC NULLS LAST, date_added DESC LIMIT 0,10 | SQL: SELECT * FROM `rms_blog_post` WHERE status = 'published' ORDER BY published_at DESC NULLS LAST, date... in E:\wamp64\www\reamur\system\library\db.php on line 175
+[2026-03-03 20:31:07] [INFO] [PID:16580] [MEM:2MB] Query execution failed: Error: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'NULLS LAST, date_added DESC LIMIT 0,10' at line 1<br/>Error No: 1064<br/>SELECT * FROM `rms_mooc_course` WHERE status = 'published' ORDER BY published_at DESC NULLS LAST, date_added DESC LIMIT 0,10 | SQL: SELECT * FROM `rms_mooc_course` WHERE status = 'published' ORDER BY published_at DESC NULLS LAST, da... in E:\wamp64\www\reamur\system\library\db.php on line 175
+[2026-03-03 20:40:55] [INFO] [PID:16580] [MEM:2MB] PHP Warning: Undefined array key "published_at"
+File: E:\wamp64\www\reamur\admin\model\cms\blog_post.php
+Line: 22
+[2026-03-03 20:41:05] [INFO] [PID:16580] [MEM:2MB] PHP Warning: Undefined array key "published_at"
+File: E:\wamp64\www\reamur\admin\model\cms\blog_post.php
+Line: 22
+[2026-03-03 20:41:05] [INFO] [PID:16580] [MEM:2MB] 0:  Query execution failed: Error: Duplicate entry 'post-teste-cli' for key 'rms_blog_post.slug'<br/>Error No: 1062<br/>INSERT INTO `rms_blog_post` SET 
+            author_id = '1',
+            title = 'Post de teste',
+            content = 'Conteudo via CLI',
+            excerpt = 'cli quick',
+            slug = 'post-teste-cli',
+            status = 'published',
+            featured_image = '',
+            published_at = NULL,
+            date_added = NOW(),
+            date_modified = NOW() | SQL: INSERT INTO `rms_blog_post` SET 
+            author_id = '1',
+            title = 'Post de teste',
+ ...
+File: E:\wamp64\www\reamur\system\library\db.php
+Line: 175
+[2026-03-03 20:41:22] [INFO] [PID:16580] [MEM:2MB] PHP Warning: Undefined array key "published_at"
+File: E:\wamp64\www\reamur\admin\model\cms\landpage.php
+Line: 20
+[2026-03-03 20:41:37] [INFO] [PID:16580] [MEM:2MB] PHP Warning: Undefined array key "published_at"
+File: E:\wamp64\www\reamur\admin\model\cms\mooc_course.php
+Line: 27
+[2026-03-03 20:41:51] [INFO] [PID:16580] [MEM:2MB] Query execution failed: Error: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'NULLS LAST, date_added DESC LIMIT 0,10' at line 1<br/>Error No: 1064<br/>SELECT * FROM `rms_blog_post` WHERE status = 'published' ORDER BY published_at DESC NULLS LAST, date_added DESC LIMIT 0,10 | SQL: SELECT * FROM `rms_blog_post` WHERE status = 'published' ORDER BY published_at DESC NULLS LAST, date... in E:\wamp64\www\reamur\system\library\db.php on line 175
+[2026-03-03 20:41:59] [INFO] [PID:16580] [MEM:2MB] Query execution failed: Error: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'NULLS LAST, date_added DESC LIMIT 0,10' at line 1<br/>Error No: 1064<br/>SELECT * FROM `rms_blog_post` WHERE status = 'published' ORDER BY published_at DESC NULLS LAST, date_added DESC LIMIT 0,10 | SQL: SELECT * FROM `rms_blog_post` WHERE status = 'published' ORDER BY published_at DESC NULLS LAST, date... in E:\wamp64\www\reamur\system\library\db.php on line 175

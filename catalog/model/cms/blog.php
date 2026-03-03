@@ -4,7 +4,7 @@ namespace Reamur\Catalog\Model\Cms;
 class Blog extends \Reamur\System\Engine\Model {
     public function getPosts(array $data = []): array {
         $sql = "SELECT * FROM `" . DB_PREFIX . "blog_post` WHERE status = 'published'";
-        $sql .= " ORDER BY published_at DESC NULLS LAST, date_added DESC";
+        $sql .= " ORDER BY (published_at IS NULL), published_at DESC, date_added DESC";
         $start = (int)($data['start'] ?? 0);
         $limit = (int)($data['limit'] ?? 10);
         if ($start < 0) $start = 0;
