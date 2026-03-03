@@ -1,0 +1,13 @@
+<article class="course">
+  <h1>{{ course.title }}</h1>
+  {% if course.subtitle %}<h3>{{ course.subtitle }}</h3>{% endif %}
+  <p>{{ text_level }}: {{ course.level }} · {{ text_duration }}: {{ course.duration_minutes }} min</p>
+  <div class="description">
+    {{ course.description|raw }}
+  </div>
+  {% if not course.is_free %}
+    <p class="price">{{ text_price }} {{ course.price }}</p>
+  {% else %}
+    <p class="price">{{ text_free }}</p>
+  {% endif %}
+</article>

@@ -1,0 +1,7 @@
+<article class="blog-post">
+  <h1>{{ post.title }}</h1>
+  {% if post.published_at %}<p class="meta">{{ post.published_at }}</p>{% endif %}
+  <div class="content">
+    {{ post.content|raw }}
+  </div>
+</article>

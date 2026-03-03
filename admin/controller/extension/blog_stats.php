@@ -10,6 +10,9 @@ class BlogStats extends \Reamur\System\Engine\Controller {
         // Get blog statistics
         $this->load->model('cms/blog_post');
         $this->load->model('cms/blog_comment');
+        if (method_exists($this->model_cms_blog_post, 'ensureTables')) {
+            $this->model_cms_blog_post->ensureTables();
+        }
         
         // Total posts
         $data['total_posts'] = $this->model_cms_blog_post->getTotalPosts();

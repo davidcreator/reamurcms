@@ -1,0 +1,7 @@
+{
+  "name": "ReamurCMS Blog Module",
+  "version": "1.0.0",
+  "author": "ReamurCMS",
+  "link": "https://reamurcms.com",
+  "instruction": "Instala as tabelas de blog e adiciona CRUD básico no admin e frontend."
+}
