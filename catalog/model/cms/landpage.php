@@ -7,6 +7,9 @@ class Landpage extends \Reamur\System\Engine\Model {
         $page = $query->row ?? [];
         if ($page) {
             $page['html'] = $this->getLatestRevisionHtml((int)$page['page_id']);
+            if (!empty($page['published_at'])) {
+                $page['published_at'] = date('c', strtotime($page['published_at']));
+            }
         }
         return $page;
     }

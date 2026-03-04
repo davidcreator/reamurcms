@@ -1,6 +1,8 @@
 <article class="blog-post">
   <h1>{{ post.title }}</h1>
+  {% if thumb %}<img src="{{ thumb }}" alt="{{ post.title }}" class="img-fluid mb-3"/>{% endif %}
   {% if post.published_at %}<p class="meta">{{ post.published_at }}</p>{% endif %}
+  {% if post.meta_description %}<p class="lead">{{ post.meta_description }}</p>{% endif %}
   <div class="content">
     {{ post.content|raw }}
   </div>

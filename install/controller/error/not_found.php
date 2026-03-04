@@ -24,7 +24,8 @@ class NotFound extends \Reamur\System\Engine\Controller {
 		$data['footer'] = $this->load->controller('common/footer');
 		$data['header'] = $this->load->controller('common/header');
 
-		$this->response->addHeader($this->request->server['SERVER_PROTOCOL'] . ' 404 Not Found');
+		$protocol = $this->request->server['SERVER_PROTOCOL'] ?? 'HTTP/1.1';
+		$this->response->addHeader($protocol . ' 404 Not Found');
 
 		$this->response->setOutput($this->load->view('error/not_found', $data));
 	}

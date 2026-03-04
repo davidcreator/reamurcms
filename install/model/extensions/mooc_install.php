@@ -44,6 +44,43 @@ class MoocInstall extends \Reamur\System\Engine\Model {
 			$executed++;
 		}
 
+		$this->grantAdministratorPermissions($db, $data['db_prefix'], ['cms/mooc_course']);
+
 		return $executed;
+	}
+
+	/**
+	 * Ensure Administrator group has access/modify permissions for the routes
+	 *
+	 * @param \Reamur\System\Library\DB $db
+	 * @param string                    $prefix
+	 * @param array                     $routes
+	 * @return void
+	 */
+	private function grantAdministratorPermissions(\Reamur\System\Library\DB $db, string $prefix, array $routes): void {
+		$table = '`' . preg_replace('/[^a-zA-Z0-9_]/', '', $prefix) . 'user_group`';
+
+		$query = $db->query("SELECT user_group_id, permission FROM {$table} WHERE name='Administrator' LIMIT 1");
+
+		if (!$query->num_rows) {
+			return;
+		}
+
+		$permissions = json_decode($query->row['permission'], true) ?: [];
+		$permissions['access'] = $permissions['access'] ?? [];
+		$permissions['modify'] = $permissions['modify'] ?? [];
+
+		foreach ($routes as $route) {
+			if (!in_array($route, $permissions['access'])) {
+				$permissions['access'][] = $route;
+			}
+			if (!in_array($route, $permissions['modify'])) {
+				$permissions['modify'][] = $route;
+			}
+		}
+
+		$json = $db->escape(json_encode($permissions, JSON_UNESCAPED_SLASHES));
+
+		$db->query("UPDATE {$table} SET permission = '{$json}' WHERE user_group_id = '" . (int)$query->row['user_group_id'] . "'");
 	}
 }

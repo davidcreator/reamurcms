@@ -1,6 +1,7 @@
 <div class="landpage">
+  {% if thumb %}<div class="landpage-hero mb-4 text-center"><img src="{{ thumb }}" alt="{{ page.title }}" class="img-fluid rounded"/></div>{% endif %}
   <h1>{{ page.title }}</h1>
-  <div class="landpage-body">
-    {{ page.html|raw }}
-  </div>
+  {% if page.published_at %}<p class="text-muted">{{ page.published_at }}</p>{% endif %}
+  <div class="landpage-body">{{ page.html|raw }}</div>
+  {% if custom_css %}<style>{{ custom_css }}</style>{% endif %}
 </div>

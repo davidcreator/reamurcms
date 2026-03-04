@@ -3,6 +3,7 @@
   <div class="blog-list">
     {% for post in posts %}
       <article class="blog-card">
+        {% if post.thumb %}<img src="{{ post.thumb }}" alt="{{ post.title }}" class="img-fluid mb-2"/>{% endif %}
         <h2><a href="{{ post.href }}">{{ post.title }}</a></h2>
         {% if post.excerpt %}<p>{{ post.excerpt }}</p>{% endif %}
         <a href="{{ post.href }}">{{ text_read_more }}</a>

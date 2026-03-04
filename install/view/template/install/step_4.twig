@@ -35,7 +35,7 @@
 					<h4 class="mb-2"><i class="fa-solid fa-plug" aria-hidden="true"></i> {{ text_install_extensions }}</h4>
 					<p class="text-muted">{{ text_install_extensions_desc }}</p>
 					<div class="row g-3">
-						<div class="col-md-6">
+						<div class="col-lg-4 col-md-6">
 							<div class="border rounded p-3 h-100">
 								<form method="post" class="h-100 d-flex flex-column">
 									<div class="d-flex justify-content-between align-items-start gap-3 flex-grow-1">
@@ -60,7 +60,32 @@
 								</form>
 							</div>
 						</div>
-						<div class="col-md-6">
+						<div class="col-lg-4 col-md-6">
+							<div class="border rounded p-3 h-100">
+								<form method="post" class="h-100 d-flex flex-column">
+									<div class="d-flex justify-content-between align-items-start gap-3 flex-grow-1">
+										<div>
+											<h5 class="mb-1">{{ text_landpage_title }}</h5>
+											<p class="small text-muted mb-2">{{ text_landpage_desc }}</p>
+											{% set status_class_landpage = 'text-muted' %}
+											{% if status_landpage %}
+												{% if 'Erro' in status_landpage or 'Error' in status_landpage %}
+													{% set status_class_landpage = 'text-danger' %}
+												{% else %}
+													{% set status_class_landpage = 'text-success' %}
+												{% endif %}
+											{% endif %}
+											<span class="small {{ status_class_landpage }}">{{ status_landpage }}</span>
+										</div>
+										<input type="hidden" name="install_extension" value="landpage"/>
+										<button type="submit" class="btn btn-primary btn-sm">
+											<i class="fa-solid fa-play" aria-hidden="true"></i> {{ button_install_now }}
+										</button>
+									</div>
+								</form>
+							</div>
+						</div>
+						<div class="col-lg-4 col-md-6">
 							<div class="border rounded p-3 h-100">
 								<form method="post" class="h-100 d-flex flex-column">
 									<div class="d-flex justify-content-between align-items-start gap-3 flex-grow-1">

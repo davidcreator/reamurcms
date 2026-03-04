@@ -21,6 +21,8 @@ class Step4 extends \Reamur\System\Engine\Controller {
 		$data['text_install_extensions_desc'] = $this->language->get('text_install_extensions_desc');
 		$data['text_blog_title'] = $this->language->get('text_blog_title');
 		$data['text_blog_desc'] = $this->language->get('text_blog_desc');
+		$data['text_landpage_title'] = $this->language->get('text_landpage_title');
+		$data['text_landpage_desc'] = $this->language->get('text_landpage_desc');
 		$data['text_mooc_title'] = $this->language->get('text_mooc_title');
 		$data['text_mooc_desc'] = $this->language->get('text_mooc_desc');
 		$data['text_installing'] = $this->language->get('text_installing');
@@ -48,6 +50,7 @@ class Step4 extends \Reamur\System\Engine\Controller {
 		$data['error_warning'] = $this->language->get('error_warning');
 		$data['success_message'] = '';
 		$data['status_blog'] = '';
+		$data['status_landpage'] = '';
 		$data['status_mooc'] = '';
 
 		// Instalação inline das extensões (POST)
@@ -56,23 +59,38 @@ class Step4 extends \Reamur\System\Engine\Controller {
 			try {
 				$dbData = $this->getDbCredentials();
 
-				if ($which === 'blog') {
-					$this->load->model('extensions/blog_install');
-					$count = $this->model_extensions_blog_install->install($dbData);
-					$data['success_message'] = sprintf($this->language->get('text_installed'), (int)$count);
-					$data['status_blog'] = $data['success_message'];
-				} elseif ($which === 'mooc') {
-					$this->load->model('extensions/mooc_install');
-					$count = $this->model_extensions_mooc_install->install($dbData);
-					$data['success_message'] = sprintf($this->language->get('text_installed'), (int)$count);
-					$data['status_mooc'] = $data['success_message'];
-				} else {
-					throw new \RuntimeException('Extension not supported.');
+				$message = '';
+
+				switch ($which) {
+					case 'blog':
+						$this->load->model('extensions/blog_install');
+						$count = $this->model_extensions_blog_install->install($dbData);
+						$message = sprintf($this->language->get('text_installed'), (int)$count);
+						$data['status_blog'] = $message;
+						break;
+					case 'landpage':
+						$this->load->model('extensions/landpage_install');
+						$count = $this->model_extensions_landpage_install->install($dbData);
+						$message = sprintf($this->language->get('text_installed'), (int)$count);
+						$data['status_landpage'] = $message;
+						break;
+					case 'mooc':
+						$this->load->model('extensions/mooc_install');
+						$count = $this->model_extensions_mooc_install->install($dbData);
+						$message = sprintf($this->language->get('text_installed'), (int)$count);
+						$data['status_mooc'] = $message;
+						break;
+					default:
+						throw new \RuntimeException('Extension not supported.');
 				}
+
+				$data['success_message'] = $message;
 			} catch (\Throwable $e) {
 				$data['error_warning'] = sprintf($this->language->get('text_install_error'), $e->getMessage());
 				if ($which === 'blog') {
 					$data['status_blog'] = $data['error_warning'];
+				} elseif ($which === 'landpage') {
+					$data['status_landpage'] = $data['error_warning'];
 				} else {
 					$data['status_mooc'] = $data['error_warning'];
 				}

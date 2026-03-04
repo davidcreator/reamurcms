@@ -8,14 +8,20 @@ class Landpage extends \Reamur\System\Engine\Model {
         if (!$installer->landpageTablesExist()) {
             $installer->installLandpageTables();
         }
+        $this->addMissingColumns();
     }
 
     public function add(array $data): int {
         $this->db->query("INSERT INTO `" . DB_PREFIX . "landpage_page` SET
             title = '" . $this->db->escape((string)$data['title']) . "',
+            meta_title = '" . $this->db->escape((string)($data['meta_title'] ?? ($data['title'] ?? ''))) . "',
+            meta_description = '" . $this->db->escape((string)($data['meta_description'] ?? '')) . "',
+            meta_keyword = '" . $this->db->escape((string)($data['meta_keyword'] ?? '')) . "',
             slug = '" . $this->db->escape((string)$data['slug']) . "',
             status = '" . $this->db->escape((string)($data['status'] ?? 'draft')) . "',
             template = '" . $this->db->escape((string)($data['template'] ?? 'default')) . "',
+            featured_image = '" . $this->db->escape((string)($data['featured_image'] ?? '')) . "',
+            custom_css = '" . $this->db->escape((string)($data['custom_css'] ?? '')) . "',
             author_id = '" . (int)($data['author_id'] ?? 0) . "',
             published_at = " . ($data['published_at'] ? "'" . $this->db->escape((string)$data['published_at']) . "'" : "NULL") . ",
             date_added = NOW(),
@@ -29,9 +35,14 @@ class Landpage extends \Reamur\System\Engine\Model {
     public function edit(int $page_id, array $data): void {
         $this->db->query("UPDATE `" . DB_PREFIX . "landpage_page` SET
             title = '" . $this->db->escape((string)$data['title']) . "',
+            meta_title = '" . $this->db->escape((string)($data['meta_title'] ?? ($data['title'] ?? ''))) . "',
+            meta_description = '" . $this->db->escape((string)($data['meta_description'] ?? '')) . "',
+            meta_keyword = '" . $this->db->escape((string)($data['meta_keyword'] ?? '')) . "',
             slug = '" . $this->db->escape((string)$data['slug']) . "',
             status = '" . $this->db->escape((string)($data['status'] ?? 'draft')) . "',
             template = '" . $this->db->escape((string)($data['template'] ?? 'default')) . "',
+            featured_image = '" . $this->db->escape((string)($data['featured_image'] ?? '')) . "',
+            custom_css = '" . $this->db->escape((string)($data['custom_css'] ?? '')) . "',
             published_at = " . ($data['published_at'] ? "'" . $this->db->escape((string)$data['published_at']) . "'" : "NULL") . ",
             date_modified = NOW()
             WHERE page_id = '" . (int)$page_id . "'");
@@ -88,5 +99,23 @@ class Landpage extends \Reamur\System\Engine\Model {
     private function getLatestRevisionHtml(int $page_id): string {
         $query = $this->db->query("SELECT html FROM `" . DB_PREFIX . "landpage_page_revision` WHERE page_id = '" . (int)$page_id . "' ORDER BY revision_id DESC LIMIT 1");
         return $query->row['html'] ?? '';
+    }
+
+    private function addMissingColumns(): void {
+        $table = DB_PREFIX . "landpage_page";
+        $columns = [
+            'meta_title' => "ALTER TABLE `" . $table . "` ADD COLUMN `meta_title` VARCHAR(255) NOT NULL DEFAULT '' AFTER `title`",
+            'meta_description' => "ALTER TABLE `" . $table . "` ADD COLUMN `meta_description` TEXT NULL AFTER `meta_title`",
+            'meta_keyword' => "ALTER TABLE `" . $table . "` ADD COLUMN `meta_keyword` VARCHAR(255) NOT NULL DEFAULT '' AFTER `meta_description`",
+            'featured_image' => "ALTER TABLE `" . $table . "` ADD COLUMN `featured_image` VARCHAR(255) NOT NULL DEFAULT '' AFTER `template`",
+            'custom_css' => "ALTER TABLE `" . $table . "` ADD COLUMN `custom_css` TEXT NULL AFTER `featured_image`"
+        ];
+
+        foreach ($columns as $column => $sql) {
+            $exists = $this->db->query("SHOW COLUMNS FROM `" . $table . "` LIKE '" . $this->db->escape($column) . "'");
+            if (empty($exists->num_rows)) {
+                $this->db->query($sql);
+            }
+        }
     }
 }

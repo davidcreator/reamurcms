@@ -50,6 +50,28 @@ class Menu extends \Reamur\System\Engine\Controller {
 			}
 		}
 
+		// CMS shortcuts
+		$data['categories'][] = [
+			'name'     => $this->language->get('text_blog'),
+			'children' => [],
+			'column'   => 1,
+			'href'     => $this->url->link('cms/blog', 'language=' . $this->config->get('config_language'))
+		];
+
+		$data['categories'][] = [
+			'name'     => $this->language->get('text_landpage'),
+			'children' => [],
+			'column'   => 1,
+			'href'     => $this->url->link('cms/landpage', 'language=' . $this->config->get('config_language'))
+		];
+
+		$data['categories'][] = [
+			'name'     => $this->language->get('text_mooc'),
+			'children' => [],
+			'column'   => 1,
+			'href'     => $this->url->link('cms/mooc', 'language=' . $this->config->get('config_language'))
+		];
+
 		return $this->load->view('common/menu', $data);
 	}
 }

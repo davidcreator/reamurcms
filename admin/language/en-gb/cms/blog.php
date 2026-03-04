@@ -19,6 +19,11 @@ $_['entry_slug']       = 'Slug';
 $_['entry_status']     = 'Status';
 $_['entry_excerpt']    = 'Excerpt';
 $_['entry_content']    = 'Content';
+$_['entry_featured_image'] = 'Featured image';
+$_['entry_meta_title']     = 'Meta title';
+$_['entry_meta_description'] = 'Meta description';
+$_['entry_meta_keyword']   = 'Meta keywords';
+$_['entry_published_at']   = 'Publish date';
 
 $_['button_save']      = 'Save';
 $_['button_cancel']    = 'Cancel';

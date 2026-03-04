@@ -136,6 +136,43 @@ class ColumnLeft extends \Reamur\System\Engine\Controller {
 					'children' => $catalog
 				];
 			}
+
+			// CMS (Blog, Landing Pages, MOOC)
+			$cms = [];
+
+			if ($this->user->hasPermission('access', 'cms/blog_post')) {
+				$cms[] = [
+					'name'	   => $this->language->get('text_blog'),
+					'href'     => $this->url->link('cms/blog_post', 'user_token=' . $this->session->data['user_token']),
+					'children' => []
+				];
+			}
+
+			if ($this->user->hasPermission('access', 'cms/landpage')) {
+				$cms[] = [
+					'name'	   => $this->language->get('text_landpage'),
+					'href'     => $this->url->link('cms/landpage', 'user_token=' . $this->session->data['user_token']),
+					'children' => []
+				];
+			}
+
+			if ($this->user->hasPermission('access', 'cms/mooc_course')) {
+				$cms[] = [
+					'name'	   => $this->language->get('text_mooc_course'),
+					'href'     => $this->url->link('cms/mooc_course', 'user_token=' . $this->session->data['user_token']),
+					'children' => []
+				];
+			}
+
+			if ($cms) {
+				$data['menus'][] = [
+					'id'       => 'menu-cms',
+					'icon'	   => 'fa-solid fa-pen-nib',
+					'name'	   => $this->language->get('text_cms'),
+					'href'     => '',
+					'children' => $cms
+				];
+			}
 			
 			// Extension
 			$marketplace = [];
@@ -198,6 +235,17 @@ class ColumnLeft extends \Reamur\System\Engine\Controller {
 				];
 			}
 
+			// RMSMOD installer shortcut under Extensions
+			if ($this->user->hasPermission('access', 'extension/rmsmod_installer')) {
+				$data['menus'][] = [
+					'id'       => 'menu-rmsmod',
+					'icon'	   => 'fa-solid fa-plug',
+					'name'	   => $this->language->get('text_rmsmod_installer'),
+					'href'     => $this->url->link('extension/rmsmod_installer', 'user_token=' . $this->session->data['user_token']),
+					'children' => []
+				];
+			}
+			
 			// Design
 			$design = [];
 

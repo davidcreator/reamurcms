@@ -2,12 +2,12 @@
 namespace Reamur\Install\Model\Extensions;
 
 /**
- * Blog Extension Installer (model)
+ * Landing Page Extension Installer (model)
  */
-class BlogInstall extends \Reamur\System\Engine\Model {
+class LandpageInstall extends \Reamur\System\Engine\Model {
 
 	/**
-	 * Run blog extension SQL bundle
+	 * Run landing page extension SQL bundle
 	 *
 	 * @param array $data Expect db_driver, db_hostname, db_username, db_password, db_database, db_port, db_prefix
 	 * @return int Number of executed statements
@@ -23,10 +23,10 @@ class BlogInstall extends \Reamur\System\Engine\Model {
 			$data['db_port']
 		);
 
-		$sqlFile = DIR_APPLICATION . 'reamurcms-blog-extension.sql';
+		$sqlFile = DIR_APPLICATION . 'sql/landpage_tables.sql';
 
 		if (!is_file($sqlFile)) {
-			throw new \Exception('Blog extension SQL file not found: ' . $sqlFile);
+			throw new \Exception('Landing page SQL file not found: ' . $sqlFile);
 		}
 
 		$sql = file_get_contents($sqlFile);
@@ -45,13 +45,13 @@ class BlogInstall extends \Reamur\System\Engine\Model {
 		}
 
 		$this->addMetaColumns($db, $data['db_prefix']);
-		$this->grantAdministratorPermissions($db, $data['db_prefix'], ['cms/blog_post']);
+		$this->grantAdministratorPermissions($db, $data['db_prefix'], ['cms/landpage']);
 
 		return $executed;
 	}
 
 	/**
-	 * Garantir permissões para o grupo Administrator acessar/modificar a rota
+	 * Garanta permissões de access/modify para Administrator
 	 *
 	 * @param \Reamur\System\Library\DB $db
 	 * @param string                    $prefix
@@ -86,18 +86,20 @@ class BlogInstall extends \Reamur\System\Engine\Model {
 	}
 
 	/**
-	 * Add SEO columns if missing
+	 * Ensure SEO/featured/custom_css columns exist
 	 *
 	 * @param \Reamur\System\Library\DB $db
 	 * @param string                    $prefix
 	 * @return void
 	 */
 	private function addMetaColumns(\Reamur\System\Library\DB $db, string $prefix): void {
-		$table = $prefix . 'blog_post';
+		$table = $prefix . 'landpage_page';
 		$columns = [
 			'meta_title' => "ALTER TABLE `{$table}` ADD COLUMN `meta_title` VARCHAR(255) NOT NULL DEFAULT '' AFTER `title`",
 			'meta_description' => "ALTER TABLE `{$table}` ADD COLUMN `meta_description` TEXT NULL AFTER `meta_title`",
-			'meta_keyword' => "ALTER TABLE `{$table}` ADD COLUMN `meta_keyword` VARCHAR(255) NOT NULL DEFAULT '' AFTER `meta_description`"
+			'meta_keyword' => "ALTER TABLE `{$table}` ADD COLUMN `meta_keyword` VARCHAR(255) NOT NULL DEFAULT '' AFTER `meta_description`",
+			'featured_image' => "ALTER TABLE `{$table}` ADD COLUMN `featured_image` VARCHAR(255) NOT NULL DEFAULT '' AFTER `template`",
+			'custom_css' => "ALTER TABLE `{$table}` ADD COLUMN `custom_css` TEXT NULL AFTER `featured_image`"
 		];
 
 		foreach ($columns as $column => $sql) {

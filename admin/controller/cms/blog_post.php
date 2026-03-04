@@ -63,11 +63,17 @@ class BlogPost extends \Reamur\System\Engine\Controller {
 
         $this->load->model('cms/blog_post');
         $this->model_cms_blog_post->ensureTables();
+        $this->load->model('tool/image');
+
+        $this->document->addScript('view/js/ckeditor/ckeditor.js');
+        $this->document->addScript('view/js/ckeditor/adapters/jquery.js');
 
         $data['heading_title'] = $this->language->get('heading_title');
         $data['text_form'] = $this->language->get('text_form');
         $data['button_save'] = $this->language->get('button_save');
         $data['button_cancel'] = $this->language->get('button_cancel');
+        $data['button_edit'] = $this->language->get('button_edit');
+        $data['button_clear'] = $this->language->get('button_clear');
         $data['text_draft'] = $this->language->get('text_draft');
         $data['text_published'] = $this->language->get('text_published');
         $data['entry_title'] = $this->language->get('entry_title');
@@ -75,11 +81,20 @@ class BlogPost extends \Reamur\System\Engine\Controller {
         $data['entry_status'] = $this->language->get('entry_status');
         $data['entry_excerpt'] = $this->language->get('entry_excerpt');
         $data['entry_content'] = $this->language->get('entry_content');
+        $data['entry_featured_image'] = $this->language->get('entry_featured_image');
+        $data['entry_meta_title'] = $this->language->get('entry_meta_title');
+        $data['entry_meta_description'] = $this->language->get('entry_meta_description');
+        $data['entry_meta_keyword'] = $this->language->get('entry_meta_keyword');
+        $data['entry_published_at'] = $this->language->get('entry_published_at');
+        $data['ckeditor'] = $this->config->get('config_language');
 
         $post_id = (int)($this->request->get['post_id'] ?? 0);
         if ($this->request->server['REQUEST_METHOD'] === 'POST' && $this->validateForm()) {
             $payload = $this->request->post;
             $payload['author_id'] = $this->user->getId() ?? 0;
+            if (!empty($payload['published_at'])) {
+                $payload['published_at'] = str_replace('T', ' ', $payload['published_at']);
+            }
 
             if ($post_id) {
                 $this->model_cms_blog_post->edit($post_id, $payload);
@@ -107,9 +122,25 @@ class BlogPost extends \Reamur\System\Engine\Controller {
                 'excerpt' => '',
                 'content' => '',
                 'featured_image' => '',
-                'published_at' => ''
+                'published_at' => '',
+                'meta_title' => '',
+                'meta_description' => '',
+                'meta_keyword' => ''
             ];
         }
+
+        if (!empty($data['post']['published_at'])) {
+            $data['post']['published_at'] = date('Y-m-d\\TH:i', strtotime($data['post']['published_at']));
+        }
+
+        $image = $data['post']['featured_image'] ?? '';
+        if ($image && is_file(DIR_IMAGE . $image)) {
+            $data['thumb'] = $this->model_tool_image->resize($image, 200, 200);
+        } else {
+            $data['thumb'] = $this->model_tool_image->resize('no_image.png', 200, 200);
+            $data['post']['featured_image'] = '';
+        }
+        $data['placeholder'] = $this->model_tool_image->resize('no_image.png', 200, 200);
 
         $data['breadcrumbs'] = [
             [

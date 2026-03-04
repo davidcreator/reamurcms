@@ -15,20 +15,26 @@ class Upgrade extends \Reamur\System\Engine\Controller {
             // Default to no upgrade needed
             $upgrade = false;
             
-            // Check if config file exists and has content
+            // Check if config file exists and has content (installed system)
             if (is_file(DIR_REAMUR . 'config.php') && filesize(DIR_REAMUR . 'config.php') > 0) {
                 $upgrade = true;
             }
-            
+
             // Skip upgrade if already in upgrade process or at final installation step
             if (isset($this->request->get['route'])) {
                 $route = $this->request->get['route'];
-                
+
                 if (strpos($route, 'upgrade/') === 0 || strpos($route, 'install/step_4') === 0) {
                     $upgrade = false;
                 }
             }
-            
+
+            // If no route param (direct /install/) and installed, still redirect to upgrade
+            if (!isset($this->request->get['route']) && $upgrade) {
+                $this->response->redirect($this->url->link('upgrade/upgrade'));
+                return;
+            }
+
             // Redirect to upgrade controller if upgrade is needed
             if ($upgrade) {
                 $this->response->redirect($this->url->link('upgrade/upgrade'));

@@ -8,12 +8,17 @@ class BlogPost extends \Reamur\System\Engine\Model {
         if (!$installer->blogTablesExist()) {
             $installer->installBlogTables();
         }
+
+        $this->addMissingColumns();
     }
 
     public function add(array $data): int {
         $this->db->query("INSERT INTO `" . DB_PREFIX . "blog_post` SET 
             author_id = '" . (int)($data['author_id'] ?? 0) . "',
             title = '" . $this->db->escape((string)$data['title']) . "',
+            meta_title = '" . $this->db->escape((string)($data['meta_title'] ?? $data['title'] ?? '')) . "',
+            meta_description = '" . $this->db->escape((string)($data['meta_description'] ?? '')) . "',
+            meta_keyword = '" . $this->db->escape((string)($data['meta_keyword'] ?? '')) . "',
             content = '" . $this->db->escape((string)$data['content']) . "',
             excerpt = '" . $this->db->escape((string)($data['excerpt'] ?? '')) . "',
             slug = '" . $this->db->escape((string)$data['slug']) . "',
@@ -29,6 +34,9 @@ class BlogPost extends \Reamur\System\Engine\Model {
     public function edit(int $post_id, array $data): void {
         $this->db->query("UPDATE `" . DB_PREFIX . "blog_post` SET 
             title = '" . $this->db->escape((string)$data['title']) . "',
+            meta_title = '" . $this->db->escape((string)($data['meta_title'] ?? $data['title'] ?? '')) . "',
+            meta_description = '" . $this->db->escape((string)($data['meta_description'] ?? '')) . "',
+            meta_keyword = '" . $this->db->escape((string)($data['meta_keyword'] ?? '')) . "',
             content = '" . $this->db->escape((string)$data['content']) . "',
             excerpt = '" . $this->db->escape((string)($data['excerpt'] ?? '')) . "',
             slug = '" . $this->db->escape((string)$data['slug']) . "',
@@ -71,5 +79,22 @@ class BlogPost extends \Reamur\System\Engine\Model {
         }
         $query = $this->db->query($sql);
         return (int)$query->row['total'];
+    }
+
+    private function addMissingColumns(): void {
+        $table = DB_PREFIX . "blog_post";
+
+        $columns = [
+            'meta_title' => "ALTER TABLE `" . $table . "` ADD COLUMN `meta_title` VARCHAR(255) NOT NULL DEFAULT '' AFTER `title`",
+            'meta_description' => "ALTER TABLE `" . $table . "` ADD COLUMN `meta_description` TEXT NULL AFTER `meta_title`",
+            'meta_keyword' => "ALTER TABLE `" . $table . "` ADD COLUMN `meta_keyword` VARCHAR(255) NOT NULL DEFAULT '' AFTER `meta_description`"
+        ];
+
+        foreach ($columns as $column => $sql) {
+            $exists = $this->db->query("SHOW COLUMNS FROM `" . $table . "` LIKE '" . $this->db->escape($column) . "'");
+            if (empty($exists->num_rows)) {
+                $this->db->query($sql);
+            }
+        }
     }
 }
