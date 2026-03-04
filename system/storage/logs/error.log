@@ -1,0 +1,134 @@
+[2026-03-04 18:58:34] [INFO] [PID:12636] [MEM:2MB] Filemanager upload: PHP configuration - file_uploads: 1
+[2026-03-04 18:58:34] [INFO] [PID:12636] [MEM:2MB] Filemanager upload: PHP configuration - upload_max_filesize: 2M
+[2026-03-04 18:58:34] [INFO] [PID:12636] [MEM:2MB] Filemanager upload: PHP configuration - post_max_size: 64M
+[2026-03-04 18:58:34] [INFO] [PID:12636] [MEM:2MB] Filemanager upload: PHP configuration - max_file_uploads: 20
+[2026-03-04 18:58:34] [INFO] [PID:12636] [MEM:2MB] Filemanager upload: PHP configuration - memory_limit: 128M
+[2026-03-04 18:58:34] [INFO] [PID:12636] [MEM:2MB] PHP Warning: Undefined array key "file"
+File: E:\wamp64\www\reamur\admin\controller\common\filemanager.php
+Line: 379
+[2026-03-04 18:58:34] [INFO] [PID:12636] [MEM:2MB] PHP Warning: Trying to access array offset on null
+File: E:\wamp64\www\reamur\admin\controller\common\filemanager.php
+Line: 379
+[2026-03-04 18:58:34] [INFO] [PID:12636] [MEM:2MB] PHP Warning: Undefined array key "file"
+File: E:\wamp64\www\reamur\admin\controller\common\filemanager.php
+Line: 394
+[2026-03-04 18:58:34] [INFO] [PID:12636] [MEM:2MB] PHP Warning: Trying to access array offset on null
+File: E:\wamp64\www\reamur\admin\controller\common\filemanager.php
+Line: 394
+[2026-03-04 18:58:34] [INFO] [PID:12636] [MEM:2MB] PHP Warning: Undefined array key "file"
+File: E:\wamp64\www\reamur\admin\controller\common\filemanager.php
+Line: 395
+[2026-03-04 18:58:34] [INFO] [PID:12636] [MEM:2MB] PHP Warning: Trying to access array offset on null
+File: E:\wamp64\www\reamur\admin\controller\common\filemanager.php
+Line: 395
+[2026-03-04 18:58:34] [INFO] [PID:12636] [MEM:2MB] PHP Warning: Undefined array key "file"
+File: E:\wamp64\www\reamur\admin\controller\common\filemanager.php
+Line: 396
+[2026-03-04 18:58:34] [INFO] [PID:12636] [MEM:2MB] PHP Warning: Trying to access array offset on null
+File: E:\wamp64\www\reamur\admin\controller\common\filemanager.php
+Line: 396
+[2026-03-04 18:58:34] [INFO] [PID:12636] [MEM:2MB] PHP Warning: Undefined array key "file"
+File: E:\wamp64\www\reamur\admin\controller\common\filemanager.php
+Line: 397
+[2026-03-04 18:58:34] [INFO] [PID:12636] [MEM:2MB] PHP Warning: Trying to access array offset on null
+File: E:\wamp64\www\reamur\admin\controller\common\filemanager.php
+Line: 397
+[2026-03-04 18:58:34] [INFO] [PID:12636] [MEM:2MB] PHP Warning: Undefined array key "file"
+File: E:\wamp64\www\reamur\admin\controller\common\filemanager.php
+Line: 398
+[2026-03-04 18:58:34] [INFO] [PID:12636] [MEM:2MB] PHP Warning: Trying to access array offset on null
+File: E:\wamp64\www\reamur\admin\controller\common\filemanager.php
+Line: 398
+[2026-03-04 18:58:34] [INFO] [PID:12636] [MEM:2MB] PHP Unknown: is_file(): Passing null to parameter #1 ($filename) of type string is deprecated
+File: E:\wamp64\www\reamur\admin\controller\common\filemanager.php
+Line: 415
+[2026-03-04 18:58:34] [INFO] [PID:12636] [MEM:2MB] Filemanager upload error: Temporary file not found for
+[2026-03-04 18:58:49] [INFO] [PID:12636] [MEM:2MB] Filemanager upload: PHP configuration - file_uploads: 1
+[2026-03-04 18:58:49] [INFO] [PID:12636] [MEM:2MB] Filemanager upload: PHP configuration - upload_max_filesize: 2M
+[2026-03-04 18:58:49] [INFO] [PID:12636] [MEM:2MB] Filemanager upload: PHP configuration - post_max_size: 64M
+[2026-03-04 18:58:49] [INFO] [PID:12636] [MEM:2MB] Filemanager upload: PHP configuration - max_file_uploads: 20
+[2026-03-04 18:58:49] [INFO] [PID:12636] [MEM:2MB] Filemanager upload: PHP configuration - memory_limit: 128M
+[2026-03-04 18:58:49] [INFO] [PID:12636] [MEM:2MB] PHP Warning: Undefined array key "file"
+File: E:\wamp64\www\reamur\admin\controller\common\filemanager.php
+Line: 379
+[2026-03-04 18:58:49] [INFO] [PID:12636] [MEM:2MB] PHP Warning: Trying to access array offset on null
+File: E:\wamp64\www\reamur\admin\controller\common\filemanager.php
+Line: 379
+[2026-03-04 18:58:49] [INFO] [PID:12636] [MEM:2MB] PHP Warning: Undefined array key "file"
+File: E:\wamp64\www\reamur\admin\controller\common\filemanager.php
+Line: 394
+[2026-03-04 18:58:49] [INFO] [PID:12636] [MEM:2MB] PHP Warning: Trying to access array offset on null
+File: E:\wamp64\www\reamur\admin\controller\common\filemanager.php
+Line: 394
+[2026-03-04 18:58:49] [INFO] [PID:12636] [MEM:2MB] PHP Warning: Undefined array key "file"
+File: E:\wamp64\www\reamur\admin\controller\common\filemanager.php
+Line: 395
+[2026-03-04 18:58:49] [INFO] [PID:12636] [MEM:2MB] PHP Warning: Trying to access array offset on null
+File: E:\wamp64\www\reamur\admin\controller\common\filemanager.php
+Line: 395
+[2026-03-04 18:58:49] [INFO] [PID:12636] [MEM:2MB] PHP Warning: Undefined array key "file"
+File: E:\wamp64\www\reamur\admin\controller\common\filemanager.php
+Line: 396
+[2026-03-04 18:58:49] [INFO] [PID:12636] [MEM:2MB] PHP Warning: Trying to access array offset on null
+File: E:\wamp64\www\reamur\admin\controller\common\filemanager.php
+Line: 396
+[2026-03-04 18:58:49] [INFO] [PID:12636] [MEM:2MB] PHP Warning: Undefined array key "file"
+File: E:\wamp64\www\reamur\admin\controller\common\filemanager.php
+Line: 397
+[2026-03-04 18:58:49] [INFO] [PID:12636] [MEM:2MB] PHP Warning: Trying to access array offset on null
+File: E:\wamp64\www\reamur\admin\controller\common\filemanager.php
+Line: 397
+[2026-03-04 18:58:49] [INFO] [PID:12636] [MEM:2MB] PHP Warning: Undefined array key "file"
+File: E:\wamp64\www\reamur\admin\controller\common\filemanager.php
+Line: 398
+[2026-03-04 18:58:49] [INFO] [PID:12636] [MEM:2MB] PHP Warning: Trying to access array offset on null
+File: E:\wamp64\www\reamur\admin\controller\common\filemanager.php
+Line: 398
+[2026-03-04 18:58:49] [INFO] [PID:12636] [MEM:2MB] PHP Unknown: is_file(): Passing null to parameter #1 ($filename) of type string is deprecated
+File: E:\wamp64\www\reamur\admin\controller\common\filemanager.php
+Line: 415
+[2026-03-04 18:58:49] [INFO] [PID:12636] [MEM:2MB] Filemanager upload error: Temporary file not found for
+[2026-03-04 19:32:38] [INFO] [PID:12636] [MEM:2MB] 0:  Undefined constant "DIR_INSTALL"
+File: E:\wamp64\www\reamur\system\helper\landpage_installer.php
+Line: 22
+[2026-03-04 19:41:55] [INFO] [PID:12636] [MEM:2MB] 0:  Undefined constant "DIR_INSTALL"
+File: E:\wamp64\www\reamur\system\helper\landpage_installer.php
+Line: 22
+[2026-03-04 20:11:50] [INFO] [PID:12636] [MEM:2MB] PHP Warning: Undefined variable $data
+File: E:\wamp64\www\reamur\admin\controller\cms\landpage_template.php
+Line: 19
+[2026-03-04 20:11:50] [INFO] [PID:12636] [MEM:2MB] PHP Warning: Trying to access array offset on null
+File: E:\wamp64\www\reamur\admin\controller\cms\landpage_template.php
+Line: 20
+[2026-03-04 20:11:50] [INFO] [PID:12636] [MEM:2MB] PHP Warning: Trying to access array offset on null
+File: E:\wamp64\www\reamur\admin\controller\cms\landpage_template.php
+Line: 20
+[2026-03-04 20:11:59] [INFO] [PID:12636] [MEM:2MB] PHP Warning: Undefined variable $data
+File: E:\wamp64\www\reamur\admin\controller\cms\landpage_template.php
+Line: 19
+[2026-03-04 20:11:59] [INFO] [PID:12636] [MEM:2MB] PHP Warning: Trying to access array offset on null
+File: E:\wamp64\www\reamur\admin\controller\cms\landpage_template.php
+Line: 20
+[2026-03-04 20:11:59] [INFO] [PID:12636] [MEM:2MB] PHP Warning: Trying to access array offset on null
+File: E:\wamp64\www\reamur\admin\controller\cms\landpage_template.php
+Line: 20
+[2026-03-04 20:12:29] [INFO] [PID:12636] [MEM:2MB] PHP Warning: Undefined variable $data
+File: E:\wamp64\www\reamur\admin\controller\cms\landpage_template.php
+Line: 19
+[2026-03-04 20:12:29] [INFO] [PID:12636] [MEM:2MB] PHP Warning: Trying to access array offset on null
+File: E:\wamp64\www\reamur\admin\controller\cms\landpage_template.php
+Line: 20
+[2026-03-04 20:12:29] [INFO] [PID:12636] [MEM:2MB] PHP Warning: Trying to access array offset on null
+File: E:\wamp64\www\reamur\admin\controller\cms\landpage_template.php
+Line: 20
+[2026-03-04 20:43:39] [INFO] [PID:12636] [MEM:2MB] 0:  Error: Could not call registry key error!
+File: E:\wamp64\www\reamur\system\engine\controller.php
+Line: 38
+[2026-03-04 21:05:51] [INFO] [PID:17452] [MEM:2MB] PHP Warning:  ini_set(): Session ini settings cannot be changed after headers have already been sent in E:\wamp64\www\reamur\system\library\session.php on line 148
+[2026-03-04 21:05:51] [INFO] [PID:17452] [MEM:2MB] PHP Warning:  ini_set(): Session ini settings cannot be changed after headers have already been sent in E:\wamp64\www\reamur\system\library\session.php on line 149
+[2026-03-04 21:05:51] [INFO] [PID:17452] [MEM:2MB] PHP Warning:  ini_set(): Session ini settings cannot be changed after headers have already been sent in E:\wamp64\www\reamur\system\library\session.php on line 150
+[2026-03-04 21:05:51] [INFO] [PID:17452] [MEM:2MB] PHP Warning:  ini_set(): Session ini settings cannot be changed after headers have already been sent in E:\wamp64\www\reamur\system\library\session.php on line 151
+[2026-03-04 21:05:51] [INFO] [PID:17452] [MEM:2MB] PHP Warning:  session_start(): Session cannot be started after headers have already been sent in E:\wamp64\www\reamur\system\library\session.php on line 116
+[2026-03-04 21:22:52] [INFO] [PID:12636] [MEM:2MB] Class "Reamur\System\Library\Pagination" not found in E:\wamp64\www\reamur\catalog\controller\cms\landpage.php on line 41
+[2026-03-04 21:32:53] [INFO] [PID:12636] [MEM:2MB] Class "Reamur\System\Library\Pagination" not found in E:\wamp64\www\reamur\catalog\controller\cms\landpage.php on line 41
+[2026-03-04 21:32:55] [INFO] [PID:12636] [MEM:2MB] Class "Reamur\System\Library\Pagination" not found in E:\wamp64\www\reamur\catalog\controller\cms\landpage.php on line 41

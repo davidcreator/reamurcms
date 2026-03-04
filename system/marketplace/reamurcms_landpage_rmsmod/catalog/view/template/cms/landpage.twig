@@ -1,6 +1,24 @@
-<div class="landpage">
-  <h1>{{ page.title }}</h1>
-  <div class="landpage-body">
-    {{ page.html|raw }}
+{{ header }}
+<div id="content" class="container">
+  <ul class="breadcrumb">
+    <li><a href="{{ home }}">{{ text_home }}</a></li>
+    <li><a href="{{ list_href }}">{{ heading_title_list }}</a></li>
+    <li>{{ page.title }}</li>
+  </ul>
+
+  <div class="landpage">
+    {% if thumb %}
+      <div class="landpage-hero mb-4 text-center">
+        <img src="{{ thumb }}" alt="{{ page.title }}" class="img-fluid rounded">
+      </div>
+    {% endif %}
+    <h1 class="mb-3">{{ page.title }}</h1>
+    {% if page.published_at %}<p class="text-muted">{{ page.published_at|date("d M Y") }}</p>{% endif %}
+    <div class="landpage-body">{{ page.html|raw }}</div>
+    <div class="mt-4">
+      <a class="btn btn-outline-primary" href="{{ list_href }}">{{ button_back }}</a>
+    </div>
+    {% if custom_css %}<style>{{ custom_css }}</style>{% endif %}
   </div>
 </div>
+{{ footer }}

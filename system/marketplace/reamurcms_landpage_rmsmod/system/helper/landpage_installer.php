@@ -11,21 +11,14 @@ class LandpageInstaller {
         $this->db = $db;
     }
     
-    /**
-     * Install landing page tables using an SQL bundle file.
-     *
-     * Expected file: DIR_INSTALL . 'sql/landpage_tables.sql'
-     *
-     * @return bool True when executed, false if file not found
-     */
     public function installLandpageTables() {
-        $sql_file = DIR_INSTALL . 'sql/landpage_tables.sql';
-        
-        if (file_exists($sql_file)) {
+        $sql_file = $this->resolveSqlPath();
+
+        if ($sql_file && file_exists($sql_file)) {
             $sql = file_get_contents($sql_file);
             $sql = str_replace('rms_', DB_PREFIX, $sql);
             $statements = explode(';', $sql);
-            
+
             foreach ($statements as $statement) {
                 $statement = trim($statement);
                 if (!empty($statement)) {
@@ -65,5 +58,24 @@ class LandpageInstaller {
     public function landpageTablesExist() {
         $result = $this->db->query("SHOW TABLES LIKE '" . DB_PREFIX . "landpage_page'");
         return $result->num_rows > 0;
+    }
+
+    private function resolveSqlPath(): string {
+        $candidates = [];
+        if (defined('DIR_SYSTEM')) {
+            $candidates[] = rtrim(DIR_SYSTEM, '/\\') . '/marketplace/reamurcms_landpage_rmsmod/install/sql/landpage_tables.sql';
+        }
+        if (defined('DIR_EXTENSION')) {
+            $candidates[] = rtrim(DIR_EXTENSION, '/\\') . '/../system/marketplace/reamurcms_landpage_rmsmod/install/sql/landpage_tables.sql';
+        }
+        if (defined('DIR_INSTALL')) {
+            $candidates[] = rtrim(DIR_INSTALL, '/\\') . '/sql/landpage_tables.sql';
+        }
+        foreach ($candidates as $path) {
+            if (file_exists($path)) {
+                return $path;
+            }
+        }
+        return '';
     }
 }

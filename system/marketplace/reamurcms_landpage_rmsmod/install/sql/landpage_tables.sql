@@ -13,6 +13,7 @@ DROP TABLE IF EXISTS `rms_landpage_form_submission`;
 DROP TABLE IF EXISTS `rms_landpage_page_revision`;
 DROP TABLE IF EXISTS `rms_landpage_page_variant`;
 DROP TABLE IF EXISTS `rms_landpage_page_block`;
+DROP TABLE IF EXISTS `rms_landpage_template`;
 DROP TABLE IF EXISTS `rms_landpage_page`;
 
 -- Master page record
@@ -91,6 +92,21 @@ CREATE TABLE `rms_landpage_analytics` (
   PRIMARY KEY (`analytics_id`),
   UNIQUE KEY `page_id` (`page_id`),
   CONSTRAINT `rms_landpage_analytics_page_fk` FOREIGN KEY (`page_id`) REFERENCES `rms_landpage_page` (`page_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Templates library
+CREATE TABLE `rms_landpage_template` (
+  `template_id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `code` varchar(64) NOT NULL,
+  `description` text DEFAULT NULL,
+  `html` longtext NOT NULL,
+  `css` text DEFAULT NULL,
+  `status` tinyint(1) NOT NULL DEFAULT 1,
+  `date_added` datetime NOT NULL,
+  `date_modified` datetime NOT NULL,
+  PRIMARY KEY (`template_id`),
+  UNIQUE KEY `code` (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 SET FOREIGN_KEY_CHECKS = 1;

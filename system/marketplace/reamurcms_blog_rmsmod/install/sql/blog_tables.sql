@@ -4,6 +4,7 @@
 SET sql_mode = '';
 SET FOREIGN_KEY_CHECKS = 0;
 
+DROP TABLE IF EXISTS `rms_blog_tag`;
 DROP TABLE IF EXISTS `rms_blog_analytics`;
 DROP TABLE IF EXISTS `rms_blog_comment`;
 DROP TABLE IF EXISTS `rms_blog_post_to_category`;
@@ -59,12 +60,15 @@ CREATE TABLE `rms_blog_category` (
   `meta_description` varchar(255) DEFAULT NULL,
   `meta_keywords` varchar(255) DEFAULT NULL,
   `slug` varchar(255) DEFAULT NULL,
+  `parent_id` int(11) NOT NULL DEFAULT 0,
   `sort_order` int(3) NOT NULL DEFAULT 0,
   `status` tinyint(1) NOT NULL DEFAULT 1,
   `date_added` datetime NOT NULL,
   `date_modified` datetime NOT NULL,
   PRIMARY KEY (`category_id`),
-  UNIQUE KEY `slug` (`slug`)
+  UNIQUE KEY `slug` (`slug`),
+  KEY `idx_parent_id` (`parent_id`),
+  CONSTRAINT `rms_blog_category_parent_fk` FOREIGN KEY (`parent_id`) REFERENCES `rms_blog_category` (`category_id`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE `rms_blog_post` (
@@ -76,12 +80,23 @@ CREATE TABLE `rms_blog_post` (
   `slug` varchar(255) NOT NULL,
   `status` enum('draft','published','pending','private','archived') NOT NULL DEFAULT 'draft',
   `featured_image` varchar(255) DEFAULT NULL,
+  `og_image` varchar(255) DEFAULT NULL,
+  `tags` varchar(255) DEFAULT NULL,
+  `meta_title` varchar(255) DEFAULT NULL,
+  `meta_description` varchar(255) DEFAULT NULL,
+  `meta_keywords` varchar(255) DEFAULT NULL,
+  `canonical_url` varchar(255) DEFAULT NULL,
+  `schema_json` longtext DEFAULT NULL,
+  `reading_time` int(11) UNSIGNED NOT NULL DEFAULT 0,
+  `is_featured` tinyint(1) NOT NULL DEFAULT 0,
   `published_at` datetime DEFAULT NULL,
   `date_added` datetime NOT NULL,
   `date_modified` datetime NOT NULL,
   PRIMARY KEY (`post_id`),
   UNIQUE KEY `slug` (`slug`),
   KEY `author_id` (`author_id`),
+  KEY `idx_status_published` (`status`,`published_at`),
+  KEY `idx_is_featured` (`is_featured`),
   CONSTRAINT `rms_blog_post_author_fk` FOREIGN KEY (`author_id`) REFERENCES `rms_user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -128,6 +143,18 @@ CREATE TABLE `rms_blog_analytics` (
   PRIMARY KEY (`analytics_id`),
   UNIQUE KEY `blog_post_id` (`blog_post_id`),
   CONSTRAINT `rms_blog_analytics_post_fk` FOREIGN KEY (`blog_post_id`) REFERENCES `rms_blog_post` (`post_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE `rms_blog_tag` (
+  `tag_id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(128) NOT NULL,
+  `slug` varchar(160) NOT NULL,
+  `status` tinyint(1) NOT NULL DEFAULT 1,
+  `sort_order` int(3) NOT NULL DEFAULT 0,
+  `date_added` datetime NOT NULL,
+  `date_modified` datetime NOT NULL,
+  PRIMARY KEY (`tag_id`),
+  UNIQUE KEY `slug` (`slug`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 SET FOREIGN_KEY_CHECKS = 1;

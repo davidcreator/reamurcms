@@ -1,0 +1,123 @@
+{{ header }}
+<div id="content" class="container blog-home">
+  <div class="row">
+    {{ column_left }}
+    {% set class = (column_left and column_right) ? 'col-sm-6' : ((column_left or column_right) ? 'col-sm-9' : 'col-sm-9') %}
+    <div class="{{ class }}">
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+          <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+      </ul>
+
+      <section class="hero mb-4 p-4 rounded text-white" style="background: linear-gradient(135deg,#0d6efd,#6610f2);">
+        <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between">
+          <div>
+            <p class="text-uppercase small mb-1">{{ heading_title }}</p>
+            <h1 class="h3 mb-2">{{ text_featured_posts }}</h1>
+            <p class="mb-3">{{ entry_search }}</p>
+            <form class="d-flex gap-2" action="{{ link_blog }}" method="get">
+              <input type="text" name="q" class="form-control form-control-sm" placeholder="{{ entry_search }}">
+              <button class="btn btn-light btn-sm" type="submit">{{ button_filter }}</button>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <section class="mb-4">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <h2 class="h5 mb-0">{{ text_featured_posts }}</h2>
+          <a class="text-decoration-none" href="{{ link_blog }}">{{ text_read_more }}</a>
+        </div>
+        <div class="row g-3">
+          {% for post in featured_posts %}
+            <div class="col-12 col-md-6">
+              <article class="card h-100 shadow-sm">
+                {% if post.featured_image %}
+                  <img src="{{ post.featured_image }}" class="card-img-top" alt="{{ post.title }}" loading="lazy">
+                {% endif %}
+                <div class="card-body d-flex flex-column">
+                  <div class="d-flex justify-content-between align-items-start">
+                    <h3 class="h6 card-title mb-1"><a class="text-decoration-none" href="{{ post.href }}">{{ post.title }}</a></h3>
+                    <span class="badge bg-primary">{{ text_featured }}</span>
+                  </div>
+                  {% if post.published_at %}
+                    <div class="text-muted small mb-1">{{ text_published_on }} {{ post.published_at }}</div>
+                  {% endif %}
+                  {% if post.excerpt %}<p class="card-text">{{ post.excerpt }}</p>{% endif %}
+                  <div class="mt-auto">
+                    <a class="btn btn-outline-primary btn-sm" href="{{ post.href }}">{{ text_read_more }}</a>
+                  </div>
+                </div>
+              </article>
+            </div>
+          {% else %}
+            <p class="text-muted">{{ text_no_results }}</p>
+          {% endfor %}
+        </div>
+      </section>
+
+      <section class="mb-4">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <h2 class="h5 mb-0">{{ text_latest_posts }}</h2>
+          <a class="text-decoration-none" href="{{ link_blog }}">{{ text_read_more }}</a>
+        </div>
+        <div class="row g-3">
+          {% for post in latest_posts %}
+            <div class="col-12 col-md-6">
+              <article class="border rounded p-3 h-100 shadow-sm">
+                <h3 class="h6 mb-1"><a class="text-decoration-none" href="{{ post.href }}">{{ post.title }}</a></h3>
+                {% if post.published_at %}
+                  <div class="text-muted small mb-1">{{ text_published_on }} {{ post.published_at }}</div>
+                {% endif %}
+                {% if post.excerpt %}<p class="mb-2">{{ post.excerpt }}</p>{% endif %}
+                <a class="btn btn-link p-0" href="{{ post.href }}">{{ text_read_more }}</a>
+              </article>
+            </div>
+          {% else %}
+            <p class="text-muted">{{ text_no_results }}</p>
+          {% endfor %}
+        </div>
+      </section>
+    </div>
+
+    <div class="col-sm-3 col-md-3">
+      <div class="card mb-3 shadow-sm">
+        <div class="card-header fw-semibold">{{ text_categories }}</div>
+        <div class="list-group list-group-flush">
+          {% for cat in categories %}
+            <a class="list-group-item list-group-item-action" href="{{ cat.href }}">{{ cat.name }}</a>
+          {% else %}
+            <div class="list-group-item text-muted small">{{ text_no_results }}</div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="card mb-3 shadow-sm">
+        <div class="card-header fw-semibold">{{ text_tags }}</div>
+        <div class="card-body">
+          {% for tag in tags %}
+            <a class="badge bg-light text-dark border me-1 mb-1 text-decoration-none" href="{{ tag.href }}">#{{ tag.name }}</a>
+          {% else %}
+            <div class="text-muted small">{{ text_no_results }}</div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="card mb-3 shadow-sm">
+        <div class="card-header fw-semibold">{{ text_top_posts }}</div>
+        <ul class="list-group list-group-flush">
+          {% for item in top_posts %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <a class="text-decoration-none" href="{{ item.href }}">{{ item.title }}</a>
+              {% if item.views %}<span class="badge bg-primary">{{ item.views }}</span>{% endif %}
+            </li>
+          {% else %}
+            <li class="list-group-item text-muted small">{{ text_no_results }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+{{ footer }}

@@ -1,7 +1,148 @@
-<article class="blog-post">
-  <h1>{{ post.title }}</h1>
-  {% if post.published_at %}<p class="meta">{{ post.published_at }}</p>{% endif %}
-  <div class="content">
-    {{ post.content|raw }}
+{{ header }}
+<div id="content" class="container">
+  <div class="row">
+    {{ column_left }}
+    {% if column_left and column_right %}
+      {% set class = 'col-sm-6' %}
+    {% elseif column_left or column_right %}
+      {% set class = 'col-sm-9' %}
+    {% else %}
+      {% set class = 'col-sm-12' %}
+    {% endif %}
+    <div id="blog-post" class="{{ class }}">
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+          <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+      </ul>
+
+      <div class="row">
+        {% if post.featured_image %}
+          <div class="col-sm-6">
+            <div class="thumbnail">
+              <img src="{{ post.featured_image }}" alt="{{ post.title }}" title="{{ post.title }}" class="img-responsive" loading="lazy" />
+            </div>
+          </div>
+          <div class="col-sm-6">
+        {% else %}
+          <div class="col-sm-12">
+        {% endif %}
+            <h1>{{ post.title }}</h1>
+            <ul class="list-unstyled">
+              {% if post.published_human %}<li><b>{{ text_published_on }}</b> {{ post.published_human }}</li>{% endif %}
+              {% if post.reading_time %}<li><b>{{ text_read_time }}</b> {{ post.reading_time }} {{ text_minutes }}</li>{% endif %}
+            </ul>
+            {% if post.categories %}
+              <p>
+                {% for cat in post.categories %}
+                  <a class="label label-default" href="{{ cat.href }}">{{ cat.name }}</a>
+                {% endfor %}
+              </p>
+            {% endif %}
+            <div class="btn-group">
+              <button class="btn btn-default btn-sm" type="button" data-blog-like>
+                👍 <span data-like-count>{{ analytics.likes ?? 0 }}</span>
+              </button>
+              <button class="btn btn-default btn-sm" type="button" data-blog-share data-share-url="{{ share_url }}" data-copied-label="{{ text_copied }}">
+                {{ text_share }}
+              </button>
+            </div>
+            <p class="small text-muted" style="margin-top:8px;">
+              👀 {{ analytics.views ?? 0 }} &nbsp; ↗ {{ analytics.shares ?? 0 }}
+            </p>
+          </div>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <div class="content">{{ post.content|raw }}</div>
+        </div>
+      </div>
+
+      {% if post.tags_list %}
+        <p><strong>{{ text_tags }}:</strong>
+          {% for tag in post.tags_list %}
+            <a class="label label-info" href="{{ link_tag_base ~ '&tag=' ~ tag|url_encode }}">#{{ tag }}</a>
+          {% endfor %}
+        </p>
+      {% endif %}
+
+      <div data-blog-interact data-endpoint="{{ interact_endpoint }}" data-payload="{{ interact_payload }}"></div>
+      <script type="application/ld+json">{{ schema_json|raw }}</script>
+
+      {% if related_posts %}
+        <div class="panel panel-default">
+          <div class="panel-heading">{{ text_related_posts }}</div>
+          <div class="panel-body">
+            <div class="row">
+              {% for item in related_posts %}
+                <div class="col-sm-6">
+                  <a href="{{ item.href }}"><strong>{{ item.title }}</strong></a>
+                  {% if item.published_at %}<div class="small text-muted">{{ item.published_at }}</div>{% endif %}
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      {% endif %}
+
+      <div class="panel panel-default" id="comments">
+        <div class="panel-heading">{{ text_comments }} ({{ comment_count }})</div>
+        <div class="panel-body">
+          {% if comments %}
+            <div class="list-group">
+              {% for c in comments %}
+                <div class="list-group-item">
+                  <div class="row">
+                    <div class="col-sm-6"><strong>{{ c.author }}</strong></div>
+                    <div class="col-sm-6 text-right text-muted small">{{ c.date_added }}</div>
+                  </div>
+                  <p class="mb-0">{{ c.content }}</p>
+                </div>
+              {% endfor %}
+            </div>
+          {% else %}
+            <p class="text-muted">{{ text_no_comments }}</p>
+          {% endif %}
+        </div>
+        <div class="panel-body">
+          <h3 class="h4">{{ text_leave_comment }}</h3>
+          <form id="comment-form" class="form-horizontal" data-comment-endpoint="{{ comment_endpoint }}" data-comment-slug="{{ post.slug }}" data-comment-post="{{ post.post_id }}" data-label-sending="{{ text_sending }}" data-label-error="{{ text_error_generic }}" data-label-network="{{ text_error_network }}" data-label-success="{{ text_comment_pending }}">
+            <div class="form-group">
+              <label class="col-sm-2 control-label" for="comment-name">{{ entry_name }}</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="comment-name" name="author" required minlength="2">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label" for="comment-email">{{ entry_email }}</label>
+              <div class="col-sm-10">
+                <input type="email" class="form-control" id="comment-email" name="email" required>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label" for="comment-text">{{ entry_comment }}</label>
+              <div class="col-sm-10">
+                <textarea class="form-control" id="comment-text" name="content" rows="4" required minlength="5" maxlength="2000"></textarea>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label" for="comment-website">Website</label>
+              <div class="col-sm-10">
+                <input type="url" class="form-control" id="comment-website" name="website" placeholder="https://">
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-primary">{{ button_submit }}</button>
+                <span class="text-muted small" id="comment-status" aria-live="polite" style="margin-left:8px;"></span>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    {{ column_right }}
   </div>
-</article>
+</div>
+{{ footer }}

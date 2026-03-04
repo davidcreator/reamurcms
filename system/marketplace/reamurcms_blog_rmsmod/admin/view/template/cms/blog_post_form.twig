@@ -42,6 +42,9 @@
               <select name="status" id="input-status" class="form-control">
                 <option value="draft" {{ post.status == 'draft' ? 'selected' : '' }}>{{ text_draft }}</option>
                 <option value="published" {{ post.status == 'published' ? 'selected' : '' }}>{{ text_published }}</option>
+                <option value="pending" {{ post.status == 'pending' ? 'selected' : '' }}>{{ text_pending }}</option>
+                <option value="private" {{ post.status == 'private' ? 'selected' : '' }}>{{ text_private }}</option>
+                <option value="archived" {{ post.status == 'archived' ? 'selected' : '' }}>{{ text_archived }}</option>
               </select>
             </div>
           </div>
@@ -52,9 +55,76 @@
             </div>
           </div>
           <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-featured-image">{{ entry_featured_image }}</label>
+            <div class="col-sm-10">
+              <input type="text" name="featured_image" value="{{ post.featured_image }}" id="input-featured-image" class="form-control" placeholder="https://...">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-og-image">{{ entry_og_image }}</label>
+            <div class="col-sm-10">
+              <input type="text" name="og_image" value="{{ post.og_image }}" id="input-og-image" class="form-control" placeholder="https://...">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-tags">{{ entry_tags }}</label>
+            <div class="col-sm-10">
+              <input type="text" name="tags" value="{{ post.tags }}" id="input-tags" class="form-control" placeholder="seo, performance, headless">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-published-at">{{ entry_published_at }}</label>
+            <div class="col-sm-4">
+              <input type="datetime-local" name="published_at" value="{{ post.published_at ? post.published_at|date('Y-m-d\\TH:i') : '' }}" id="input-published-at" class="form-control">
+            </div>
+            <label class="col-sm-2 control-label" for="input-is-featured">{{ entry_is_featured }}</label>
+            <div class="col-sm-4">
+              <input type="checkbox" name="is_featured" id="input-is-featured" value="1" {{ post.is_featured ? 'checked' : '' }}>
+              <span class="help-block">{{ text_featured }}</span>
+            </div>
+          </div>
+          <div class="form-group">
             <label class="col-sm-2 control-label" for="input-content">{{ entry_content }}</label>
             <div class="col-sm-10">
               <textarea name="content" id="input-content" rows="12" class="form-control">{{ post.content }}</textarea>
+            </div>
+          </div>
+          <hr>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-meta-title">{{ entry_meta_title }}</label>
+            <div class="col-sm-10">
+              <input type="text" name="meta_title" value="{{ post.meta_title }}" id="input-meta-title" class="form-control" maxlength="255">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-meta-description">{{ entry_meta_description }}</label>
+            <div class="col-sm-10">
+              <textarea name="meta_description" id="input-meta-description" rows="2" class="form-control" maxlength="180">{{ post.meta_description }}</textarea>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-meta-keywords">{{ entry_meta_keywords }}</label>
+            <div class="col-sm-10">
+              <input type="text" name="meta_keywords" value="{{ post.meta_keywords }}" id="input-meta-keywords" class="form-control" placeholder="headless, blog, cms">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-canonical">{{ entry_canonical_url }}</label>
+            <div class="col-sm-10">
+              <input type="text" name="canonical_url" value="{{ post.canonical_url }}" id="input-canonical" class="form-control" placeholder="https://site.com/blog/slug">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-schema">{{ entry_schema_json }}</label>
+            <div class="col-sm-10">
+              <textarea name="schema_json" id="input-schema" rows="4" class="form-control" placeholder='{\"@context\":\"https://schema.org\",\"@type\":\"Article\"...}'>{{ post.schema_json }}</textarea>
+              <p class="help-block">Se vazio, o schema automÃ¡tico serÃ¡ usado.</p>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">Tempo de leitura</label>
+            <div class="col-sm-10">
+              <input type="text" readonly class="form-control-plaintext" value="{{ post.reading_time ? post.reading_time ~ ' min' : 'Calculado automaticamente' }}">
             </div>
           </div>
         </form>

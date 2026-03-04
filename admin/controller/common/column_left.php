@@ -137,33 +137,40 @@ class ColumnLeft extends \Reamur\System\Engine\Controller {
 				];
 			}
 
-			// CMS (Blog, Landing Pages, MOOC)
+			// CMS (Blog)
 			$cms = [];
-
 			if ($this->user->hasPermission('access', 'cms/blog_post')) {
 				$cms[] = [
-					'name'	   => $this->language->get('text_blog'),
+					'name'	   => $this->language->get('text_blog_posts'),
 					'href'     => $this->url->link('cms/blog_post', 'user_token=' . $this->session->data['user_token']),
 					'children' => []
 				];
-			}
-
-			if ($this->user->hasPermission('access', 'cms/landpage')) {
 				$cms[] = [
-					'name'	   => $this->language->get('text_landpage'),
-					'href'     => $this->url->link('cms/landpage', 'user_token=' . $this->session->data['user_token']),
+					'name'	   => $this->language->get('text_blog_stats'),
+					'href'     => $this->url->link('cms/blog_stats', 'user_token=' . $this->session->data['user_token']),
+					'children' => []
+				];
+				$cms[] = [
+					'name'	   => $this->language->get('text_blog_categories'),
+					'href'     => $this->url->link('cms/blog_category', 'user_token=' . $this->session->data['user_token']),
+					'children' => []
+				];
+				$cms[] = [
+					'name'	   => $this->language->get('text_blog_comments'),
+					'href'     => $this->url->link('cms/blog_comment', 'user_token=' . $this->session->data['user_token']),
+					'children' => []
+				];
+				$cms[] = [
+					'name'	   => $this->language->get('text_blog_tags'),
+					'href'     => $this->url->link('cms/blog_tag', 'user_token=' . $this->session->data['user_token']),
+					'children' => []
+				];
+				$cms[] = [
+					'name'	   => $this->language->get('text_blog_settings'),
+					'href'     => $this->url->link('cms/blog_settings', 'user_token=' . $this->session->data['user_token']),
 					'children' => []
 				];
 			}
-
-			if ($this->user->hasPermission('access', 'cms/mooc_course')) {
-				$cms[] = [
-					'name'	   => $this->language->get('text_mooc_course'),
-					'href'     => $this->url->link('cms/mooc_course', 'user_token=' . $this->session->data['user_token']),
-					'children' => []
-				];
-			}
-
 			if ($cms) {
 				$data['menus'][] = [
 					'id'       => 'menu-cms',
@@ -171,6 +178,46 @@ class ColumnLeft extends \Reamur\System\Engine\Controller {
 					'name'	   => $this->language->get('text_cms'),
 					'href'     => '',
 					'children' => $cms
+				];
+			}
+
+			// Landpage Creator
+			$landpage = [];
+			if ($this->user->hasPermission('access', 'cms/landpage') || $this->user->hasPermission('access', 'cms/blog_post')) {
+				$landpage[] = [
+					'name' => $this->language->get('text_landpage'),
+					'href' => $this->url->link('cms/landpage', 'user_token=' . $this->session->data['user_token']),
+					'children' => []
+				];
+			}
+			if ($this->user->hasPermission('access', 'cms/landpage_template') || $this->user->hasPermission('access', 'cms/blog_post')) {
+				$landpage[] = [
+					'name' => $this->language->get('text_landpage_templates'),
+					'href' => $this->url->link('cms/landpage_template', 'user_token=' . $this->session->data['user_token']),
+					'children' => []
+				];
+			}
+			if ($this->user->hasPermission('access', 'cms/landpage_block') || $this->user->hasPermission('access', 'cms/blog_post')) {
+				$landpage[] = [
+					'name' => $this->language->get('text_landpage_blocks'),
+					'href' => $this->url->link('cms/landpage_block', 'user_token=' . $this->session->data['user_token']),
+					'children' => []
+				];
+			}
+			if ($this->user->hasPermission('access', 'cms/landpage_a_b_test') || $this->user->hasPermission('access', 'cms/blog_post')) {
+				$landpage[] = [
+					'name' => $this->language->get('text_landpage_abtest'),
+					'href' => $this->url->link('cms/landpage_a_b_test', 'user_token=' . $this->session->data['user_token']),
+					'children' => []
+				];
+			}
+			if ($landpage) {
+				$data['menus'][] = [
+					'id' => 'menu-landpage',
+					'icon' => 'fas fa-layer-group',
+					'name' => $this->language->get('text_landpage_creator'),
+					'href' => '',
+					'children' => $landpage
 				];
 			}
 			

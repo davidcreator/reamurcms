@@ -70,15 +70,30 @@ class BlogPost extends \Reamur\System\Engine\Controller {
         $data['button_cancel'] = $this->language->get('button_cancel');
         $data['text_draft'] = $this->language->get('text_draft');
         $data['text_published'] = $this->language->get('text_published');
+        $data['text_pending'] = $this->language->get('text_pending');
+        $data['text_private'] = $this->language->get('text_private');
+        $data['text_archived'] = $this->language->get('text_archived');
+        $data['text_featured'] = $this->language->get('text_featured');
         $data['entry_title'] = $this->language->get('entry_title');
         $data['entry_slug'] = $this->language->get('entry_slug');
         $data['entry_status'] = $this->language->get('entry_status');
         $data['entry_excerpt'] = $this->language->get('entry_excerpt');
         $data['entry_content'] = $this->language->get('entry_content');
+        $data['entry_featured_image'] = $this->language->get('entry_featured_image');
+        $data['entry_og_image'] = $this->language->get('entry_og_image');
+        $data['entry_meta_title'] = $this->language->get('entry_meta_title');
+        $data['entry_meta_description'] = $this->language->get('entry_meta_description');
+        $data['entry_meta_keywords'] = $this->language->get('entry_meta_keywords');
+        $data['entry_canonical_url'] = $this->language->get('entry_canonical_url');
+        $data['entry_tags'] = $this->language->get('entry_tags');
+        $data['entry_published_at'] = $this->language->get('entry_published_at');
+        $data['entry_schema_json'] = $this->language->get('entry_schema_json');
+        $data['entry_is_featured'] = $this->language->get('entry_is_featured');
 
         $post_id = (int)($this->request->get['post_id'] ?? 0);
         if ($this->request->server['REQUEST_METHOD'] === 'POST' && $this->validateForm()) {
             $payload = $this->request->post;
+            $payload['published_at'] = $this->normalizeDateTime($payload['published_at'] ?? '');
             $payload['author_id'] = $this->user->getId() ?? 0;
 
             if ($post_id) {
@@ -107,6 +122,15 @@ class BlogPost extends \Reamur\System\Engine\Controller {
                 'excerpt' => '',
                 'content' => '',
                 'featured_image' => '',
+                'og_image' => '',
+                'meta_title' => '',
+                'meta_description' => '',
+                'meta_keywords' => '',
+                'canonical_url' => '',
+                'tags' => '',
+                'schema_json' => '',
+                'reading_time' => 0,
+                'is_featured' => 0,
                 'published_at' => ''
             ];
         }
@@ -158,5 +182,17 @@ class BlogPost extends \Reamur\System\Engine\Controller {
         $text = strtolower(trim($text));
         $text = preg_replace('/[^a-z0-9]+/i', '-', $text);
         return trim($text, '-');
+    }
+
+    private function normalizeDateTime(string $value): string {
+        $value = trim($value);
+        if ($value === '') {
+            return '';
+        }
+        $value = str_replace('T', ' ', $value);
+        if (preg_match('/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}$/', $value)) {
+            $value .= ':00';
+        }
+        return $value;
     }
 }

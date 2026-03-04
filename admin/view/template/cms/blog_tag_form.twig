@@ -1,0 +1,59 @@
+{{ header }}
+{{ column_left }}
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right">
+        <button type="submit" form="form-tag" class="btn btn-primary"><i class="fa fa-save"></i> {{ button_save }}</button>
+        <a href="{{ cancel }}" class="btn btn-default"><i class="fa fa-reply"></i> {{ button_cancel }}</a>
+      </div>
+      <h1>{{ heading_title }}</h1>
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+          <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="container-fluid">
+    {% if errors.warning %}
+      <div class="alert alert-danger">{{ errors.warning }}</div>
+    {% endif %}
+    <div class="panel panel-default">
+      <div class="panel-heading"><h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_form }}</h3></div>
+      <div class="panel-body">
+        <form action="{{ action }}" method="post" id="form-tag" class="form-horizontal">
+          <div class="form-group required">
+            <label class="col-sm-2 control-label" for="input-name">{{ entry_title }}</label>
+            <div class="col-sm-10">
+              <input type="text" name="name" value="{{ tag.name }}" id="input-name" class="form-control"/>
+              {% if errors.name %}<div class="text-danger">{{ errors.name }}</div>{% endif %}
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-slug">{{ entry_slug }}</label>
+            <div class="col-sm-10">
+              <input type="text" name="slug" value="{{ tag.slug }}" id="input-slug" class="form-control"/>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-status">{{ entry_status }}</label>
+            <div class="col-sm-10">
+              <select name="status" id="input-status" class="form-control">
+                <option value="1" {{ tag.status ? 'selected' : '' }}>{{ text_enabled }}</option>
+                <option value="0" {{ not tag.status ? 'selected' : '' }}>{{ text_disabled }}</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-sort">{{ entry_sort_order }}</label>
+            <div class="col-sm-10">
+              <input type="number" name="sort_order" value="{{ tag.sort_order }}" id="input-sort" class="form-control"/>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{{ footer }}

@@ -31,8 +31,18 @@ class Permission extends \Reamur\System\Engine\Controller {
 				'error/permission'
 			];
 
-			if (!in_array($route, $ignore) && !$this->user->hasPermission('access', $route)) {
-				return new \Reamur\System\Engine\Action('error/permission');
+			if (!in_array($route, $ignore)) {
+				// allow any blog sub-route if user can access blog_post
+				if (strpos($route, 'cms/blog_') === 0 && $this->user->hasPermission('access', 'cms/blog_post')) {
+					return null;
+				}
+				if (strpos($route, 'cms/landpage') === 0 && ($this->user->hasPermission('access', 'cms/landpage') || $this->user->hasPermission('access', 'cms/blog_post'))) {
+					return null;
+				}
+
+				if (!$this->user->hasPermission('access', $route)) {
+					return new \Reamur\System\Engine\Action('error/permission');
+				}
 			}
 		}
 

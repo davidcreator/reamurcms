@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 // Text
 $_['text_address_format']      = 'Formato de Endereço';
 $_['text_affiliate']           = 'Afiliado';
@@ -15,7 +15,17 @@ $_['text_catalog']             = 'Catálogo';
 $_['text_category']            = 'Categorias';
 $_['text_cms']                 = 'CMS';
 $_['text_blog']                = 'Blog';
+$_['text_blog_posts']          = 'Posts do Blog';
+$_['text_blog_stats']          = 'Estatísticas do Blog';
+$_['text_blog_categories']     = 'Categorias do Blog';
+$_['text_blog_comments']       = 'Comentários do Blog';
+$_['text_blog_tags']           = 'Tags do Blog';
+$_['text_blog_settings']       = 'Configurações do Blog';
+$_['text_landpage_creator']    = 'Landpage Creator';
 $_['text_landpage']            = 'Landing Pages';
+$_['text_landpage_templates']  = 'Modelos';
+$_['text_landpage_blocks']     = 'Blocos';
+$_['text_landpage_abtest']     = 'Testes A/B';
 $_['text_mooc_course']         = 'Cursos MOOC';
 $_['text_contact']             = 'E-Mail';
 $_['text_country']             = 'Países';
