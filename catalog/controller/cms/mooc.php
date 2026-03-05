@@ -35,6 +35,9 @@ class Mooc extends \Reamur\System\Engine\Controller {
         $this->load->model('cms/mooc');
         $this->load->model('cms/mooc_enrollment');
         $this->load->model('cms/mooc_lesson');
+        $this->load->model('cms/mooc_forum');
+        $this->load->model('cms/mooc_rating');
+        $this->load->model('cms/mooc_payment');
 
         $course_id = (int)($this->request->get['course_id'] ?? 0);
         $slug = $this->request->get['slug'] ?? null;
@@ -64,6 +67,18 @@ class Mooc extends \Reamur\System\Engine\Controller {
         $data['text_start_course'] = $this->language->get('text_start_course');
         $data['text_continue_course'] = $this->language->get('text_continue_course');
         $data['text_no_lessons'] = $this->language->get('text_no_lessons');
+        $data['text_forum'] = $this->language->get('text_forum');
+        $data['text_view_forum'] = $this->language->get('text_view_forum');
+        $data['text_new_topic'] = $this->language->get('text_new_topic');
+        $data['text_rating'] = $this->language->get('text_rating');
+        $data['text_reviews'] = $this->language->get('text_reviews');
+        $data['text_no_reviews'] = $this->language->get('text_no_reviews');
+        $data['text_rate_course'] = $this->language->get('text_rate_course');
+        $data['text_your_review'] = $this->language->get('text_your_review');
+        $data['text_reply'] = $this->language->get('text_reply');
+        $data['text_no_results'] = $this->language->get('text_no_results');
+        $data['text_buy_course'] = $this->language->get('text_buy_course');
+        $data['text_payment_required'] = $this->language->get('text_payment_required');
 
         $customer_id = $this->customer->getId();
         $enrollment = $customer_id ? $this->model_cms_mooc_enrollment->getEnrollment($course['course_id'], $customer_id) : [];
@@ -73,6 +88,7 @@ class Mooc extends \Reamur\System\Engine\Controller {
         $data['final_score'] = $enrollment['final_score'] ?? null;
         $data['time_spent_seconds'] = $enrollment['time_spent_seconds'] ?? 0;
         $data['enroll_action'] = $this->url->link('cms/mooc.enroll', 'course_id=' . $course['course_id']);
+        $data['checkout_link'] = $this->url->link('cms/mooc_payment.checkout', 'course_id=' . $course['course_id']);
         $data['login_link'] = $this->url->link('account/login', 'language=' . $this->config->get('config_language') . '&redirect=' . urlencode($this->url->link('cms/mooc.info', 'course_id=' . $course['course_id'])));
         if ($data['is_enrolled']) {
             $lessons = $this->model_cms_mooc_lesson->getLessonsByCourse($course['course_id']);
@@ -89,6 +105,20 @@ class Mooc extends \Reamur\System\Engine\Controller {
         } else {
             $data['lessons'] = [];
         }
+
+        $topics = $this->model_cms_mooc_forum->getTopics($course['course_id'], 0, 5);
+        $data['forum_topics'] = array_map(function ($t) {
+            $t['href'] = $this->url->link('cms/mooc_forum.topic', 'topic_id=' . $t['topic_id']);
+            return $t;
+        }, $topics);
+        $data['forum_link'] = $this->url->link('cms/mooc_forum', 'course_id=' . $course['course_id']);
+
+        $rating_stats = $this->model_cms_mooc_rating->getStats($course['course_id']);
+        $data['rating_avg'] = $rating_stats['avg'];
+        $data['rating_total'] = $rating_stats['total'];
+        $data['recent_ratings'] = $this->model_cms_mooc_rating->getRecent($course['course_id'], 5);
+        $data['rate_action'] = $this->url->link('cms/mooc.rate');
+
         $data['success'] = $this->session->data['success'] ?? '';
         unset($this->session->data['success']);
 
@@ -113,6 +143,11 @@ class Mooc extends \Reamur\System\Engine\Controller {
             $this->response->redirect($this->url->link('cms/mooc'));
             return;
         }
+        if (!$course['is_free']) {
+            $this->session->data['success'] = $this->language->get('text_payment_required');
+            $this->response->redirect($this->url->link('cms/mooc_payment.checkout', 'course_id=' . $course_id));
+            return;
+        }
 
         $this->model_cms_mooc_enrollment->enroll($course_id, $this->customer->getId());
         $this->session->data['success'] = $this->language->get('text_enrolled_success');
@@ -125,6 +160,7 @@ class Mooc extends \Reamur\System\Engine\Controller {
         $this->load->model('cms/mooc');
         $this->load->model('cms/mooc_enrollment');
         $this->load->model('cms/mooc_lesson');
+        $this->load->model('cms/mooc_comment');
 
         $lesson_id = (int)($this->request->get['lesson_id'] ?? 0);
         $course_id = (int)($this->request->get['course_id'] ?? 0);
@@ -158,6 +194,14 @@ class Mooc extends \Reamur\System\Engine\Controller {
         $data['text_download'] = $this->language->get('text_download');
         $data['text_back_to_course'] = $this->language->get('text_back_to_course');
         $data['text_no_lessons'] = $this->language->get('text_no_lessons');
+        $data['text_no_results'] = $this->language->get('text_no_results');
+        $data['text_comments'] = $this->language->get('text_comments');
+        $data['text_add_comment'] = $this->language->get('text_add_comment');
+        $data['text_comment'] = $this->language->get('text_comment');
+        $data['text_requires_login'] = $this->language->get('text_requires_login');
+        $data['customer_logged'] = $this->customer->isLogged();
+        $data['comments'] = $this->model_cms_mooc_comment->getComments($lesson['lesson_id']);
+        $data['comment_action'] = $this->url->link('cms/mooc.comment', 'course_id=' . $lesson['course_id'] . '&lesson_id=' . $lesson['lesson_id']);
         $data['course_link'] = $this->url->link('cms/mooc.info', 'course_id=' . $lesson['course_id']);
 
         $this->response->setOutput($this->load->view('cms/mooc_lesson', $data));
@@ -245,6 +289,46 @@ class Mooc extends \Reamur\System\Engine\Controller {
         $data['qr_src'] = 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=' . urlencode($data['verify_link']);
 
         $this->response->setOutput($this->load->view('cms/mooc_certificate', $data));
+    }
+
+    public function rate(): void {
+        $this->load->language('cms/mooc');
+        if (!$this->customer->isLogged()) {
+            $this->session->data['redirect'] = $this->url->link('cms/mooc.rate');
+            $this->response->redirect($this->url->link('account/login'));
+            return;
+        }
+        $course_id = (int)($this->request->post['course_id'] ?? 0);
+        $rating = (int)($this->request->post['rating'] ?? 0);
+        $review = trim($this->request->post['review'] ?? '');
+        if ($course_id && $rating) {
+            $this->load->model('cms/mooc_rating');
+            $this->model_cms_mooc_rating->addOrUpdate($course_id, $this->customer->getId(), $rating, $review);
+            $this->session->data['success'] = $this->language->get('text_rating_saved');
+        }
+        $this->response->redirect($this->url->link('cms/mooc.info', 'course_id=' . $course_id));
+    }
+
+    public function comment(): void {
+        $this->load->language('cms/mooc');
+        if (!$this->customer->isLogged()) {
+            $this->session->data['redirect'] = $this->url->link('cms/mooc.comment');
+            $this->response->redirect($this->url->link('account/login'));
+            return;
+        }
+        $lesson_id = (int)($this->request->post['lesson_id'] ?? 0);
+        $course_id = (int)($this->request->post['course_id'] ?? 0);
+        $body = trim($this->request->post['body'] ?? '');
+        if ($lesson_id && $body) {
+            $this->load->model('cms/mooc_comment');
+            $this->model_cms_mooc_comment->addComment($lesson_id, $this->customer->getId(), $body);
+            $this->session->data['success'] = $this->language->get('text_comment_saved');
+        }
+        if ($course_id) {
+            $this->response->redirect($this->url->link('cms/mooc.lesson', 'course_id=' . $course_id . '&lesson_id=' . $lesson_id));
+        } else {
+            $this->response->redirect($this->url->link('cms/mooc'));
+        }
     }
 
     public function verify(): void {

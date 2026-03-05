@@ -17,6 +17,9 @@ class Landpage extends \Reamur\System\Engine\Controller {
         $data['text_no_results'] = $this->language->get('text_no_results');
         $data['column_title'] = $this->language->get('column_title');
         $data['column_status'] = $this->language->get('column_status');
+        $data['column_premium'] = $this->language->get('column_premium');
+        $data['column_price'] = $this->language->get('column_price');
+        $data['column_owner'] = $this->language->get('column_owner');
         $data['column_date'] = $this->language->get('column_date');
         $data['column_action'] = $this->language->get('column_action');
 
@@ -24,9 +27,17 @@ class Landpage extends \Reamur\System\Engine\Controller {
         $limit = 20;
         $start = ($page - 1) * $limit;
 
+        $data['user_token'] = $this->session->data['user_token'];
+        $this->load->model('cms/mooc_instructor');
+        $owner_map = [];
+        foreach ($this->model_cms_mooc_instructor->getApprovedInstructors(['start' => 0, 'limit' => 1000]) as $instr) {
+            $owner_map[$instr['instructor_id']] = $instr['name'];
+        }
+
         $raw_pages = $this->model_cms_landpage->getPages(['start' => $start, 'limit' => $limit]);
-        $data['pages'] = array_map(function ($page) use ($data) {
+        $data['pages'] = array_map(function ($page) use ($data, $owner_map) {
             $page['edit'] = $this->url->link('cms/landpage.form', 'user_token=' . $data['user_token'] . '&page_id=' . $page['page_id']);
+            $page['owner_name'] = $owner_map[$page['owner_id'] ?? 0] ?? $this->language->get('text_owner_platform');
             return $page;
         }, $raw_pages);
         $data['total'] = $this->model_cms_landpage->getTotalPages();
@@ -34,7 +45,6 @@ class Landpage extends \Reamur\System\Engine\Controller {
         $data['success'] = $this->session->data['success'] ?? '';
         unset($this->session->data['success']);
 
-        $data['user_token'] = $this->session->data['user_token'];
         $data['add'] = $this->url->link('cms/landpage.form', 'user_token=' . $data['user_token']);
         $data['delete'] = $this->url->link('cms/landpage.delete', 'user_token=' . $data['user_token']);
 
@@ -48,6 +58,9 @@ class Landpage extends \Reamur\System\Engine\Controller {
                 'href' => $this->url->link('cms/landpage', 'user_token=' . $data['user_token'])
             ]
         ];
+
+        $this->load->model('cms/mooc_instructor');
+        $data['instructors'] = $this->model_cms_mooc_instructor->getApprovedInstructors(['start' => 0, 'limit' => 1000]);
 
         $data['header'] = $this->load->controller('common/header');
         $data['column_left'] = $this->load->controller('common/column_left');
@@ -76,9 +89,14 @@ class Landpage extends \Reamur\System\Engine\Controller {
         $data['button_insert_snippet'] = $this->language->get('button_insert_snippet');
         $data['text_draft'] = $this->language->get('text_draft');
         $data['text_published'] = $this->language->get('text_published');
+        $data['text_owner_platform'] = $this->language->get('text_owner_platform');
         $data['entry_title'] = $this->language->get('entry_title');
         $data['entry_slug'] = $this->language->get('entry_slug');
         $data['entry_status'] = $this->language->get('entry_status');
+        $data['entry_is_premium'] = $this->language->get('entry_is_premium');
+        $data['entry_price'] = $this->language->get('entry_price');
+        $data['entry_owner'] = $this->language->get('entry_owner');
+        $data['entry_payout_share'] = $this->language->get('entry_payout_share');
         $data['entry_html'] = $this->language->get('entry_html');
         $data['entry_template'] = $this->language->get('entry_template');
         $data['entry_featured_image'] = $this->language->get('entry_featured_image');
@@ -134,6 +152,10 @@ class Landpage extends \Reamur\System\Engine\Controller {
                 'title' => '',
                 'slug' => '',
                 'status' => 'draft',
+                'is_premium' => 0,
+                'price' => 0,
+                'owner_id' => 0,
+                'payout_share' => 80,
                 'template' => 'default',
                 'html' => '',
                 'published_at' => '',

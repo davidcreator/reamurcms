@@ -1,0 +1,94 @@
+{{ header }}
+{{ column_left }}
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right">
+        <button type="submit" form="form-blog-settings" class="btn btn-primary"><i class="fa fa-save"></i> {{ button_save }}</button>
+        <a href="{{ cancel }}" class="btn btn-default"><i class="fa fa-reply"></i> {{ button_cancel }}</a>
+      </div>
+      <h1>{{ heading_title }}</h1>
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+          <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="container-fluid">
+    {% if error_warning %}
+      <div class="alert alert-danger">{{ error_warning }}</div>
+    {% endif %}
+    <div class="panel panel-default">
+      <div class="panel-heading"><h3 class="panel-title"><i class="fa fa-cog"></i> {{ heading_general }}</h3></div>
+      <div class="panel-body">
+        <form action="{{ action }}" method="post" id="form-blog-settings" class="form-horizontal">
+          <div class="form-group">
+            <label class="col-sm-3 control-label" for="input-auto-approve">{{ entry_comment_auto_approve }}</label>
+            <div class="col-sm-9">
+              <select name="blog_comment_auto_approve" id="input-auto-approve" class="form-control">
+                <option value="1" {{ blog_comment_auto_approve ? 'selected' : '' }}>{{ text_enabled }}</option>
+                <option value="0" {{ not blog_comment_auto_approve ? 'selected' : '' }}>{{ text_disabled }}</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-3 control-label" for="input-require-login">{{ entry_comment_require_login }}</label>
+            <div class="col-sm-9">
+              <select name="blog_comment_require_login" id="input-require-login" class="form-control">
+                <option value="1" {{ blog_comment_require_login ? 'selected' : '' }}>{{ text_enabled }}</option>
+                <option value="0" {{ not blog_comment_require_login ? 'selected' : '' }}>{{ text_disabled }}</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-3 control-label" for="input-spam-words">{{ entry_comment_spam_words }}</label>
+            <div class="col-sm-9">
+              <textarea name="blog_comment_spam_words" id="input-spam-words" rows="3" class="form-control">{{ blog_comment_spam_words }}</textarea>
+              <p class="help-block">{{ help_spam_words }}</p>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-3 control-label" for="input-rate-limit">{{ entry_comment_rate_limit }}</label>
+            <div class="col-sm-9">
+              <input type="number" name="blog_comment_rate_limit" value="{{ blog_comment_rate_limit }}" id="input-rate-limit" class="form-control" min="0"/>
+              <p class="help-block">{{ help_comment_rate_limit }}</p>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-3 control-label" for="input-share-img">{{ entry_share_default_image }}</label>
+            <div class="col-sm-9">
+              <input type="text" name="blog_share_default_image" value="{{ blog_share_default_image }}" id="input-share-img" class="form-control" placeholder="https://...">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-3 control-label" for="input-schema-auto">{{ entry_schema_auto }}</label>
+            <div class="col-sm-9">
+              <select name="blog_schema_auto" id="input-schema-auto" class="form-control">
+                <option value="1" {{ blog_schema_auto ? 'selected' : '' }}>{{ text_enabled }}</option>
+                <option value="0" {{ not blog_schema_auto ? 'selected' : '' }}>{{ text_disabled }}</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-3 control-label" for="input-rss">{{ entry_rss_enabled }}</label>
+            <div class="col-sm-9">
+              <select name="blog_rss_enabled" id="input-rss" class="form-control">
+                <option value="1" {{ blog_rss_enabled ? 'selected' : '' }}>{{ text_enabled }}</option>
+                <option value="0" {{ not blog_rss_enabled ? 'selected' : '' }}>{{ text_disabled }}</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-3 control-label" for="input-cache-ttl">{{ entry_cache_ttl }}</label>
+            <div class="col-sm-9">
+              <input type="number" name="blog_cache_ttl" value="{{ blog_cache_ttl }}" id="input-cache-ttl" class="form-control" min="60" step="60"/>
+              <p class="help-block">{{ help_cache_ttl }}</p>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{{ footer }}

@@ -109,6 +109,11 @@ class Product extends \Reamur\System\Engine\Controller {
 		$product_total = $this->model_catalog_product->getTotalProducts($filter_data);
 
 		$results = $this->model_catalog_product->getProducts($filter_data);
+		$this->load->model('cms/mooc_instructor');
+		$owner_map = [];
+		foreach ($this->model_cms_mooc_instructor->getApprovedInstructors(['start' => 0, 'limit' => 1000]) as $instr) {
+			$owner_map[$instr['instructor_id']] = $instr['name'];
+		}
 
 		foreach ($results as $result) {
 			if (is_file(DIR_IMAGE . html_entity_decode($result['image'], ENT_QUOTES, 'UTF-8'))) {
@@ -137,6 +142,9 @@ class Product extends \Reamur\System\Engine\Controller {
 				'price'      => $this->currency->format($result['price'], $this->config->get('config_currency')),
 				'special'    => $special,
 				'quantity'   => $result['quantity'],
+				'is_premium' => (int)$result['is_premium'],
+				'owner'      => $owner_map[$result['owner_id'] ?? 0] ?? $this->language->get('text_owner_platform'),
+				'payout_share' => $result['payout_share'],
 				'status'     => $result['status'],
 				'edit'       => $this->url->link('catalog/product.form', 'user_token=' . $this->session->data['user_token'] . '&product_id=' . $result['product_id'] . ($result['master_id'] ? '&master_id=' . $result['master_id'] : '') . $url),
 				'variant'    => (!$result['master_id'] ? $this->url->link('catalog/product.form', 'user_token=' . $this->session->data['user_token'] . '&master_id=' . $result['product_id'] . $url) : '')
@@ -428,6 +436,12 @@ class Product extends \Reamur\System\Engine\Controller {
 		} else {
 			$data['price'] = '';
 		}
+		$data['is_premium'] = $this->request->post['is_premium'] ?? (!empty($product_info) ? (int)$product_info['is_premium'] : 0);
+		$data['owner_id'] = $this->request->post['owner_id'] ?? (!empty($product_info) ? (int)$product_info['owner_id'] : 0);
+		$data['payout_share'] = $this->request->post['payout_share'] ?? (!empty($product_info) ? $product_info['payout_share'] : 80);
+		$this->load->model('cms/mooc_instructor');
+		$data['instructors'] = $this->model_cms_mooc_instructor->getApprovedInstructors(['start' => 0, 'limit' => 1000]);
+		$data['text_owner_platform'] = $this->language->get('text_owner_platform');
 
 		$this->load->model('localisation/tax_class');
 

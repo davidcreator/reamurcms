@@ -9,24 +9,36 @@ class MoocCourse extends \Reamur\System\Engine\Controller {
         $this->document->setTitle($this->language->get('heading_title'));
 
         $this->load->model('cms/mooc_course');
+        $this->load->model('cms/mooc_instructor');
         $this->model_cms_mooc_course->ensureTables();
 
         $data['heading_title'] = $this->language->get('heading_title');
         $data['text_add'] = $this->language->get('text_add');
         $data['text_list'] = $this->language->get('text_list');
         $data['text_no_results'] = $this->language->get('text_no_results');
+        $data['text_draft'] = $this->language->get('text_draft');
+        $data['text_published'] = $this->language->get('text_published');
+        $data['text_level_beginner'] = $this->language->get('text_level_beginner');
+        $data['text_level_intermediate'] = $this->language->get('text_level_intermediate');
+        $data['text_level_advanced'] = $this->language->get('text_level_advanced');
+        $data['text_level_all'] = $this->language->get('text_level_all');
         $data['column_title'] = $this->language->get('column_title');
         $data['column_status'] = $this->language->get('column_status');
+        $data['column_level'] = $this->language->get('column_level');
+        $data['column_category'] = $this->language->get('column_category');
+        $data['column_instructor'] = $this->language->get('column_instructor');
         $data['column_date'] = $this->language->get('column_date');
         $data['column_action'] = $this->language->get('column_action');
+        $data['button_approve'] = $this->language->get('button_approve');
 
         $page = (int)($this->request->get['page'] ?? 1);
         $limit = 20;
         $start = ($page - 1) * $limit;
 
         $raw_courses = $this->model_cms_mooc_course->getCourses(['start' => $start, 'limit' => $limit]);
-        $data['courses'] = array_map(function ($course) use ($data) {
-            $course['edit'] = $this->url->link('cms/mooc_course.form', 'user_token=' . $data['user_token'] . '&course_id=' . $course['course_id']);
+        $user_token = $this->session->data['user_token'];
+        $data['courses'] = array_map(function ($course) use ($user_token) {
+            $course['edit'] = $this->url->link('cms/mooc_course.form', 'user_token=' . $user_token . '&course_id=' . $course['course_id']);
             return $course;
         }, $raw_courses);
         $data['total'] = $this->model_cms_mooc_course->getTotalCourses();
@@ -34,9 +46,10 @@ class MoocCourse extends \Reamur\System\Engine\Controller {
         $data['success'] = $this->session->data['success'] ?? '';
         unset($this->session->data['success']);
 
-        $data['user_token'] = $this->session->data['user_token'];
-        $data['add'] = $this->url->link('cms/mooc_course.form', 'user_token=' . $data['user_token']);
-        $data['delete'] = $this->url->link('cms/mooc_course.delete', 'user_token=' . $data['user_token']);
+        $data['user_token'] = $user_token;
+        $data['add'] = $this->url->link('cms/mooc_course.form', 'user_token=' . $user_token);
+        $data['delete'] = $this->url->link('cms/mooc_course.delete', 'user_token=' . $user_token);
+        $data['approve'] = $this->url->link('cms/mooc_course.approve', 'user_token=' . $user_token);
 
         $data['breadcrumbs'] = [
             [
@@ -61,6 +74,7 @@ class MoocCourse extends \Reamur\System\Engine\Controller {
         $this->document->setTitle($this->language->get('heading_title'));
 
         $this->load->model('cms/mooc_course');
+        $this->load->model('cms/mooc_instructor');
         $this->model_cms_mooc_course->ensureTables();
 
         $data['heading_title'] = $this->language->get('heading_title');
@@ -76,8 +90,13 @@ class MoocCourse extends \Reamur\System\Engine\Controller {
         $data['entry_description'] = $this->language->get('entry_description');
         $data['entry_duration'] = $this->language->get('entry_duration');
         $data['entry_price'] = $this->language->get('entry_price');
+        $data['entry_level'] = $this->language->get('entry_level');
+        $data['entry_featured_image'] = $this->language->get('entry_featured_image');
+        $data['entry_category'] = $this->language->get('entry_category');
+        $data['entry_instructor'] = $this->language->get('entry_instructor');
 
         $course_id = (int)($this->request->get['course_id'] ?? 0);
+        $is_new = $course_id === 0;
 
         if ($this->request->server['REQUEST_METHOD'] === 'POST' && $this->validateForm()) {
             $payload = $this->request->post;
@@ -85,6 +104,15 @@ class MoocCourse extends \Reamur\System\Engine\Controller {
                 $this->model_cms_mooc_course->edit($course_id, $payload);
             } else {
                 $course_id = $this->model_cms_mooc_course->add($payload);
+                $is_new = true;
+            }
+
+            if ($is_new) {
+                $this->load->model('cms/mooc_notification');
+                $title = sprintf($this->language->get('text_new_course_notification') ?? 'Novo curso: %s', $payload['title'] ?? '');
+                $message = $payload['subtitle'] ?? ($payload['description'] ?? '');
+                $url = '/index.php?route=cms/mooc.info&course_id=' . $course_id;
+                $this->model_cms_mooc_notification->notifyAllCustomersForCourse($course_id, $title, $message, $url, 'system');
             }
             $this->session->data['success'] = $this->language->get('text_success');
             $this->response->redirect($this->url->link('cms/mooc_course', 'user_token=' . $this->session->data['user_token']));
@@ -112,9 +140,21 @@ class MoocCourse extends \Reamur\System\Engine\Controller {
                 'is_free' => 1,
                 'status' => 'draft',
                 'featured_image' => '',
-                'published_at' => ''
+                'published_at' => '',
+                'category_ids' => [],
+                'instructor_ids' => []
             ];
         }
+
+        if (empty($data['course']['category_ids'])) {
+            $data['course']['category_ids'] = $this->model_cms_mooc_course->getCourseCategoryIds($course_id);
+        }
+        if (empty($data['course']['instructor_ids'])) {
+            $data['course']['instructor_ids'] = $this->model_cms_mooc_course->getCourseInstructorIds($course_id);
+        }
+
+        $data['categories'] = $this->model_cms_mooc_course->getAllCategories();
+        $data['instructors'] = $this->model_cms_mooc_instructor->getApprovedInstructors();
 
         $data['breadcrumbs'] = [
             [
@@ -141,6 +181,17 @@ class MoocCourse extends \Reamur\System\Engine\Controller {
         foreach ($ids as $id) {
             $this->model_cms_mooc_course->delete((int)$id);
         }
+        $this->response->redirect($this->url->link('cms/mooc_course', 'user_token=' . $this->session->data['user_token']));
+    }
+
+    public function approve(): void {
+        $this->load->language('cms/mooc');
+        $this->load->model('cms/mooc_course');
+        $ids = $this->request->post['selected'] ?? [];
+        foreach ($ids as $id) {
+            $this->model_cms_mooc_course->approve((int)$id);
+        }
+        $this->session->data['success'] = $this->language->get('text_success_approved');
         $this->response->redirect($this->url->link('cms/mooc_course', 'user_token=' . $this->session->data['user_token']));
     }
 

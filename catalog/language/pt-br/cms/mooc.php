@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 $_['heading_title']         = 'Cursos';
 $_['text_duration']         = 'Duracao';
 $_['text_price']            = 'Preco';
@@ -28,3 +28,24 @@ $_['text_my_courses']       = 'Meus cursos';
 $_['text_no_enrollments']   = 'Voce ainda nao esta matriculado em cursos.';
 $_['text_progress']         = 'Progresso';
 $_['text_view_course']      = 'Ver curso';
+$_['text_forum']            = 'Forum do curso';
+$_['text_new_topic']        = 'Novo topico';
+$_['text_view_forum']       = 'Ver forum';
+$_['text_reply']            = 'Responder';
+$_['text_solution']         = 'Solucao';
+$_['text_rating']           = 'Avaliacoes';
+$_['text_reviews']          = 'avaliacoes';
+$_['text_no_reviews']       = 'Ainda sem avaliacoes.';
+$_['text_rate_course']      = 'Avaliar curso';
+$_['text_your_review']      = 'Escreva um comentario (opcional)';
+$_['text_comments']         = 'Comentarios';
+$_['text_add_comment']      = 'Escreva seu comentario';
+$_['text_comment']          = 'Comentar';
+$_['text_comment_saved']    = 'Comentario enviado.';
+$_['text_rating_saved']     = 'Avaliacao salva.';
+$_['text_buy_course']       = 'Comprar curso';
+$_['text_payment_required'] = 'Pagamento necessario para matricular-se.';
+$_['text_payment_methods']  = 'Metodos de pagamento';
+$_['text_pay_now']          = 'Pagar agora';
+$_['text_payment_success']  = 'Pagamento aprovado e matricula ativada.';
+$_['text_payment_required_blog'] = 'Conteúdo premium. Assine ou compre acesso.';

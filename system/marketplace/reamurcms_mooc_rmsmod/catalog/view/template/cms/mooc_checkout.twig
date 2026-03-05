@@ -1,0 +1,16 @@
+﻿<article class="checkout">
+  <h1>{{ text_buy_course }}</h1>
+  <h3>{{ course.title }}</h3>
+  <p>{{ text_price }}: {{ course.price }}</p>
+
+  <form method="post" action="{{ action }}" class="card p-3">
+    <h4>{{ text_payment_methods }}</h4>
+    {% for m in methods %}
+      <div class="form-check mb-2">
+        <input class="form-check-input" type="radio" name="method" id="m_{{ m.code }}" value="{{ m.code }}" {% if loop.first %}checked{% endif %}>
+        <label class="form-check-label" for="m_{{ m.code }}">{{ m.title }}</label>
+      </div>
+    {% endfor %}
+    <button type="submit" class="btn btn-primary mt-2">{{ text_pay_now }}</button>
+  </form>
+</article>

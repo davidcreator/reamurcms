@@ -28,7 +28,7 @@ class MoocInstaller {
         $sql = file_get_contents($sql_file);
         $sql = str_replace('rms_', DB_PREFIX, $sql);
         $statements = explode(';', $sql);
-        
+
         foreach ($statements as $statement) {
             $statement = trim($statement);
             if (!empty($statement)) {
@@ -45,9 +45,15 @@ class MoocInstaller {
      */
     public function uninstallMoocTables() {
         $tables = [
+            'mooc_badge_unlock',
+            'mooc_badge',
+            'mooc_goal',
+            'mooc_points',
+            'mooc_streak',
             'mooc_enrollment',
             'mooc_progress',
             'mooc_certificate',
+            'mooc_notification',
             'mooc_quiz_answer',
             'mooc_quiz_question',
             'mooc_quiz',
@@ -77,6 +83,7 @@ class MoocInstaller {
 
     private function resolveSqlPath(): string {
         $candidates = [];
+
         if (defined('DIR_SYSTEM')) {
             $candidates[] = rtrim(DIR_SYSTEM, '/\\') . '/marketplace/reamurcms_mooc_rmsmod/install/sql/mooc_tables.sql';
         }
@@ -86,11 +93,13 @@ class MoocInstaller {
         if (defined('DIR_INSTALL')) {
             $candidates[] = rtrim(DIR_INSTALL, '/\\') . '/sql/mooc_tables.sql';
         }
+
         foreach ($candidates as $path) {
             if (file_exists($path)) {
                 return $path;
             }
         }
+
         return '';
     }
 }

@@ -316,6 +316,10 @@ class Confirm extends \Reamur\System\Engine\Controller {
 					$this->model_checkout_order->editOrder($this->session->data['order_id'], $order_data);
 				}
 			}
+
+			// If PaySplit is chosen, redirect to gateway checkout
+			$this->response->redirect($this->url->link('checkout/pay_split.checkout', 'order_id=' . (int)$this->session->data['order_id'], true));
+			return '';
 		}
 
 		// Display prices

@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 $_['heading_title']   = 'Courses';
 $_['text_duration']   = 'Duration';
 $_['text_price']      = 'Price';
@@ -28,3 +28,24 @@ $_['text_my_courses'] = 'My courses';
 $_['text_no_enrollments'] = 'You are not enrolled in any courses yet.';
 $_['text_progress']   = 'Progress';
 $_['text_view_course'] = 'View course';
+$_['text_forum']      = 'Course forum';
+$_['text_new_topic']  = 'New topic';
+$_['text_view_forum'] = 'View forum';
+$_['text_reply']      = 'Reply';
+$_['text_solution']   = 'Solution';
+$_['text_rating']     = 'Ratings';
+$_['text_reviews']    = 'reviews';
+$_['text_no_reviews'] = 'No ratings yet.';
+$_['text_rate_course']= 'Rate course';
+$_['text_your_review']= 'Write a short review (optional)';
+$_['text_comments']   = 'Comments';
+$_['text_add_comment']= 'Write your comment';
+$_['text_comment']    = 'Comment';
+$_['text_comment_saved'] = 'Comment posted.';
+$_['text_rating_saved'] = 'Rating saved.';
+$_['text_buy_course'] = 'Buy course';
+$_['text_payment_required'] = 'Payment required to enroll.';
+$_['text_payment_methods'] = 'Payment methods';
+$_['text_pay_now'] = 'Pay now';
+$_['text_payment_success'] = 'Payment approved and enrollment activated.';
+$_['text_payment_required_blog'] = 'This content is premium. Please subscribe or purchase access.';

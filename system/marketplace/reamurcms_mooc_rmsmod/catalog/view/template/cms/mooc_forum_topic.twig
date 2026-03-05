@@ -1,0 +1,45 @@
+<section class="forum-topic">
+  <a href="{{ course_link }}">&larr; Voltar ao curso</a>
+  <h1>{{ topic.title }}</h1>
+  <p>{{ topic.body }}</p>
+  {% if topic.is_solved %}<p><span class="badge bg-success">{{ text_solution }}</span></p>{% endif %}
+
+  <h3>{{ text_reply }}</h3>
+  {% if customer_logged %}
+    <form method="post" action="{{ action_reply }}">
+      <textarea name="body" rows="3" class="form-control mb-2"></textarea>
+      <button class="btn btn-primary" type="submit">{{ text_reply }}</button>
+    </form>
+  {% else %}
+    <p><a href="{{ login_link }}">{{ text_requires_login }}</a></p>
+  {% endif %}
+
+  <hr>
+  {% if replies %}
+    {% for r in replies %}
+      <div class="mb-3">
+        <p><strong>{{ r.firstname }} {{ r.lastname }}</strong></p>
+        <p>{{ r.body }}</p>
+        <div class="small text-muted">
+          {{ r.likes_count }} likes
+          {% if r.is_solution %}<span class="badge bg-success">{{ text_solution }}</span>{% endif %}
+        </div>
+        {% if customer_logged %}
+          <form method="post" action="{{ action_like }}">
+            <input type="hidden" name="reply_id" value="{{ r.reply_id }}">
+            <button class="btn btn-sm btn-outline-primary" type="submit">Curtir</button>
+          </form>
+          {% if topic.customer_id == customer_id and not r.is_solution %}
+            <form method="post" action="{{ action_solution }}">
+              <input type="hidden" name="reply_id" value="{{ r.reply_id }}">
+              <button class="btn btn-sm btn-outline-success" type="submit">{{ text_solution }}</button>
+            </form>
+          {% endif %}
+        {% endif %}
+      </div>
+      <hr>
+    {% endfor %}
+  {% else %}
+    <p>{{ text_no_results }}</p>
+  {% endif %}
+</section>

@@ -12,12 +12,19 @@ $_['text_published']   = 'Published';
 
 $_['column_title']     = 'Title';
 $_['column_status']    = 'Status';
+$_['column_premium']   = 'Premium';
+$_['column_price']     = 'Price';
+$_['column_owner']     = 'Owner';
 $_['column_date']      = 'Date';
 $_['column_action']    = 'Action';
 
 $_['entry_title']      = 'Title';
 $_['entry_slug']       = 'Slug';
 $_['entry_status']     = 'Status';
+$_['entry_is_premium'] = 'Premium content';
+$_['entry_price']      = 'Price';
+$_['entry_owner']      = 'Owner (instructor)';
+$_['entry_payout_share'] = 'Payout share (%)';
 $_['entry_excerpt']    = 'Excerpt';
 $_['entry_content']    = 'Content';
 $_['entry_featured_image'] = 'Featured image';
@@ -25,6 +32,8 @@ $_['entry_meta_title']     = 'Meta title';
 $_['entry_meta_description'] = 'Meta description';
 $_['entry_meta_keyword']   = 'Meta keywords';
 $_['entry_published_at']   = 'Publish date';
+$_['text_owner_platform']  = 'Platform';
+$_['help_payout_share']    = 'Percentage that goes to the owner; the remainder stays on the platform.';
 
 $_['button_save']      = 'Save';
 $_['button_cancel']    = 'Cancel';

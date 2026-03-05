@@ -1,4 +1,4 @@
-<article class="course">
+﻿<article class="course">
   {% if success %}
     <div class="alert alert-success">{{ success }}</div>
   {% endif %}
@@ -20,15 +20,44 @@
     <p class="price">{{ text_free }}</p>
   {% endif %}
 
+  <section class="mt-4">
+    <h3>{{ text_rating }}</h3>
+    {% if rating_total %}
+      <p>{{ rating_avg|number_format(1) }} / 5 ({{ rating_total }} {{ text_reviews }})</p>
+      <ul class="list-unstyled">
+        {% for r in recent_ratings %}
+          <li class="mb-1"><strong>{{ r.rating }}★</strong> - {{ r.firstname }} {{ r.lastname }}{% if r.review %}: {{ r.review }}{% endif %}</li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>{{ text_no_reviews }}</p>
+    {% endif %}
+
+    {% if customer_logged %}
+      <form class="row g-2 align-items-center" method="post" action="{{ rate_action }}">
+        <input type="hidden" name="course_id" value="{{ course.course_id }}">
+        <div class="col-auto"><input type="number" name="rating" class="form-control" min="1" max="5" value="5" required></div>
+        <div class="col"><input type="text" name="review" class="form-control" placeholder="{{ text_your_review }}"></div>
+        <div class="col-auto"><button class="btn btn-outline-primary" type="submit">{{ text_rate_course }}</button></div>
+      </form>
+    {% else %}
+      <p><a href="{{ login_link }}">{{ text_requires_login }}</a></p>
+    {% endif %}
+  </section>
+
   <div class="course-actions">
     {% if customer_logged %}
       {% if is_enrolled %}
         <span class="badge bg-success">{{ text_enrolled }}</span>
       <a class="btn btn-primary" href="#lessons">{{ text_continue_course }}</a>
     {% else %}
-      <form action="{{ enroll_action }}" method="post">
-        <button type="submit" class="btn btn-primary">{{ text_enroll }}</button>
-      </form>
+      {% if course.is_free %}
+        <form action="{{ enroll_action }}" method="post">
+          <button type="submit" class="btn btn-primary">{{ text_enroll }}</button>
+        </form>
+      {% else %}
+        <a class="btn btn-success" href="{{ checkout_link }}">{{ text_buy_course }}</a>
+      {% endif %}
     {% endif %}
   {% else %}
     <a class="btn btn-primary" href="{{ login_link }}">{{ text_requires_login }}</a>
@@ -58,7 +87,7 @@
               {% set status = lesson.progress_status %}
               {% if status == 'completed' %}<span class="badge bg-success">✔</span>
               {% elseif status == 'in_progress' %}<span class="badge bg-warning text-dark">⏳</span>
-              {% else %}<span class="badge bg-secondary">○</span>{% endif %}
+              {% else %}<span class="badge bg-secondary">◌</span>{% endif %}
               <div class="small text-muted">
                 {% if lesson.duration_minutes %}{{ text_duration }}: {{ lesson.duration_minutes }} min{% endif %}
                 {% if lesson.time_spent_seconds %} · {{ text_time_spent }}: {{ (lesson.time_spent_seconds/60)|number_format(1) }} min{% endif %}
@@ -72,4 +101,24 @@
       {% endif %}
     </section>
   {% endif %}
+
+  <section class="mt-4">
+    <h3>{{ text_forum }}</h3>
+    {% if forum_topics %}
+      <ul class="list-group mb-2">
+        {% for t in forum_topics %}
+          <li class="list-group-item d-flex justify-content-between align-items-start">
+            <div>
+              <a href="{{ t.href }}">{{ t.title }}</a>
+              <div class="small text-muted">{{ t.firstname }} {{ t.lastname }}</div>
+            </div>
+            <span class="badge bg-secondary">{{ t.replies_count }} {{ text_reply|lower }}</span>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>{{ text_no_results }}</p>
+    {% endif %}
+    <a class="btn btn-outline-primary" href="{{ forum_link }}">{{ text_view_forum }}</a>
+  </section>
 </article>

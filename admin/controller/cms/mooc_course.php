@@ -96,6 +96,7 @@ class MoocCourse extends \Reamur\System\Engine\Controller {
         $data['entry_instructor'] = $this->language->get('entry_instructor');
 
         $course_id = (int)($this->request->get['course_id'] ?? 0);
+        $is_new = $course_id === 0;
 
         if ($this->request->server['REQUEST_METHOD'] === 'POST' && $this->validateForm()) {
             $payload = $this->request->post;
@@ -103,6 +104,15 @@ class MoocCourse extends \Reamur\System\Engine\Controller {
                 $this->model_cms_mooc_course->edit($course_id, $payload);
             } else {
                 $course_id = $this->model_cms_mooc_course->add($payload);
+                $is_new = true;
+            }
+
+            if ($is_new) {
+                $this->load->model('cms/mooc_notification');
+                $title = sprintf($this->language->get('text_new_course_notification') ?? 'Novo curso: %s', $payload['title'] ?? '');
+                $message = $payload['subtitle'] ?? ($payload['description'] ?? '');
+                $url = '/index.php?route=cms/mooc.info&course_id=' . $course_id;
+                $this->model_cms_mooc_notification->notifyAllCustomersForCourse($course_id, $title, $message, $url, 'system');
             }
             $this->session->data['success'] = $this->language->get('text_success');
             $this->response->redirect($this->url->link('cms/mooc_course', 'user_token=' . $this->session->data['user_token']));

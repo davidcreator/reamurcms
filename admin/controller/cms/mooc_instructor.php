@@ -102,7 +102,10 @@ class MoocInstructor extends \Reamur\System\Engine\Controller {
                 'linkedin' => '',
                 'twitter' => '',
                 'website' => '',
-                'user_id' => ''
+                'user_id' => '',
+                'stripe_account_id' => '',
+                'mp_user_id' => '',
+                'payout_share' => 80
             ];
         }
 

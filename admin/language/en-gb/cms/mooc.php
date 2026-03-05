@@ -10,6 +10,7 @@ $_['text_draft']       = 'Draft';
 $_['text_published']   = 'Published';
 $_['text_free']        = 'Free course';
 $_['text_success_approved'] = 'Selected items approved';
+$_['text_new_course_notification'] = 'New course: %s';
 $_['button_approve']   = 'Approve';
 
 $_['column_title']     = 'Title';

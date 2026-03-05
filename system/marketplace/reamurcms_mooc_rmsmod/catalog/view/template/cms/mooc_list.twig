@@ -3,9 +3,14 @@
   <div class="course-list">
     {% for course in courses %}
       <article class="course-card">
+        {% if course.featured_image %}
+          <img src="{{ course.featured_image }}" alt="{{ course.title }}" class="course-thumb">
+        {% endif %}
         <h2><a href="{{ course.href }}">{{ course.title }}</a></h2>
         {% if course.subtitle %}<p>{{ course.subtitle }}</p>{% endif %}
-        <p>{{ text_duration }}: {{ course.duration_minutes }} min{% if course.is_free %} · {{ text_free }}{% else %} · {{ text_price }} {{ course.price }}{% endif %}</p>
+        {% if course.instructors %}<p>{{ text_instructor }}: {{ course.instructors }}</p>{% endif %}
+        {% if course.categories %}<p>{{ text_categories }}: {{ course.categories }}</p>{% endif %}
+        <p>{{ text_level }}: {{ course.level }} · {{ text_duration }}: {{ course.duration_minutes }} min{% if course.is_free %} · {{ text_free }}{% else %} · {{ text_price }} {{ course.price }}{% endif %}</p>
       </article>
     {% endfor %}
   </div>

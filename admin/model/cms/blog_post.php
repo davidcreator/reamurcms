@@ -23,6 +23,10 @@ class BlogPost extends \Reamur\System\Engine\Model {
             excerpt = '" . $this->db->escape((string)($data['excerpt'] ?? '')) . "',
             slug = '" . $this->db->escape((string)$data['slug']) . "',
             status = '" . $this->db->escape((string)($data['status'] ?? 'draft')) . "',
+            is_premium = '" . (int)($data['is_premium'] ?? 0) . "',
+            price = '" . (float)($data['price'] ?? 0) . "',
+            owner_id = " . (!empty($data['owner_id']) ? "'" . (int)$data['owner_id'] . "'" : "NULL") . ",
+            payout_share = '" . (float)($data['payout_share'] ?? 80) . "',
             featured_image = '" . $this->db->escape((string)($data['featured_image'] ?? '')) . "',
             published_at = " . ($data['published_at'] ? "'" . $this->db->escape((string)$data['published_at']) . "'" : "NULL") . ",
             date_added = NOW(),
@@ -41,6 +45,10 @@ class BlogPost extends \Reamur\System\Engine\Model {
             excerpt = '" . $this->db->escape((string)($data['excerpt'] ?? '')) . "',
             slug = '" . $this->db->escape((string)$data['slug']) . "',
             status = '" . $this->db->escape((string)($data['status'] ?? 'draft')) . "',
+            is_premium = '" . (int)($data['is_premium'] ?? 0) . "',
+            price = '" . (float)($data['price'] ?? 0) . "',
+            owner_id = " . (!empty($data['owner_id']) ? "'" . (int)$data['owner_id'] . "'" : "NULL") . ",
+            payout_share = '" . (float)($data['payout_share'] ?? 80) . "',
             featured_image = '" . $this->db->escape((string)($data['featured_image'] ?? '')) . "',
             published_at = " . ($data['published_at'] ? "'" . $this->db->escape((string)$data['published_at']) . "'" : "NULL") . ",
             date_modified = NOW()
@@ -87,7 +95,11 @@ class BlogPost extends \Reamur\System\Engine\Model {
         $columns = [
             'meta_title' => "ALTER TABLE `" . $table . "` ADD COLUMN `meta_title` VARCHAR(255) NOT NULL DEFAULT '' AFTER `title`",
             'meta_description' => "ALTER TABLE `" . $table . "` ADD COLUMN `meta_description` TEXT NULL AFTER `meta_title`",
-            'meta_keyword' => "ALTER TABLE `" . $table . "` ADD COLUMN `meta_keyword` VARCHAR(255) NOT NULL DEFAULT '' AFTER `meta_description`"
+            'meta_keyword' => "ALTER TABLE `" . $table . "` ADD COLUMN `meta_keyword` VARCHAR(255) NOT NULL DEFAULT '' AFTER `meta_description`",
+            'is_premium' => "ALTER TABLE `" . $table . "` ADD COLUMN `is_premium` TINYINT(1) NOT NULL DEFAULT 0 AFTER `status`",
+            'owner_id' => "ALTER TABLE `" . $table . "` ADD COLUMN `owner_id` INT(11) DEFAULT NULL AFTER `is_premium`",
+            'payout_share' => "ALTER TABLE `" . $table . "` ADD COLUMN `payout_share` DECIMAL(5,2) NOT NULL DEFAULT 80.00 AFTER `owner_id`",
+            'price' => "ALTER TABLE `" . $table . "` ADD COLUMN `price` DECIMAL(10,2) NOT NULL DEFAULT 0.00 AFTER `payout_share`"
         ];
 
         foreach ($columns as $column => $sql) {

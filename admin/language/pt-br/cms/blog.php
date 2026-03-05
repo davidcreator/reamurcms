@@ -12,12 +12,19 @@ $_['text_published']   = 'Publicado';
 
 $_['column_title']     = 'Título';
 $_['column_status']    = 'Status';
+$_['column_premium']   = 'Premium';
+$_['column_price']     = 'Preço';
+$_['column_owner']     = 'Responsável';
 $_['column_date']      = 'Data';
 $_['column_action']    = 'Ação';
 
 $_['entry_title']      = 'Título';
 $_['entry_slug']       = 'Slug';
 $_['entry_status']     = 'Status';
+$_['entry_is_premium'] = 'Conteúdo premium';
+$_['entry_price']      = 'Preço';
+$_['entry_owner']      = 'Instrutor/Responsável';
+$_['entry_payout_share'] = 'Percentual de repasse (%)';
 $_['entry_excerpt']    = 'Resumo';
 $_['entry_content']    = 'Conteúdo';
 $_['entry_featured_image'] = 'Imagem destacada';
@@ -25,6 +32,8 @@ $_['entry_meta_title']     = 'Meta titulo';
 $_['entry_meta_description'] = 'Meta descricao';
 $_['entry_meta_keyword']   = 'Palavras-chave';
 $_['entry_published_at']   = 'Data de publicacao';
+$_['text_owner_platform']  = 'Plataforma';
+$_['help_payout_share']    = 'Percentual destinado ao dono; o restante fica na plataforma.';
 
 $_['button_save']      = 'Salvar';
 $_['button_cancel']    = 'Cancelar';

@@ -8,6 +8,9 @@
           <td class="text-start"><a href="{{ sort_name }}"{% if sort == 'pd.name' %} class="{{ order|lower }}"{% endif %}>{{ column_name }}</a></td>
           <td class="text-start d-none d-lg-table-cell"><a href="{{ sort_model }}"{% if sort == 'p.model' %} class="{{ order|lower }}"{% endif %}>{{ column_model }}</a></td>
           <td class="text-end"><a href="{{ sort_price }}"{% if sort == 'p.price' %} class="{{ order|lower }}"{% endif %}>{{ column_price }}</a></td>
+          <td class="text-center">{{ column_premium }}</td>
+          <td class="text-start">{{ column_owner }}</td>
+          <td class="text-end">{{ column_payout_share }}</td>
           <td class="text-end"><a href="{{ sort_quantity }}"{% if sort == 'p.quantity' %} class="{{ order|lower }}"{% endif %}>{{ column_quantity }}</a></td>
           <td class="text-end">{{ column_action }}</td>
         </tr>
@@ -33,6 +36,9 @@
                 {% else %}
                   {{ product.price }}
                 {% endif %}</td>
+              <td class="text-center">{% if product.is_premium %}<span class="badge bg-primary">Sim</span>{% else %}<span class="badge bg-secondary">Não</span>{% endif %}</td>
+              <td class="text-start">{{ product.owner }}</td>
+              <td class="text-end">{{ product.payout_share }}%</td>
               <td class="text-end">
                 {% if product.quantity <= 0 %}
                   <span class="badge bg-warning">{{ product.quantity }}</span>
@@ -56,7 +62,7 @@
           {% endfor %}
         {% else %}
           <tr>
-            <td class="text-center" colspan="7">{{ text_no_results }}</td>
+            <td class="text-center" colspan="10">{{ text_no_results }}</td>
           </tr>
         {% endif %}
       </tbody>

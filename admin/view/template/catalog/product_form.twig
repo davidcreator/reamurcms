@@ -298,6 +298,36 @@
                   </div>
                 </div>
                 <div class="row mb-3">
+                  <label for="input-is-premium" class="col-sm-2 col-form-label">{{ entry_is_premium }}</label>
+                  <div class="col-sm-10 d-flex align-items-center">
+                    <input type="hidden" name="is_premium" value="0"/>
+                    <div class="form-check form-switch">
+                      <input type="checkbox" name="is_premium" value="1" id="input-is-premium" class="form-check-input"{% if is_premium %} checked{% endif %}/>
+                      <label for="input-is-premium" class="form-check-label">{{ text_enabled }}</label>
+                    </div>
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <label for="input-owner" class="col-sm-2 col-form-label">{{ entry_owner }}</label>
+                  <div class="col-sm-10">
+                    <select name="owner_id" id="input-owner" class="form-select">
+                      <option value="0">{{ text_owner_platform }}</option>
+                      {% for instructor in instructors %}
+                        <option value="{{ instructor.instructor_id }}"{% if instructor.instructor_id == owner_id %} selected{% endif %}>{{ instructor.name }}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <label for="input-payout-share" class="col-sm-2 col-form-label">{{ entry_payout_share }}</label>
+                  <div class="col-sm-10">
+                    <div class="input-group">
+                      <input type="text" name="payout_share" value="{{ payout_share }}" id="input-payout-share" class="form-control"/>
+                      <span class="input-group-text">%</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="row mb-3">
                   <label for="input-tax-class" class="col-sm-2 col-form-label">{{ entry_tax_class }}</label>
                   <div class="col-sm-10">
                     <div class="input-group">

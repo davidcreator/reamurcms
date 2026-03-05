@@ -1,0 +1,11 @@
+<section class="certificate">
+  <h1>{{ text_certificate }}</h1>
+  <p><strong>{{ course_title ?? certificate.course_title }}</strong></p>
+  <p>{{ student_name }}</p>
+  <p>{{ text_duration }}: {{ certificate.duration_minutes }} min</p>
+  {% if certificate.instructors %}<p>{{ text_instructor }}: {{ certificate.instructors }}</p>{% endif %}
+  <p>{{ text_code }}: {{ certificate.certificate_code }}</p>
+  <p>{{ text_verify }}: <a href="{{ verify_link }}">{{ verify_link }}</a></p>
+  {% if qr_src %}<img src="{{ qr_src }}" alt="QR code" width="150" height="150">{% endif %}
+  <p><small>Emitido em: {{ certificate.issued_at }}</small></p>
+</section>

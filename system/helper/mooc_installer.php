@@ -45,9 +45,16 @@ class MoocInstaller {
      */
     public function uninstallMoocTables() {
         $tables = [
+            'mooc_payment',
+            'mooc_badge_unlock',
+            'mooc_badge',
+            'mooc_goal',
+            'mooc_points',
+            'mooc_streak',
             'mooc_enrollment',
             'mooc_progress',
             'mooc_certificate',
+            'mooc_notification',
             'mooc_quiz_answer',
             'mooc_quiz_question',
             'mooc_quiz',
