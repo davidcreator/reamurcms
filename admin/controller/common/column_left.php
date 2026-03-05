@@ -221,6 +221,51 @@ class ColumnLeft extends \Reamur\System\Engine\Controller {
 				];
 			}
 			
+			// MOOC
+			$mooc = [];
+
+			if ($this->user->hasPermission('access', 'cms/mooc_course')) {
+				$mooc[] = [
+					'name'	   => $this->language->get('text_mooc_course'),
+					'href'     => $this->url->link('cms/mooc_course', 'user_token=' . $this->session->data['user_token']),
+					'children' => []
+				];
+			}
+
+			if ($this->user->hasPermission('access', 'cms/mooc_lesson')) {
+				$mooc[] = [
+					'name'	   => $this->language->get('text_mooc_lesson'),
+					'href'     => $this->url->link('cms/mooc_lesson', 'user_token=' . $this->session->data['user_token']),
+					'children' => []
+				];
+			}
+
+			if ($this->user->hasPermission('access', 'cms/mooc_instructor')) {
+				$mooc[] = [
+					'name'	   => $this->language->get('text_mooc_instructor'),
+					'href'     => $this->url->link('cms/mooc_instructor', 'user_token=' . $this->session->data['user_token']),
+					'children' => []
+				];
+			}
+
+			if ($this->user->hasPermission('access', 'cms/mooc_quiz')) {
+				$mooc[] = [
+					'name'	   => $this->language->get('text_mooc_quiz'),
+					'href'     => $this->url->link('cms/mooc_quiz', 'user_token=' . $this->session->data['user_token']),
+					'children' => []
+				];
+			}
+
+			if ($mooc) {
+				$data['menus'][] = [
+					'id'       => 'menu-mooc',
+					'icon'	   => 'fa-solid fa-graduation-cap',
+					'name'	   => $this->language->get('text_mooc'),
+					'href'     => '',
+					'children' => $mooc
+				];
+			}
+			
 			// Extension
 			$marketplace = [];
 

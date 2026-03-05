@@ -72,6 +72,21 @@ class Menu extends \Reamur\System\Engine\Controller {
 			'href'     => $this->url->link('cms/mooc', 'language=' . $this->config->get('config_language'))
 		];
 
+		if ($this->customer->isLogged()) {
+			$data['categories'][] = [
+				'name'     => $this->language->get('text_dashboard'),
+				'children' => [],
+				'column'   => 1,
+				'href'     => $this->url->link('account/mooc_dashboard', 'language=' . $this->config->get('config_language'))
+			];
+			$data['categories'][] = [
+				'name'     => $this->language->get('text_my_courses'),
+				'children' => [],
+				'column'   => 1,
+				'href'     => $this->url->link('cms/mooc.my', 'language=' . $this->config->get('config_language'))
+			];
+		}
+
 		return $this->load->view('common/menu', $data);
 	}
 }

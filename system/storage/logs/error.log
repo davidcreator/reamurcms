@@ -132,3 +132,30 @@ Line: 38
 [2026-03-04 21:22:52] [INFO] [PID:12636] [MEM:2MB] Class "Reamur\System\Library\Pagination" not found in E:\wamp64\www\reamur\catalog\controller\cms\landpage.php on line 41
 [2026-03-04 21:32:53] [INFO] [PID:12636] [MEM:2MB] Class "Reamur\System\Library\Pagination" not found in E:\wamp64\www\reamur\catalog\controller\cms\landpage.php on line 41
 [2026-03-04 21:32:55] [INFO] [PID:12636] [MEM:2MB] Class "Reamur\System\Library\Pagination" not found in E:\wamp64\www\reamur\catalog\controller\cms\landpage.php on line 41
+[2026-03-05 14:08:23] [INFO] [PID:4428] [MEM:2MB] 0:  Undefined constant "DIR_INSTALL"
+File: E:\wamp64\www\reamur\system\helper\mooc_installer.php
+Line: 22
+[2026-03-05 14:08:45] [INFO] [PID:4428] [MEM:2MB] 0:  Undefined constant "DIR_INSTALL"
+File: E:\wamp64\www\reamur\system\helper\mooc_installer.php
+Line: 22
+[2026-03-05 14:11:04] [INFO] [PID:4428] [MEM:2MB] 0:  Undefined constant "DIR_INSTALL"
+File: E:\wamp64\www\reamur\system\helper\mooc_installer.php
+Line: 22
+[2026-03-05 14:11:39] [INFO] [PID:4428] [MEM:2MB] 0:  Undefined constant "DIR_INSTALL"
+File: E:\wamp64\www\reamur\system\helper\mooc_installer.php
+Line: 22
+[2026-03-05 14:22:59] [INFO] [PID:4428] [MEM:2MB] 0:  Template rendering failed: Failed to render template: Unknown "path" function in "admin/view/template/cms/mooc_lesson_list.twig" at line 65.
+File: E:\wamp64\www\reamur\system\library\template.php
+Line: 211
+[2026-03-05 14:23:04] [INFO] [PID:4428] [MEM:2MB] 0:  Template rendering failed: Failed to render template: Unknown "url_link" function in "admin/view/template/cms/mooc_instructor_list.twig" at line 44.
+File: E:\wamp64\www\reamur\system\library\template.php
+Line: 211
+[2026-03-05 14:23:10] [INFO] [PID:4428] [MEM:2MB] 0:  Template rendering failed: Failed to render template: Unknown "path" function in "admin/view/template/cms/mooc_lesson_list.twig" at line 65.
+File: E:\wamp64\www\reamur\system\library\template.php
+Line: 211
+[2026-03-05 17:25:16] [INFO] [PID:4428] [MEM:4MB] 0:  Template rendering failed: Failed to render template: Unable to find template "cms/partial_quiz_question.twig" (looked into: ) in "admin/view/template/cms/mooc_quiz_form.twig" at line 69.
+File: E:\wamp64\www\reamur\system\library\template.php
+Line: 211
+[2026-03-05 17:25:21] [INFO] [PID:4428] [MEM:2MB] 0:  Template rendering failed: Failed to render template: Unable to find template "cms/partial_quiz_question.twig" (looked into: ) in "admin/view/template/cms/mooc_quiz_form.twig" at line 69.
+File: E:\wamp64\www\reamur\system\library\template.php
+Line: 211

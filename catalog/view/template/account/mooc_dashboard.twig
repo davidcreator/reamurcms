@@ -1,0 +1,62 @@
+<div class="dashboard">
+  <h1>{{ heading_title }}</h1>
+
+  <section class="profile card mb-3 p-3">
+    <h3>{{ text_profile }}</h3>
+    <p>{{ customer_name }}<br>{{ customer_email }}</p>
+  </section>
+
+  <section class="my-courses card mb-3 p-3">
+    <h3>{{ text_my_courses }}</h3>
+    {% if enrollments %}
+      <ul class="list-group">
+        {% for c in enrollments %}
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <div>
+              <strong>{{ c.title }}</strong>
+              <div class="small text-muted">{{ text_progress }}: {{ c.progress_percent }}%</div>
+            </div>
+            <a class="btn btn-sm btn-primary" href="{{ c.href }}">{{ text_view }}</a>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>{{ text_none }}</p>
+    {% endif %}
+  </section>
+
+  <section class="recommended card mb-3 p-3">
+    <h3>{{ text_recommended }}</h3>
+    {% if recommended %}
+      <ul class="list-group">
+        {% for c in recommended %}
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <strong>{{ c.title }}</strong>
+            <a class="btn btn-sm btn-outline-primary" href="{{ c.href }}">{{ text_view }}</a>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>{{ text_none }}</p>
+    {% endif %}
+  </section>
+
+  <section class="certificates card mb-3 p-3">
+    <h3>{{ text_certificates }}</h3>
+    {% if certificates %}
+      <ul class="list-group">
+        {% for cert in certificates %}
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <div>
+              <strong>{{ cert.course_title }}</strong>
+              <div class="small text-muted">{{ cert.issued_at }} · {{ cert.certificate_code }}</div>
+            </div>
+            <a class="btn btn-sm btn-success" href="{{ cert.verify }}">{{ text_view }}</a>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>{{ text_none }}</p>
+    {% endif %}
+  </section>
+</div>

@@ -5,6 +5,8 @@
     <div class="container-fluid">
       <div class="pull-right">
         <a href="{{ add }}" class="btn btn-primary"><i class="fa fa-plus"></i> {{ text_add }}</a>
+        <button type="submit" form="form-course" formaction="{{ approve }}" class="btn btn-success"><i class="fa fa-check"></i> {{ button_approve }}</button>
+        <button type="submit" form="form-course" formaction="{{ delete }}" class="btn btn-danger" onclick="return confirm('Delete selected?');"><i class="fa fa-trash"></i></button>
       </div>
       <h1>{{ heading_title }}</h1>
       <ul class="breadcrumb">
@@ -28,6 +30,9 @@
                 <tr>
                   <td style="width:1px;" class="text-center"><input type="checkbox" onclick="$('input[name*=\\'selected\\']').prop('checked', this.checked);" /></td>
                   <td>{{ column_title }}</td>
+                  <td>{{ column_category }}</td>
+                  <td>{{ column_instructor }}</td>
+                  <td>{{ column_level }}</td>
                   <td>{{ column_status }}</td>
                   <td>{{ column_date }}</td>
                   <td class="text-right">{{ column_action }}</td>
@@ -39,7 +44,18 @@
                     <tr>
                       <td class="text-center"><input type="checkbox" name="selected[]" value="{{ course.course_id }}" /></td>
                       <td>{{ course.title }}</td>
-                      <td>{{ course.status }}</td>
+                      <td>{{ course.categories }}</td>
+                      <td>{{ course.instructors }}</td>
+                      <td>{{ course.level }}</td>
+                      <td>
+                        {% if course.status == 'published' %}
+                          <span class="badge bg-success">{{ text_published }}</span>
+                        {% elseif course.status == 'draft' %}
+                          <span class="badge bg-secondary">{{ text_draft }}</span>
+                        {% else %}
+                          {{ course.status }}
+                        {% endif %}
+                      </td>
                       <td>{{ course.date_added }}</td>
                       <td class="text-right">
                         <a href="{{ course.edit }}" class="btn btn-primary btn-sm"><i class="fa fa-pencil"></i></a>
@@ -47,7 +63,7 @@
                     </tr>
                   {% endfor %}
                 {% else %}
-                  <tr><td colspan="5" class="text-center">{{ text_no_results }}</td></tr>
+                  <tr><td colspan="8" class="text-center">{{ text_no_results }}</td></tr>
                 {% endif %}
               </tbody>
             </table>

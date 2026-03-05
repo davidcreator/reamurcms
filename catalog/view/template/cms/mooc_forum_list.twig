@@ -1,0 +1,32 @@
+<section class="forum">
+  <h1>{{ text_forum }}</h1>
+  {% if customer_logged %}
+    <form method="post" action="{{ action_topic }}" class="mb-3">
+      <input type="hidden" name="course_id" value="{{ course_id }}">
+      <div class="mb-2">
+        <input type="text" name="title" class="form-control" placeholder="{{ text_new_topic }}">
+      </div>
+      <div class="mb-2">
+        <textarea name="body" rows="3" class="form-control" placeholder="Sua dúvida ou tópico"></textarea>
+      </div>
+      <button class="btn btn-primary" type="submit">{{ text_new_topic }}</button>
+    </form>
+  {% else %}
+    <p><a href="{{ login_link }}">{{ text_requires_login }}</a></p>
+  {% endif %}
+
+  {% if topics %}
+    <ul class="list-group">
+      {% for t in topics %}
+        <li class="list-group-item">
+          <a href="{{ url('cms/mooc_forum.topic', {'topic_id': t.topic_id}) }}">{{ t.title }}</a>
+          <div class="small text-muted">
+            {{ t.firstname }} {{ t.lastname }} · {{ t.replies_count }} respostas · {{ t.likes_count }} likes {% if t.is_solved %}· ✓ solucionado{% endif %}
+          </div>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>{{ text_no_results }}</p>
+  {% endif %}
+</section>

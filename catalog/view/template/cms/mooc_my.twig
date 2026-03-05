@@ -1,0 +1,18 @@
+<section class="my-courses">
+  <h1>{{ heading_title }}</h1>
+  {% if enrollments %}
+    <ul class="enrollment-list">
+      {% for enrollment in enrollments %}
+        <li>
+          <div class="course-name">{{ enrollment.title }}</div>
+          <div class="meta">
+            <span>{{ text_progress }}: {{ enrollment.progress_percent }}%</span>
+            <a class="btn btn-sm btn-primary" href="{{ enrollment.href }}">{{ text_view_course }}</a>
+          </div>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>{{ text_no_enrollments }}</p>
+  {% endif %}
+</section>

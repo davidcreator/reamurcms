@@ -1,0 +1,77 @@
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="float-end">
+        <a href="{{ add }}" class="btn btn-primary"><i class="fa-solid fa-plus"></i> {{ text_add }}</a>
+        <button type="submit" form="form-quiz" formaction="{{ delete }}" class="btn btn-danger" onclick="return confirm('Delete selected?');"><i class="fa-regular fa-trash-can"></i></button>
+      </div>
+      <h1>{{ heading_title }}</h1>
+      <ol class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+          <li class="breadcrumb-item"><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+      </ol>
+    </div>
+  </div>
+  <div class="container-fluid">
+    {% if success %}
+      <div class="alert alert-success">{{ success }}</div>
+    {% endif %}
+    <div class="card mb-3">
+      <div class="card-body">
+        <form method="get" class="row g-3">
+          <input type="hidden" name="route" value="cms/mooc_quiz">
+          <input type="hidden" name="user_token" value="{{ user_token }}">
+          <div class="col-md-6">
+            <label class="form-label">{{ column_lesson }}</label>
+            <select name="lesson_id" class="form-select" onchange="this.form.submit()">
+              <option value="0">-- All --</option>
+              {% for lesson in lessons %}
+                <option value="{{ lesson.lesson_id }}" {% if lesson.lesson_id == filter_lesson_id %}selected{% endif %}>{{ lesson.title }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header"><i class="fa-solid fa-list"></i> {{ text_list }}</div>
+      <div class="card-body">
+        <form id="form-quiz" method="post">
+          <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+              <thead>
+                <tr>
+                  <td style="width:1%;" class="text-center"><input type="checkbox" onclick="$('input[name*=\\'selected\\']').prop('checked', this.checked);" /></td>
+                  <td>{{ column_title }}</td>
+                  <td>{{ column_lesson }}</td>
+                  <td>{{ column_status }}</td>
+                  <td class="text-end">{{ column_action }}</td>
+                </tr>
+              </thead>
+              <tbody>
+                {% if quizzes %}
+                  {% for quiz in quizzes %}
+                    <tr>
+                      <td class="text-center"><input type="checkbox" name="selected[]" value="{{ quiz.quiz_id }}"></td>
+                      <td>{{ quiz.title }}</td>
+                      <td>{{ quiz.lesson_title }}</td>
+                      <td>{{ quiz.status ? 'Enabled' : 'Disabled' }}</td>
+                      <td class="text-end">
+                        <a href="{{ quiz.edit }}" class="btn btn-primary btn-sm"><i class="fa-solid fa-pencil"></i></a>
+                      </td>
+                    </tr>
+                  {% endfor %}
+                {% else %}
+                  <tr><td colspan="5" class="text-center">{{ text_no_results }}</td></tr>
+                {% endif %}
+              </tbody>
+            </table>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{{ footer }}

@@ -4,6 +4,11 @@
 SET sql_mode = '';
 SET FOREIGN_KEY_CHECKS = 0;
 
+DROP TABLE IF EXISTS `rms_mooc_forum_like`;
+DROP TABLE IF EXISTS `rms_mooc_forum_reply`;
+DROP TABLE IF EXISTS `rms_mooc_forum_topic`;
+DROP TABLE IF EXISTS `rms_mooc_comment`;
+DROP TABLE IF EXISTS `rms_mooc_course_rating`;
 DROP TABLE IF EXISTS `rms_mooc_certificate`;
 DROP TABLE IF EXISTS `rms_mooc_progress`;
 DROP TABLE IF EXISTS `rms_mooc_quiz_answer`;
@@ -28,6 +33,8 @@ CREATE TABLE `rms_mooc_instructor` (
   `linkedin` varchar(255) DEFAULT NULL,
   `twitter` varchar(255) DEFAULT NULL,
   `website` varchar(255) DEFAULT NULL,
+  `approved` tinyint(1) NOT NULL DEFAULT 0,
+  `approved_at` datetime DEFAULT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`instructor_id`),
@@ -93,9 +100,13 @@ CREATE TABLE `rms_mooc_lesson` (
   `title` varchar(255) NOT NULL,
   `slug` varchar(255) DEFAULT NULL,
   `summary` text DEFAULT NULL,
-  `content_type` enum('video','article','quiz','live') NOT NULL DEFAULT 'article',
+  `content_type` enum('video','article','quiz','live','slides','pdf','link','download') NOT NULL DEFAULT 'article',
   `video_url` varchar(255) DEFAULT NULL,
+  `external_url` varchar(255) DEFAULT NULL,
   `duration_minutes` int(11) NOT NULL DEFAULT 0,
+  `min_seconds` int(11) NOT NULL DEFAULT 0,
+  `auto_complete` tinyint(1) NOT NULL DEFAULT 0,
+  `comments_enabled` tinyint(1) NOT NULL DEFAULT 1,
   `sort_order` int(5) NOT NULL DEFAULT 0,
   `status` tinyint(1) NOT NULL DEFAULT 1,
   `release_at` datetime DEFAULT NULL,
@@ -133,11 +144,12 @@ CREATE TABLE `rms_mooc_quiz` (
 CREATE TABLE `rms_mooc_quiz_question` (
   `question_id` int(11) NOT NULL AUTO_INCREMENT,
   `quiz_id` int(11) NOT NULL,
-  `type` enum('single','multiple','true_false','text') NOT NULL DEFAULT 'single',
+  `type` enum('single','multiple','true_false','text','file') NOT NULL DEFAULT 'single',
   `question` text NOT NULL,
   `options` longtext DEFAULT NULL,
   `correct_answer` longtext DEFAULT NULL,
   `points` int(11) NOT NULL DEFAULT 1,
+  `manual_review` tinyint(1) NOT NULL DEFAULT 0,
   `sort_order` int(5) NOT NULL DEFAULT 0,
   PRIMARY KEY (`question_id`),
   KEY `quiz_id` (`quiz_id`),
@@ -150,6 +162,7 @@ CREATE TABLE `rms_mooc_quiz_answer` (
   `question_id` int(11) NOT NULL,
   `customer_id` int(11) DEFAULT NULL,
   `selected_answer` longtext DEFAULT NULL,
+  `attachment` varchar(255) DEFAULT NULL,
   `is_correct` tinyint(1) NOT NULL DEFAULT 0,
   `score` int(11) NOT NULL DEFAULT 0,
   `answered_at` datetime NOT NULL,
@@ -168,6 +181,8 @@ CREATE TABLE `rms_mooc_enrollment` (
   `customer_id` int(11) NOT NULL,
   `status` enum('active','completed','cancelled','refunded') NOT NULL DEFAULT 'active',
   `progress_percent` int(3) NOT NULL DEFAULT 0,
+  `final_score` decimal(5,2) DEFAULT NULL,
+  `time_spent_seconds` int(11) NOT NULL DEFAULT 0,
   `started_at` datetime NOT NULL,
   `completed_at` datetime DEFAULT NULL,
   PRIMARY KEY (`enrollment_id`),
@@ -182,6 +197,8 @@ CREATE TABLE `rms_mooc_progress` (
   `enrollment_id` int(11) NOT NULL,
   `lesson_id` int(11) NOT NULL,
   `status` enum('not_started','in_progress','completed') NOT NULL DEFAULT 'not_started',
+  `time_spent_seconds` int(11) NOT NULL DEFAULT 0,
+  `score` decimal(5,2) DEFAULT NULL,
   `last_viewed_at` datetime DEFAULT NULL,
   `completed_at` datetime DEFAULT NULL,
   PRIMARY KEY (`progress_id`),
@@ -202,4 +219,73 @@ CREATE TABLE `rms_mooc_certificate` (
   CONSTRAINT `rms_mooc_certificate_enrollment_fk` FOREIGN KEY (`enrollment_id`) REFERENCES `rms_mooc_enrollment` (`enrollment_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+CREATE TABLE `rms_mooc_forum_topic` (
+  `topic_id` int(11) NOT NULL AUTO_INCREMENT,
+  `course_id` int(11) NOT NULL,
+  `customer_id` int(11) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `body` text NOT NULL,
+  `is_solved` tinyint(1) NOT NULL DEFAULT 0,
+  `solution_reply_id` int(11) DEFAULT NULL,
+  `likes_count` int(11) NOT NULL DEFAULT 0,
+  `replies_count` int(11) NOT NULL DEFAULT 0,
+  `created_at` datetime NOT NULL,
+  PRIMARY KEY (`topic_id`),
+  KEY `course_id` (`course_id`),
+  KEY `customer_id` (`customer_id`),
+  CONSTRAINT `rms_mooc_forum_topic_course_fk` FOREIGN KEY (`course_id`) REFERENCES `rms_mooc_course` (`course_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `rms_mooc_forum_topic_customer_fk` FOREIGN KEY (`customer_id`) REFERENCES `rms_customer` (`customer_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE `rms_mooc_forum_reply` (
+  `reply_id` int(11) NOT NULL AUTO_INCREMENT,
+  `topic_id` int(11) NOT NULL,
+  `customer_id` int(11) NOT NULL,
+  `body` text NOT NULL,
+  `likes_count` int(11) NOT NULL DEFAULT 0,
+  `is_solution` tinyint(1) NOT NULL DEFAULT 0,
+  `created_at` datetime NOT NULL,
+  PRIMARY KEY (`reply_id`),
+  KEY `topic_id` (`topic_id`),
+  KEY `customer_id` (`customer_id`),
+  CONSTRAINT `rms_mooc_forum_reply_topic_fk` FOREIGN KEY (`topic_id`) REFERENCES `rms_mooc_forum_topic` (`topic_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `rms_mooc_forum_reply_customer_fk` FOREIGN KEY (`customer_id`) REFERENCES `rms_customer` (`customer_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE `rms_mooc_forum_like` (
+  `like_id` int(11) NOT NULL AUTO_INCREMENT,
+  `reply_id` int(11) NOT NULL,
+  `customer_id` int(11) NOT NULL,
+  PRIMARY KEY (`like_id`),
+  UNIQUE KEY `reply_customer` (`reply_id`,`customer_id`),
+  CONSTRAINT `rms_mooc_forum_like_reply_fk` FOREIGN KEY (`reply_id`) REFERENCES `rms_mooc_forum_reply` (`reply_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `rms_mooc_forum_like_customer_fk` FOREIGN KEY (`customer_id`) REFERENCES `rms_customer` (`customer_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE `rms_mooc_comment` (
+  `comment_id` int(11) NOT NULL AUTO_INCREMENT,
+  `lesson_id` int(11) NOT NULL,
+  `customer_id` int(11) NOT NULL,
+  `body` text NOT NULL,
+  `likes_count` int(11) NOT NULL DEFAULT 0,
+  `created_at` datetime NOT NULL,
+  PRIMARY KEY (`comment_id`),
+  KEY `lesson_id` (`lesson_id`),
+  KEY `customer_id` (`customer_id`),
+  CONSTRAINT `rms_mooc_comment_lesson_fk` FOREIGN KEY (`lesson_id`) REFERENCES `rms_mooc_lesson` (`lesson_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `rms_mooc_comment_customer_fk` FOREIGN KEY (`customer_id`) REFERENCES `rms_customer` (`customer_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE `rms_mooc_course_rating` (
+  `rating_id` int(11) NOT NULL AUTO_INCREMENT,
+  `course_id` int(11) NOT NULL,
+  `customer_id` int(11) NOT NULL,
+  `rating` tinyint(1) NOT NULL,
+  `review` text DEFAULT NULL,
+  `created_at` datetime NOT NULL,
+  PRIMARY KEY (`rating_id`),
+  UNIQUE KEY `course_customer` (`course_id`,`customer_id`),
+  CONSTRAINT `rms_mooc_rating_course_fk` FOREIGN KEY (`course_id`) REFERENCES `rms_mooc_course` (`course_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `rms_mooc_rating_customer_fk` FOREIGN KEY (`customer_id`) REFERENCES `rms_customer` (`customer_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 SET FOREIGN_KEY_CHECKS = 1;
